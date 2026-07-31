@@ -1,0 +1,18 @@
+[
+  {"name":"PARIVISION","clientName":"TEAM VISION","pick":"4-0","aliases":["PARIVISION","Parivision","TEAM VISION"]},
+  {"name":"Team Yandex","clientName":"TEAM YANDEX","pick":"4-1","aliases":["Team Yandex","TEAM YANDEX","Yandex"]},
+  {"name":"BetBoom Team","clientName":"BOOMBOYS","pick":"4-1","aliases":["BetBoom Team","BetBoom","BB Team","BOOMBOYS"]},
+  {"name":"Team Falcons","clientName":"TEAM FALCONS","pick":"Elimination Winner","aliases":["Team Falcons","Falcons","TEAM FALCONS"]},
+  {"name":"Team Spirit","clientName":"TEAM SPIRIT","pick":"Elimination Winner","aliases":["Team Spirit","Spirit","TEAM SPIRIT"]},
+  {"name":"Nigma Galaxy","clientName":"NIGMA GALAXY","pick":"Elimination Winner","aliases":["Nigma Galaxy","Nigma","NIGMA GALAXY"]},
+  {"name":"Vici Gaming","clientName":"VICI GAMING","pick":"Elimination Winner","aliases":["Vici Gaming","Vici","VG","VICI GAMING"]},
+  {"name":"Aurora Gaming","clientName":"AURORA GAMING","pick":"Elimination Winner","aliases":["Aurora Gaming","Aurora","AURORA GAMING"]},
+  {"name":"Team Liquid","clientName":"TEAM LIQUID","pick":"Elimination Loser","aliases":["Team Liquid","Liquid","TEAM LIQUID"]},
+  {"name":"LGD Gaming","clientName":"LGD GAMING","pick":"Elimination Loser","aliases":["LGD Gaming","LGD","LGD GAMING"]},
+  {"name":"IRON WING","clientName":"IRON WING","pick":"Elimination Loser","aliases":["IRON WING","Iron Wing","1win","1win Team","Tundra Esports"]},
+  {"name":"Xtreme Gaming","clientName":"XTREME GAMING","pick":"Elimination Loser","aliases":["Xtreme Gaming","Xtreme","XG","XTREME GAMING"]},
+  {"name":"OG","clientName":"OG","pick":"Elimination Loser","aliases":["OG"]},
+  {"name":"GamerLegion","clientName":"GAMERLEGION","pick":"1-4","aliases":["GamerLegion","GAMERLEGION"]},
+  {"name":"Team Resilience","clientName":"TEAM RESILIENCE","pick":"1-4","aliases":["Team Resilience","Resilience","TEAM RESILIENCE"]},
+  {"name":"HULIGANI","clientName":"HULIGANI","pick":"0-4","aliases":["HULIGANI","Huligani","L1ga Team","L1GA TEAM","L1 Team"]}
+]

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 2,
+  "status": "waiting",
+  "source": "OpenDota",
+  "message": "Waiting for the TI 2026 league feed to become available.",
+  "generatedAt": null,
+  "leagueName": null,
+  "leagueId": null,
+  "teams": [],
+  "series": []
+}
