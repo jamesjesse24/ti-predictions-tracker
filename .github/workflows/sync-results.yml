@@ -1,0 +1,50 @@
+name: Sync tournament results
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      league_id:
+        description: "Optional OpenDota league ID override"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-ti-results
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Fetch and normalize OpenDota results
+        env:
+          OPENDOTA_LEAGUE_ID: ${{ inputs.league_id }}
+          OPENDOTA_API_KEY: ${{ secrets.OPENDOTA_API_KEY }}
+        run: python scripts/sync_results.py
+
+      - name: Commit changed feed
+        shell: bash
+        run: |
+          if git diff --quiet -- data/live.json; then
+            echo "No result changes to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/live.json
+          git commit -m "data: sync TI 2026 results"
+          git push
