@@ -95,7 +95,6 @@ def configure_icons() -> None:
         android:pathData="M6.5,7.2 L17.5,7.2 L17.5,9.7 L13.4,9.7 L13.4,17 L10.6,17 L10.6,9.7 L6.5,9.7 Z" />
 </vector>
 """
-    # Notification icons must be a white silhouette on a transparent background.
     notification = notification.replace('android:fillColor="#00000000"', 'android:fillColor="#FFFFFFFF"')
     write(RES / "drawable" / "ic_stat_ti.xml", notification)
 
@@ -111,6 +110,8 @@ def configure_icons() -> None:
 def configure_manifest() -> None:
     text = MANIFEST.read_text(encoding="utf-8")
     permissions = [
+        '<uses-permission android:name="android.permission.INTERNET" />',
+        '<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />',
         '<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />',
         '<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />',
         '<uses-permission android:name="android.permission.VIBRATE" />',
@@ -176,7 +177,7 @@ def main() -> None:
     configure_icons()
     configure_manifest()
     configure_gradle()
-    print("Configured branded launcher icon, notification icon, and Android build settings.")
+    print("Configured launcher assets, notification assets, network permissions, and Android build settings.")
 
 
 if __name__ == "__main__":

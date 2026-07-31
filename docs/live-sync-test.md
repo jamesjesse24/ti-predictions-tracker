@@ -1,0 +1,1 @@
+After installing version 1.2.2+5, opening the dashboard or pressing refresh should load the public GitHub feed and replace `Not synced yet` with the feed timestamp. The current feed contains `generatedAt: 2026-07-31T22:15:55Z` and OpenDota league ID 19719.
