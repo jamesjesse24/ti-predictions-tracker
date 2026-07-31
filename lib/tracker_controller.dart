@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'live_models.dart';
 import 'live_service.dart';
+import 'notification_service.dart';
 
 const resultBuckets = <String>[
   'Pending',
@@ -16,13 +17,14 @@ const resultBuckets = <String>[
   '0-4',
 ];
 
-const _storageKey = 'ti_tracker_state_v2';
+const _storageKey = 'ti_tracker_state_v3';
 
 class TeamEntry {
   TeamEntry({
     required this.name,
     required this.clientName,
     required this.pick,
+    this.logoUrl,
     this.wins = 0,
     this.losses = 0,
     this.mapWins = 0,
@@ -35,6 +37,7 @@ class TeamEntry {
   final String name;
   final String clientName;
   final String pick;
+  String? logoUrl;
   int wins;
   int losses;
   int mapWins;
@@ -59,6 +62,7 @@ class TeamEntry {
         'name': name,
         'clientName': clientName,
         'pick': pick,
+        'logoUrl': logoUrl,
         'wins': wins,
         'losses': losses,
         'mapWins': mapWins,
@@ -72,6 +76,7 @@ class TeamEntry {
         name: json['name'] as String,
         clientName: json['clientName'] as String,
         pick: json['pick'] as String? ?? json['predicted'] as String? ?? 'Pending',
+        logoUrl: _cleanUrl(json['logoUrl'] as String?),
         wins: (json['wins'] as num?)?.toInt() ?? 0,
         losses: (json['losses'] as num?)?.toInt() ?? 0,
         mapWins: (json['mapWins'] as num?)?.toInt() ?? 0,
@@ -106,15 +111,20 @@ class TrackerController extends ChangeNotifier {
     this.teams, {
     SharedPreferences? preferences,
     LiveResultsService? service,
+    NotificationService? notifications,
   })  : _preferences = preferences,
-        _service = service ?? LiveResultsService();
+        _service = service ?? LiveResultsService(),
+        _notifications = notifications ?? NotificationService();
 
   List<TeamEntry> teams;
   final SharedPreferences? _preferences;
   final LiveResultsService _service;
+  final NotificationService _notifications;
 
   List<LiveSeries> series = const [];
   bool isSyncing = false;
+  bool notificationsEnabled = false;
+  bool notificationPermissionDenied = false;
   String syncStatus = 'offline';
   String syncMessage = 'Using saved data.';
   String source = 'OpenDota';
@@ -123,26 +133,39 @@ class TrackerController extends ChangeNotifier {
   String? leagueName;
   int newSeriesCount = 0;
 
-  factory TrackerController.memory({LiveResultsService? service}) =>
-      TrackerController(TeamEntry.defaults(), service: service);
+  factory TrackerController.memory({
+    LiveResultsService? service,
+    NotificationService? notifications,
+  }) =>
+      TrackerController(
+        TeamEntry.defaults(),
+        service: service,
+        notifications: notifications,
+      );
 
   static Future<TrackerController> load() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_storageKey);
-    if (raw == null) {
-      return TrackerController(TeamEntry.defaults(), preferences: prefs);
-    }
+    final controller = TrackerController(
+      TeamEntry.defaults(),
+      preferences: prefs,
+    );
+    controller.notificationsEnabled =
+        prefs.getBool(notificationsEnabledKey) ?? false;
+
+    if (raw == null) return controller;
 
     try {
       final data = jsonDecode(raw) as Map<String, dynamic>;
-      final teams = (data['teams'] as List<dynamic>)
+      controller.teams = (data['teams'] as List<dynamic>)
           .map((item) => TeamEntry.fromJson(item as Map<String, dynamic>))
           .toList();
-      final controller = TrackerController(teams, preferences: prefs);
       controller.syncStatus = data['syncStatus'] as String? ?? 'offline';
-      controller.syncMessage = data['syncMessage'] as String? ?? 'Using saved data.';
+      controller.syncMessage =
+          data['syncMessage'] as String? ?? 'Using saved data.';
       controller.source = data['source'] as String? ?? 'OpenDota';
-      controller.lastUpdated = DateTime.tryParse(data['lastUpdated'] as String? ?? '');
+      controller.lastUpdated =
+          DateTime.tryParse(data['lastUpdated'] as String? ?? '');
       controller.leagueId = (data['leagueId'] as num?)?.toInt();
       controller.leagueName = data['leagueName'] as String?;
       controller.series = ((data['series'] as List<dynamic>?) ?? const [])
@@ -151,7 +174,7 @@ class TrackerController extends ChangeNotifier {
           .toList();
       return controller;
     } catch (_) {
-      return TrackerController(TeamEntry.defaults(), preferences: prefs);
+      return controller;
     }
   }
 
@@ -162,6 +185,52 @@ class TrackerController extends ChangeNotifier {
   int get active => teams.where((team) => team.wins + team.losses > 0).length;
   int get completedSeries => series.where((item) => item.completed).length;
   bool get hasLiveData => syncStatus == 'live' || syncStatus == 'ready';
+  List<LiveSeries> get recentCompletedSeries {
+    final items = series.where((item) => item.completed).toList()
+      ..sort((a, b) =>
+          (b.startedAt ?? DateTime(1970)).compareTo(a.startedAt ?? DateTime(1970)));
+    return items;
+  }
+
+  TeamEntry? teamByName(String value) {
+    final key = _normalize(value);
+    for (final team in teams) {
+      if (_normalize(team.name) == key || _normalize(team.clientName) == key) {
+        return team;
+      }
+    }
+    return null;
+  }
+
+  Future<void> initializeNotifications() => _notifications.initialize();
+
+  Future<bool> setNotificationsEnabled(bool enabled) async {
+    notificationPermissionDenied = false;
+    if (enabled) {
+      final granted = await _notifications.requestPermission();
+      if (!granted) {
+        notificationPermissionDenied = true;
+        notificationsEnabled = false;
+        await _notifications.setEnabled(false);
+        notifyListeners();
+        return false;
+      }
+      await _notifications.setEnabled(
+        true,
+        currentSeriesIds:
+            series.where((item) => item.completed).map((item) => item.id),
+      );
+      notificationsEnabled = true;
+    } else {
+      await _notifications.setEnabled(false);
+      notificationsEnabled = false;
+    }
+    notifyListeners();
+    return true;
+  }
+
+  Future<void> sendTestNotification() =>
+      _notifications.showTestNotification();
 
   Future<void> synchronize() async {
     if (isSyncing) return;
@@ -170,7 +239,10 @@ class TrackerController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final before = series.where((item) => item.completed).map((item) => item.id).toSet();
+      final before = series
+          .where((item) => item.completed)
+          .map((item) => item.id)
+          .toSet();
       final feed = await _service.fetch();
       syncStatus = feed.status;
       syncMessage = feed.message;
@@ -180,13 +252,18 @@ class TrackerController extends ChangeNotifier {
       leagueName = feed.leagueName;
       series = feed.series;
 
-      final after = series.where((item) => item.completed).map((item) => item.id).toSet();
+      final after = series
+          .where((item) => item.completed)
+          .map((item) => item.id)
+          .toSet();
       newSeriesCount = after.difference(before).length;
       _applyFeed(feed);
+      await _notifications.notifyForNewSeries(feed.series);
       await _save();
-    } catch (error) {
+    } catch (_) {
       syncStatus = 'offline';
-      syncMessage = 'Automatic refresh failed. Showing the last saved results.';
+      syncMessage =
+          'Automatic refresh failed. Showing the last saved results.';
       await _save();
     } finally {
       isSyncing = false;
@@ -197,16 +274,7 @@ class TrackerController extends ChangeNotifier {
   void _applyFeed(LiveFeed feed) {
     if (feed.teams.isEmpty) return;
     for (final incoming in feed.teams) {
-      final key = _normalize(incoming.name);
-      TeamEntry? local;
-      for (final candidate in teams) {
-        if (_normalize(candidate.name) == key ||
-            _normalize(candidate.clientName) == key ||
-            _normalize(candidate.clientName) == _normalize(incoming.clientName)) {
-          local = candidate;
-          break;
-        }
-      }
+      final local = teamByName(incoming.name) ?? teamByName(incoming.clientName);
       if (local == null) continue;
       local
         ..wins = incoming.seriesWins
@@ -216,6 +284,7 @@ class TrackerController extends ChangeNotifier {
         ..actual = incoming.actual
         ..lastMatchAt = incoming.lastMatchAt
         ..live = true;
+      if (incoming.logoUrl != null) local.logoUrl = incoming.logoUrl;
     }
   }
 
@@ -245,7 +314,7 @@ class TrackerController extends ChangeNotifier {
   }
 
   String exportJson() => const JsonEncoder.withIndent('  ').convert({
-        'schemaVersion': 2,
+        'schemaVersion': 3,
         'exportedAt': DateTime.now().toUtc().toIso8601String(),
         'teams': teams.map((team) => team.toJson()).toList(),
         'series': series.map((item) => item.toJson()).toList(),
@@ -301,6 +370,10 @@ class TrackerController extends ChangeNotifier {
   }
 }
 
-String _normalize(String value) => value
-    .toLowerCase()
-    .replaceAll(RegExp(r'[^a-z0-9]'), '');
+String _normalize(String value) =>
+    value.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '');
+
+String? _cleanUrl(String? value) {
+  final trimmed = value?.trim();
+  return trimmed == null || trimmed.isEmpty ? null : trimmed;
+}
