@@ -39,6 +39,14 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Validate data scripts
+        run: python -m py_compile scripts/sync_results.py tool/configure_android.py
+
       - name: Install Flutter
         shell: bash
         run: |
@@ -54,6 +62,7 @@ jobs:
             --platforms=android \
             --org com.jamesjesse24 \
             --project-name ti_predictions_tracker
+          python tool/configure_android.py
 
       - name: Install dependencies
         run: flutter pub get
