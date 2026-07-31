@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate data/live.json from OpenDota league match data.
 
-The script is intentionally dependency-free so GitHub Actions can run it with
-standard Python. It discovers the TI 2026 league automatically unless
+The script is dependency-free so GitHub Actions can run it with standard
+Python. It discovers the TI 2026 league automatically unless
 OPENDOTA_LEAGUE_ID is provided.
 """
 
@@ -15,7 +15,6 @@ import re
 import sys
 import urllib.parse
 import urllib.request
-from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -36,6 +35,19 @@ def normalize(value: str | None) -> str:
     return re.sub(r"[^a-z0-9]", "", (value or "").lower())
 
 
+def normalize_logo_url(value: Any) -> str | None:
+    if not value:
+        return None
+    url = str(value).strip()
+    if not url:
+        return None
+    if url.startswith("//"):
+        return f"https:{url}"
+    if url.startswith("/"):
+        return f"https://www.opendota.com{url}"
+    return url
+
+
 def get_json(path: str) -> Any:
     query: dict[str, str] = {}
     api_key = os.getenv("OPENDOTA_API_KEY", "").strip()
@@ -48,7 +60,7 @@ def get_json(path: str) -> Any:
         url,
         headers={
             "Accept": "application/json",
-            "User-Agent": "ti-predictions-tracker/2.0 (+github.com/jamesjesse24/ti-predictions-tracker)",
+            "User-Agent": "ti-predictions-tracker/3.0 (+github.com/jamesjesse24/ti-predictions-tracker)",
         },
     )
     with urllib.request.urlopen(request, timeout=30) as response:
@@ -154,7 +166,7 @@ def write_if_changed(payload: dict[str, Any]) -> bool:
 def waiting_payload(message: str) -> dict[str, Any]:
     config = load_json(TEAMS_PATH, [])
     return {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "status": "waiting",
         "source": "OpenDota",
         "message": message,
@@ -165,6 +177,7 @@ def waiting_payload(message: str) -> dict[str, Any]:
             {
                 "name": team["name"],
                 "clientName": team["clientName"],
+                "logoUrl": normalize_logo_url(team.get("logoUrl")),
                 "seriesWins": 0,
                 "seriesLosses": 0,
                 "mapWins": 0,
@@ -196,14 +209,30 @@ def main() -> int:
 
     aliases = build_alias_index(config)
     id_to_name: dict[int, str] = {}
+    id_to_logo: dict[int, str] = {}
     if isinstance(league_teams, list):
         for item in league_teams:
             if not isinstance(item, dict):
                 continue
-            team_id = int(item.get("team_id") or 0)
+            team_id = int(item.get("team_id") or item.get("teamid") or 0)
             name = str(item.get("name") or item.get("tag") or "")
+            logo = normalize_logo_url(item.get("logo_url") or item.get("logo"))
             if team_id and name:
                 id_to_name[team_id] = name
+            if team_id and logo:
+                id_to_logo[team_id] = logo
+
+    canonical_logos: dict[str, str] = {}
+    if isinstance(league_teams, list):
+        for item in league_teams:
+            if not isinstance(item, dict):
+                continue
+            team_id = int(item.get("team_id") or item.get("teamid") or 0)
+            name = str(item.get("name") or item.get("tag") or "")
+            canonical = resolve_team(name, team_id, id_to_name, aliases)
+            logo = id_to_logo.get(team_id) or normalize_logo_url(item.get("logo_url") or item.get("logo"))
+            if canonical and logo:
+                canonical_logos[canonical] = logo
 
     grouped: dict[str, dict[str, Any]] = {}
     sorted_matches = sorted(
@@ -218,6 +247,11 @@ def main() -> int:
         dire = resolve_team(match.get("dire_name"), dire_id, id_to_name, aliases)
         if radiant is None or dire is None or radiant == dire:
             continue
+
+        if radiant_id in id_to_logo:
+            canonical_logos.setdefault(radiant, id_to_logo[radiant_id])
+        if dire_id in id_to_logo:
+            canonical_logos.setdefault(dire, id_to_logo[dire_id])
 
         start_time = int(match.get("start_time") or 0)
         series_id = int(match.get("series_id") or 0)
@@ -350,6 +384,7 @@ def main() -> int:
             {
                 "name": name,
                 "clientName": team_config["clientName"],
+                "logoUrl": canonical_logos.get(name) or normalize_logo_url(team_config.get("logoUrl")),
                 "seriesWins": team_state["seriesWins"],
                 "seriesLosses": team_state["seriesLosses"],
                 "mapWins": team_state["mapWins"],
@@ -361,7 +396,7 @@ def main() -> int:
 
     completed_count = sum(1 for item in series_output if item["completed"])
     payload = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "status": "live" if completed_count else "ready",
         "source": "OpenDota",
         "message": (
