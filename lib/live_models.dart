@@ -7,6 +7,7 @@ class LiveTeamResult {
     required this.mapWins,
     required this.mapLosses,
     required this.actual,
+    this.logoUrl,
     this.lastMatchAt,
   });
 
@@ -17,6 +18,7 @@ class LiveTeamResult {
   final int mapWins;
   final int mapLosses;
   final String actual;
+  final String? logoUrl;
   final DateTime? lastMatchAt;
 
   factory LiveTeamResult.fromJson(Map<String, dynamic> json) => LiveTeamResult(
@@ -27,6 +29,7 @@ class LiveTeamResult {
         mapWins: (json['mapWins'] as num?)?.toInt() ?? 0,
         mapLosses: (json['mapLosses'] as num?)?.toInt() ?? 0,
         actual: json['actual'] as String? ?? 'Pending',
+        logoUrl: _cleanUrl(json['logoUrl'] as String?),
         lastMatchAt: DateTime.tryParse(json['lastMatchAt'] as String? ?? ''),
       );
 }
@@ -118,4 +121,9 @@ class LiveFeed {
             .map(LiveSeries.fromJson)
             .toList(),
       );
+}
+
+String? _cleanUrl(String? value) {
+  final trimmed = value?.trim();
+  return trimmed == null || trimmed.isEmpty ? null : trimmed;
 }
