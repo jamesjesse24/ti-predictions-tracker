@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'background_worker.dart';
+import 'group_stage_status_panel.dart';
 import 'live_models.dart';
 import 'tracker_controller.dart';
 
@@ -342,6 +343,8 @@ class DashboardPage extends StatelessWidget {
             misses: controller.misses,
             activeTeams: activeTeams,
           ),
+          const SizedBox(height: 24),
+          GroupStageStatusPanel(controller: controller),
           const SizedBox(height: 24),
           _SectionHeader(
             title: 'Latest completed series',
