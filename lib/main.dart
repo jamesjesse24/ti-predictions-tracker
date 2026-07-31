@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _storageKey = 'ti_predictions_tracker_state_v1';
+const _storageKey = 'ti_tracker_state_v1';
+const _gold = Color(0xFFD6A84B);
+const _bg = Color(0xFF090A0C);
+const _panel = Color(0xFF15171C);
 
-const predictionBuckets = <String>[
+const resultBuckets = <String>[
   'Pending',
   '4-0',
   '4-1',
@@ -29,31 +32,20 @@ class TrackerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const seed = Color(0xFFD6A84B);
     return MaterialApp(
       title: 'TI Predictions Tracker',
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark,
-      darkTheme: ThemeData(
+      theme: ThemeData(
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: seed,
+          seedColor: _gold,
           brightness: Brightness.dark,
-          surface: const Color(0xFF121316),
         ),
-        scaffoldBackgroundColor: const Color(0xFF090A0C),
+        scaffoldBackgroundColor: _bg,
         useMaterial3: true,
-        dividerColor: Colors.white12,
-        navigationBarTheme: const NavigationBarThemeData(
-          backgroundColor: Color(0xFF111318),
-          indicatorColor: Color(0xFF5A431D),
-          labelTextStyle: WidgetStatePropertyAll(
-            TextStyle(fontWeight: FontWeight.w700),
-          ),
-        ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: const Color(0xFF17191F),
+          fillColor: _panel,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: BorderSide.none,
@@ -75,9 +67,9 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
-  int _index = 0;
+  int index = 0;
 
-  static const _titles = <String>[
+  static const titles = [
     'Command Center',
     'Prediction Board',
     'Fantasy Roster',
@@ -88,64 +80,58 @@ class _HomeShellState extends State<HomeShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF0E0F12),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _titles[_index],
+              titles[index],
               style: const TextStyle(fontWeight: FontWeight.w900),
             ),
             const Text(
               'THE INTERNATIONAL 2026',
               style: TextStyle(
-                color: Color(0xFFD6A84B),
+                color: _gold,
                 fontSize: 10,
-                letterSpacing: 1.8,
+                letterSpacing: 1.7,
                 fontWeight: FontWeight.w800,
               ),
             ),
           ],
         ),
-        backgroundColor: const Color(0xFF0E0F12),
       ),
       body: SafeArea(
         child: AnimatedBuilder(
           animation: widget.controller,
-          builder: (context, _) {
-            return IndexedStack(
-              index: _index,
-              children: [
-                DashboardPage(controller: widget.controller),
-                PredictionsPage(controller: widget.controller),
-                const FantasyPage(),
-                SettingsPage(controller: widget.controller),
-              ],
-            );
-          },
+          builder: (context, _) => IndexedStack(
+            index: index,
+            children: [
+              DashboardPage(controller: widget.controller),
+              PredictionsPage(controller: widget.controller),
+              const FantasyPage(),
+              SettingsPage(controller: widget.controller),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (value) => setState(() => _index = value),
+        selectedIndex: index,
+        onDestinationSelected: (value) => setState(() => index = value),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
             label: 'Dashboard',
           ),
           NavigationDestination(
             icon: Icon(Icons.shield_outlined),
-            selectedIcon: Icon(Icons.shield),
             label: 'Predictions',
           ),
           NavigationDestination(
             icon: Icon(Icons.auto_awesome_outlined),
-            selectedIcon: Icon(Icons.auto_awesome),
             label: 'Fantasy',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
@@ -155,101 +141,75 @@ class _HomeShellState extends State<HomeShell> {
 }
 
 class TrackerController extends ChangeNotifier {
-  TrackerController({required this.teams, SharedPreferences? preferences})
-      : _preferences = preferences;
+  TrackerController(this.teams, [this.preferences]);
 
-  final SharedPreferences? _preferences;
   List<TeamEntry> teams;
+  final SharedPreferences? preferences;
+
+  factory TrackerController.memory() => TrackerController(TeamEntry.defaults());
 
   static Future<TrackerController> load() async {
-    final preferences = await SharedPreferences.getInstance();
-    final raw = preferences.getString(_storageKey);
-    if (raw == null) {
-      return TrackerController(
-        teams: TeamEntry.defaults(),
-        preferences: preferences,
-      );
-    }
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_storageKey);
+    if (raw == null) return TrackerController(TeamEntry.defaults(), prefs);
 
     try {
-      final decoded = jsonDecode(raw) as Map<String, dynamic>;
-      final storedTeams = (decoded['teams'] as List<dynamic>)
+      final data = jsonDecode(raw) as Map<String, dynamic>;
+      final teams = (data['teams'] as List<dynamic>)
           .map((item) => TeamEntry.fromJson(item as Map<String, dynamic>))
           .toList();
-      return TrackerController(teams: storedTeams, preferences: preferences);
+      return TrackerController(teams, prefs);
     } catch (_) {
-      return TrackerController(
-        teams: TeamEntry.defaults(),
-        preferences: preferences,
-      );
+      return TrackerController(TeamEntry.defaults(), prefs);
     }
   }
 
-  factory TrackerController.memory() {
-    return TrackerController(teams: TeamEntry.defaults());
+  int get settled => teams.where((team) => team.actual != 'Pending').length;
+  int get hits => teams.where((team) => team.actual == team.predicted).length;
+  int get misses => teams.where((team) => team.isMiss).length;
+  double get accuracy => settled == 0 ? 0 : hits / settled;
+  int get active => teams.where((team) => team.wins + team.losses > 0).length;
+
+  void changeWins(TeamEntry team, int amount) {
+    team.wins = (team.wins + amount).clamp(0, 4).toInt();
+    _inferTerminalResult(team);
+    _save();
   }
 
-  int get settledCount =>
-      teams.where((team) => team.actualBucket != 'Pending').length;
-
-  int get exactHits => teams
-      .where(
-        (team) =>
-            team.actualBucket != 'Pending' &&
-            team.actualBucket == team.predictedBucket,
-      )
-      .length;
-
-  double get accuracy => settledCount == 0 ? 0 : exactHits / settledCount;
-
-  int get teamsInProgress => teams
-      .where((team) => team.wins > 0 || team.losses > 0)
-      .length;
-
-  void changeWins(TeamEntry team, int delta) {
-    team.wins = (team.wins + delta).clamp(0, 4);
-    _inferTerminalBucket(team);
-    _commit();
+  void changeLosses(TeamEntry team, int amount) {
+    team.losses = (team.losses + amount).clamp(0, 4).toInt();
+    _inferTerminalResult(team);
+    _save();
   }
 
-  void changeLosses(TeamEntry team, int delta) {
-    team.losses = (team.losses + delta).clamp(0, 4);
-    _inferTerminalBucket(team);
-    _commit();
+  void setActual(TeamEntry team, String actual) {
+    team.actual = actual;
+    _save();
   }
 
-  void setActualBucket(TeamEntry team, String bucket) {
-    team.actualBucket = bucket;
-    _commit();
-  }
-
-  void _inferTerminalBucket(TeamEntry team) {
+  void _inferTerminalResult(TeamEntry team) {
     if (team.wins == 4) {
-      team.actualBucket = team.losses == 0 ? '4-0' : '4-1';
+      team.actual = team.losses == 0 ? '4-0' : '4-1';
     } else if (team.losses == 4) {
-      team.actualBucket = team.wins == 0 ? '0-4' : '1-4';
+      team.actual = team.wins == 0 ? '0-4' : '1-4';
     }
   }
 
-  String exportJson() {
-    return const JsonEncoder.withIndent('  ').convert({
-      'schemaVersion': 1,
-      'exportedAt': DateTime.now().toUtc().toIso8601String(),
-      'teams': teams.map((team) => team.toJson()).toList(),
-    });
-  }
+  String exportJson() => const JsonEncoder.withIndent('  ').convert({
+        'schemaVersion': 1,
+        'exportedAt': DateTime.now().toUtc().toIso8601String(),
+        'teams': teams.map((team) => team.toJson()).toList(),
+      });
 
   bool importJson(String source) {
     try {
-      final decoded = jsonDecode(source) as Map<String, dynamic>;
-      final imported = (decoded['teams'] as List<dynamic>)
+      final data = jsonDecode(source) as Map<String, dynamic>;
+      final imported = (data['teams'] as List<dynamic>)
           .map((item) => TeamEntry.fromJson(item as Map<String, dynamic>))
           .toList();
-      if (imported.length != 16) {
-        return false;
-      }
+      if (imported.length != 16) return false;
       teams = imported;
-      _commit();
+      _save();
       return true;
     } catch (_) {
       return false;
@@ -258,16 +218,15 @@ class TrackerController extends ChangeNotifier {
 
   void reset() {
     teams = TeamEntry.defaults();
-    _commit();
+    _save();
   }
 
-  void _commit() {
+  void _save() {
     notifyListeners();
-    final data = jsonEncode({
-      'schemaVersion': 1,
-      'teams': teams.map((team) => team.toJson()).toList(),
-    });
-    _preferences?.setString(_storageKey, data);
+    preferences?.setString(
+      _storageKey,
+      jsonEncode({'teams': teams.map((team) => team.toJson()).toList()}),
+    );
   }
 }
 
@@ -275,133 +234,129 @@ class TeamEntry {
   TeamEntry({
     required this.name,
     required this.clientName,
-    required this.predictedBucket,
+    required this.predicted,
     this.wins = 0,
     this.losses = 0,
-    this.actualBucket = 'Pending',
+    this.actual = 'Pending',
   });
 
   final String name;
   final String clientName;
-  final String predictedBucket;
+  final String predicted;
   int wins;
   int losses;
-  String actualBucket;
+  String actual;
+
+  bool get isExact => actual != 'Pending' && actual == predicted;
+  bool get isMiss => actual != 'Pending' && actual != predicted;
 
   String get initials {
     final words = clientName.split(RegExp(r'\s+'));
     if (words.length == 1) {
-      return words.first.substring(0, words.first.length.clamp(0, 2)).toUpperCase();
+      final length = words.first.length < 2 ? words.first.length : 2;
+      return words.first.substring(0, length).toUpperCase();
     }
     return words.take(2).map((word) => word[0]).join().toUpperCase();
   }
 
-  bool get isExact =>
-      actualBucket != 'Pending' && actualBucket == predictedBucket;
-
-  bool get isMiss =>
-      actualBucket != 'Pending' && actualBucket != predictedBucket;
-
   Map<String, dynamic> toJson() => {
         'name': name,
         'clientName': clientName,
-        'predictedBucket': predictedBucket,
+        'predicted': predicted,
         'wins': wins,
         'losses': losses,
-        'actualBucket': actualBucket,
+        'actual': actual,
       };
 
-  factory TeamEntry.fromJson(Map<String, dynamic> json) {
-    return TeamEntry(
-      name: json['name'] as String,
-      clientName: json['clientName'] as String,
-      predictedBucket: json['predictedBucket'] as String,
-      wins: (json['wins'] as num?)?.toInt() ?? 0,
-      losses: (json['losses'] as num?)?.toInt() ?? 0,
-      actualBucket: json['actualBucket'] as String? ?? 'Pending',
-    );
-  }
+  factory TeamEntry.fromJson(Map<String, dynamic> json) => TeamEntry(
+        name: json['name'] as String,
+        clientName: json['clientName'] as String,
+        predicted: json['predicted'] as String,
+        wins: (json['wins'] as num?)?.toInt() ?? 0,
+        losses: (json['losses'] as num?)?.toInt() ?? 0,
+        actual: json['actual'] as String? ?? 'Pending',
+      );
 
   static List<TeamEntry> defaults() => [
         TeamEntry(
           name: 'PARIVISION',
           clientName: 'TEAM VISION',
-          predictedBucket: '4-0',
+          predicted: '4-0',
         ),
         TeamEntry(
           name: 'Team Yandex',
           clientName: 'TEAM YANDEX',
-          predictedBucket: '4-1',
+          predicted: '4-1',
         ),
         TeamEntry(
           name: 'BetBoom Team',
           clientName: 'BOOMBOYS',
-          predictedBucket: '4-1',
+          predicted: '4-1',
         ),
         TeamEntry(
           name: 'Team Falcons',
           clientName: 'TEAM FALCONS',
-          predictedBucket: 'Elimination Winner',
+          predicted: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'Team Spirit',
           clientName: 'TEAM SPIRIT',
-          predictedBucket: 'Elimination Winner',
+          predicted: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'Nigma Galaxy',
           clientName: 'NIGMA GALAXY',
-          predictedBucket: 'Elimination Winner',
+          predicted: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'Vici Gaming',
           clientName: 'VICI GAMING',
-          predictedBucket: 'Elimination Winner',
+          predicted: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'Aurora Gaming',
           clientName: 'AURORA GAMING',
-          predictedBucket: 'Elimination Winner',
+          predicted: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'Team Liquid',
           clientName: 'TEAM LIQUID',
-          predictedBucket: 'Elimination Loser',
+          predicted: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'LGD Gaming',
           clientName: 'LGD GAMING',
-          predictedBucket: 'Elimination Loser',
+          predicted: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'IRON WING',
           clientName: 'IRON WING',
-          predictedBucket: 'Elimination Loser',
+          predicted: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'Xtreme Gaming',
           clientName: 'XTREME GAMING',
-          predictedBucket: 'Elimination Loser',
+          predicted: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'OG',
           clientName: 'OG',
-          predictedBucket: 'Elimination Loser',
+          predicted: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'GamerLegion',
           clientName: 'GAMERLEGION',
-          predictedBucket: '1-4',
+          predicted: '1-4',
         ),
         TeamEntry(
           name: 'Team Resilience',
           clientName: 'TEAM RESILIENCE',
-          predictedBucket: '1-4',
+          predicted: '1-4',
         ),
         TeamEntry(
           name: 'HULIGANI',
           clientName: 'HULIGANI',
-          predictedBucket: '0-4',
+          predicted: '0-4',
         ),
       ];
 }
@@ -413,63 +368,44 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final percentage = (controller.accuracy * 100).round();
-    final misses = controller.teams.where((team) => team.isMiss).toList();
-
+    final percent = (controller.accuracy * 100).round();
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 30),
+      padding: const EdgeInsets.all(16),
       children: [
         Container(
-          padding: const EdgeInsets.all(22),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(26),
             gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF3C2A10), Color(0xFF17191F)],
+              colors: [Color(0xFF3C2A10), _panel],
             ),
-            border: Border.all(color: const Color(0x66D6A84B)),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: _gold.withOpacity(.45)),
           ),
           child: Row(
             children: [
               SizedBox(
-                width: 112,
-                height: 112,
+                width: 106,
+                height: 106,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     CircularProgressIndicator(
-                      value: controller.settledCount == 0
-                          ? 0
-                          : controller.accuracy,
-                      strokeWidth: 11,
+                      value: controller.accuracy,
+                      strokeWidth: 10,
                       backgroundColor: Colors.white10,
-                      color: const Color(0xFFD6A84B),
+                      color: _gold,
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '$percentage%',
-                          style: const TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        const Text(
-                          'ACCURACY',
-                          style: TextStyle(
-                            fontSize: 10,
-                            letterSpacing: 1.2,
-                            color: Colors.white60,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      '$percent%',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 18),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -481,25 +417,28 @@ class DashboardPage extends StatelessWidget {
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    const SizedBox(height: 7),
+                    const SizedBox(height: 6),
                     Text(
-                      controller.settledCount == 0
-                          ? 'Enter completed results to start measuring the prediction board.'
-                          : '${controller.exactHits} exact hits from ${controller.settledCount} settled teams.',
-                      style: const TextStyle(color: Colors.white70, height: 1.4),
+                      controller.settled == 0
+                          ? 'Enter completed results to begin the comparison.'
+                          : '${controller.hits} exact hits from ${controller.settled} settled teams.',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.35,
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    _StatusPill(
-                      label: controller.settledCount == 0
+                    const SizedBox(height: 10),
+                    StatusPill(
+                      text: controller.settled == 0
                           ? 'Awaiting group stage'
-                          : percentage >= 80
+                          : percent >= 80
                               ? 'Elite read'
-                              : percentage >= 60
+                              : percent >= 60
                                   ? 'Competitive read'
                                   : 'Model needs revision',
-                      color: percentage >= 80
+                      color: percent >= 80
                           ? Colors.greenAccent
-                          : percentage >= 60
+                          : percent >= 60
                               ? Colors.amberAccent
                               : Colors.redAccent,
                     ),
@@ -509,75 +448,73 @@ class DashboardPage extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 12),
         Row(
           children: [
             Expanded(
-              child: _MetricCard(
-                icon: Icons.check_circle_outline,
-                value: '${controller.exactHits}',
+              child: MetricCard(
+                value: '${controller.hits}',
                 label: 'Exact hits',
+                icon: Icons.check_circle_outline,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
-              child: _MetricCard(
-                icon: Icons.flag_outlined,
-                value: '${controller.settledCount}/16',
+              child: MetricCard(
+                value: '${controller.settled}/16',
                 label: 'Settled',
+                icon: Icons.flag_outlined,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
-              child: _MetricCard(
+              child: MetricCard(
+                value: '${controller.active}',
+                label: 'Active',
                 icon: Icons.ssid_chart,
-                value: '${controller.teamsInProgress}',
-                label: 'In progress',
               ),
             ),
           ],
         ),
         const SizedBox(height: 22),
-        const _SectionTitle(
+        const SectionTitle(
           title: 'Original prediction board',
-          subtitle: 'The locked forecast used for accuracy comparison.',
-        ),
-        const SizedBox(height: 12),
-        ...predictionBuckets.where((bucket) => bucket != 'Pending').map(
-          (bucket) {
-            final teams = controller.teams
-                .where((team) => team.predictedBucket == bucket)
-                .toList();
-            return _BucketStrip(bucket: bucket, teams: teams);
-          },
-        ),
-        const SizedBox(height: 18),
-        _SectionTitle(
-          title: 'Prediction misses',
-          subtitle: misses.isEmpty
-              ? 'No confirmed misses yet.'
-              : '${misses.length} team${misses.length == 1 ? '' : 's'} currently differ from the forecast.',
+          subtitle: 'The locked forecast used for accuracy scoring.',
         ),
         const SizedBox(height: 10),
-        if (misses.isEmpty)
-          const _EmptyPanel(
+        ...resultBuckets.where((bucket) => bucket != 'Pending').map((bucket) {
+          final teams = controller.teams
+              .where((team) => team.predicted == bucket)
+              .toList();
+          return BucketStrip(bucket: bucket, teams: teams);
+        }),
+        const SizedBox(height: 18),
+        SectionTitle(
+          title: 'Current misses',
+          subtitle: controller.misses == 0
+              ? 'No confirmed misses yet.'
+              : '${controller.misses} predictions differ from the final category.',
+        ),
+        const SizedBox(height: 10),
+        if (controller.misses == 0)
+          const InfoPanel(
             icon: Icons.auto_awesome,
             title: 'Clean board',
-            message: 'Settled teams that miss their predicted category will appear here.',
+            message: 'Confirmed misses will appear here.',
           )
         else
-          ...misses.map(
-            (team) => Card(
-              child: ListTile(
-                leading: _TeamAvatar(team: team),
-                title: Text(team.clientName),
-                subtitle: Text(
-                  'Predicted ${team.predictedBucket} • Actual ${team.actualBucket}',
+          ...controller.teams.where((team) => team.isMiss).map(
+                (team) => Card(
+                  child: ListTile(
+                    leading: TeamAvatar(team: team),
+                    title: Text(team.clientName),
+                    subtitle: Text(
+                      'Predicted ${team.predicted} • Actual ${team.actual}',
+                    ),
+                    trailing: const Icon(Icons.close, color: Colors.redAccent),
+                  ),
                 ),
-                trailing: const Icon(Icons.close, color: Colors.redAccent),
               ),
-            ),
-          ),
       ],
     );
   }
@@ -593,53 +530,50 @@ class PredictionsPage extends StatefulWidget {
 }
 
 class _PredictionsPageState extends State<PredictionsPage> {
-  String _query = '';
-  String _filter = 'All';
+  String query = '';
+  String filter = 'All';
 
   @override
   Widget build(BuildContext context) {
-    final filtered = widget.controller.teams.where((team) {
-      final matchesSearch = team.clientName.toLowerCase().contains(
-            _query.toLowerCase(),
-          ) ||
-          team.name.toLowerCase().contains(_query.toLowerCase());
-      final matchesFilter =
-          _filter == 'All' || team.predictedBucket == _filter;
-      return matchesSearch && matchesFilter;
+    final teams = widget.controller.teams.where((team) {
+      final text = '${team.clientName} ${team.name}'.toLowerCase();
+      return text.contains(query.toLowerCase()) &&
+          (filter == 'All' || team.predicted == filter);
     }).toList();
 
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
           child: Column(
             children: [
               TextField(
-                onChanged: (value) => setState(() => _query = value),
+                onChanged: (value) => setState(() => query = value),
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Search teams',
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               SizedBox(
                 height: 42,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
                     'All',
-                    ...predictionBuckets.where((bucket) => bucket != 'Pending'),
-                  ].map((bucket) {
-                    final selected = _filter == bucket;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: FilterChip(
-                        label: Text(bucket),
-                        selected: selected,
-                        onSelected: (_) => setState(() => _filter = bucket),
-                      ),
-                    );
-                  }).toList(),
+                    ...resultBuckets.where((bucket) => bucket != 'Pending'),
+                  ]
+                      .map(
+                        (bucket) => Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: FilterChip(
+                            label: Text(bucket),
+                            selected: filter == bucket,
+                            onSelected: (_) => setState(() => filter = bucket),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ],
@@ -647,15 +581,12 @@ class _PredictionsPageState extends State<PredictionsPage> {
         ),
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.fromLTRB(16, 2, 16, 30),
-            itemCount: filtered.length,
-            itemBuilder: (context, index) {
-              final team = filtered[index];
-              return TeamTrackerCard(
-                team: team,
-                controller: widget.controller,
-              );
-            },
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+            itemCount: teams.length,
+            itemBuilder: (context, index) => TeamCard(
+              team: teams[index],
+              controller: widget.controller,
+            ),
           ),
         ),
       ],
@@ -663,8 +594,8 @@ class _PredictionsPageState extends State<PredictionsPage> {
   }
 }
 
-class TeamTrackerCard extends StatelessWidget {
-  const TeamTrackerCard({
+class TeamCard extends StatelessWidget {
+  const TeamCard({
     super.key,
     required this.team,
     required this.controller,
@@ -675,123 +606,114 @@ class TeamTrackerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bucketColor = colorForBucket(team.predictedBucket);
+    final color = bucketColor(team.predicted);
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      clipBehavior: Clip.antiAlias,
       child: Container(
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          border: Border(
-            left: BorderSide(color: bucketColor, width: 4),
-          ),
+          borderRadius: BorderRadius.circular(12),
+          border: Border(left: BorderSide(color: color, width: 4)),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  _TeamAvatar(team: team),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+        child: Column(
+          children: [
+            Row(
+              children: [
+                TeamAvatar(team: team),
+                const SizedBox(width: 11),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        team.clientName,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      if (team.name != team.clientName)
                         Text(
-                          team.clientName,
+                          team.name,
                           style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w900,
+                            color: Colors.white54,
+                            fontSize: 12,
                           ),
                         ),
-                        if (team.name != team.clientName)
-                          Text(
-                            team.name,
-                            style: const TextStyle(
-                              color: Colors.white54,
-                              fontSize: 12,
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                  _StatusPill(
-                    label: team.predictedBucket,
-                    color: bucketColor,
+                ),
+                StatusPill(text: team.predicted, color: color),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: RecordControl(
+                    label: 'WINS',
+                    value: team.wins,
+                    color: Colors.greenAccent,
+                    onMinus: () => controller.changeWins(team, -1),
+                    onPlus: () => controller.changeWins(team, 1),
                   ),
-                ],
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: RecordControl(
+                    label: 'LOSSES',
+                    value: team.losses,
+                    color: Colors.redAccent,
+                    onMinus: () => controller.changeLosses(team, -1),
+                    onPlus: () => controller.changeLosses(team, 1),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: _panel,
+                borderRadius: BorderRadius.circular(13),
               ),
-              const SizedBox(height: 14),
-              Row(
+              child: Row(
                 children: [
+                  Icon(
+                    team.isExact
+                        ? Icons.check_circle
+                        : team.isMiss
+                            ? Icons.cancel
+                            : Icons.hourglass_empty,
+                    color: team.isExact
+                        ? Colors.greenAccent
+                        : team.isMiss
+                            ? Colors.redAccent
+                            : Colors.white38,
+                  ),
+                  const SizedBox(width: 9),
                   Expanded(
-                    child: _RecordControl(
-                      label: 'WINS',
-                      value: team.wins,
-                      color: Colors.greenAccent,
-                      onDecrease: () => controller.changeWins(team, -1),
-                      onIncrease: () => controller.changeWins(team, 1),
+                    child: Text(
+                      'Actual result: ${team.actual}',
+                      style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _RecordControl(
-                      label: 'LOSSES',
-                      value: team.losses,
-                      color: Colors.redAccent,
-                      onDecrease: () => controller.changeLosses(team, -1),
-                      onIncrease: () => controller.changeLosses(team, 1),
-                    ),
+                  PopupMenuButton<String>(
+                    icon: const Icon(Icons.edit_outlined),
+                    onSelected: (value) => controller.setActual(team, value),
+                    itemBuilder: (context) => resultBuckets
+                        .map(
+                          (bucket) => PopupMenuItem(
+                            value: bucket,
+                            child: Text(bucket),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF17191F),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      team.isExact
-                          ? Icons.check_circle
-                          : team.isMiss
-                              ? Icons.cancel
-                              : Icons.hourglass_empty,
-                      color: team.isExact
-                          ? Colors.greenAccent
-                          : team.isMiss
-                              ? Colors.redAccent
-                              : Colors.white38,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        'Actual result: ${team.actualBucket}',
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                    PopupMenuButton<String>(
-                      tooltip: 'Set actual result',
-                      onSelected: (value) =>
-                          controller.setActualBucket(team, value),
-                      itemBuilder: (context) => predictionBuckets
-                          .map(
-                            (bucket) => PopupMenuItem(
-                              value: bucket,
-                              child: Text(bucket),
-                            ),
-                          )
-                          .toList(),
-                      icon: const Icon(Icons.edit_outlined),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -804,51 +726,41 @@ class FantasyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 30),
+      padding: const EdgeInsets.all(16),
       children: const [
-        _FantasyTitleCard(),
-        SizedBox(height: 14),
-        _FantasyRoleCard(
+        FantasyTitleCard(),
+        SizedBox(height: 12),
+        FantasyRoleCard(
           role: 'CORE',
           team: 'TEAM VISION',
           players: 'Noticed & Satanic',
-          icon: Icons.sports_mma,
           stats: [
-            BannerStat('Deaths', 150, 'Tier III • Benevolent'),
-            BannerStat('Tormentor Kills', 200, 'Tier II • Vampiric'),
-            BannerStat('Creep Score', 180, 'Tier III • Unique'),
+            FantasyStat('Deaths', 150, 'Tier III • Benevolent'),
+            FantasyStat('Tormentor Kills', 200, 'Tier II • Vampiric'),
+            FantasyStat('Creep Score', 180, 'Tier III • Unique'),
           ],
         ),
-        SizedBox(height: 12),
-        _FantasyRoleCard(
+        SizedBox(height: 10),
+        FantasyRoleCard(
           role: 'MID',
           team: 'TEAM LIQUID',
           players: 'Nisha',
-          icon: Icons.bolt,
           stats: [
-            BannerStat('Creep Score', 220, 'Tier III • Fractal'),
-            BannerStat('Lotuses Gained', 190, 'Tier I • Fractal'),
-            BannerStat('Stuns', 250, 'Tier V • Benevolent'),
+            FantasyStat('Creep Score', 220, 'Tier III • Fractal'),
+            FantasyStat('Lotuses Gained', 190, 'Tier I • Fractal'),
+            FantasyStat('Stuns', 250, 'Tier V • Benevolent'),
           ],
         ),
-        SizedBox(height: 12),
-        _FantasyRoleCard(
+        SizedBox(height: 10),
+        FantasyRoleCard(
           role: 'SUPPORT',
           team: 'LGD GAMING',
           players: 'KingJungles & Thiolicor',
-          icon: Icons.volunteer_activism,
           stats: [
-            BannerStat('Camps Stacked', 220, 'Tier III • Fractal'),
-            BannerStat('Stuns', 260, 'Tier IV • Fractal'),
-            BannerStat('Watchers Taken', 250, 'Tier V • Friendly'),
+            FantasyStat('Camps Stacked', 220, 'Tier III • Fractal'),
+            FantasyStat('Stuns', 260, 'Tier IV • Fractal'),
+            FantasyStat('Watchers Taken', 250, 'Tier V • Friendly'),
           ],
-        ),
-        SizedBox(height: 16),
-        _EmptyPanel(
-          icon: Icons.insights,
-          title: 'Optimization note',
-          message:
-              'The roster is stored as the current reference build. A later version can add editable fantasy cards and automatic match-level scoring.',
         ),
       ],
     );
@@ -863,28 +775,29 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 30),
+      padding: const EdgeInsets.all(16),
       children: [
-        const _SectionTitle(
-          title: 'Back up your tracker',
-          subtitle: 'Export or restore the full 16-team prediction state.',
+        const SectionTitle(
+          title: 'Backup',
+          subtitle: 'Copy or restore all team records and outcomes.',
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
         Card(
           child: Column(
             children: [
               ListTile(
                 leading: const Icon(Icons.copy_all_outlined),
                 title: const Text('Copy JSON backup'),
-                subtitle: const Text('Copies all records and actual outcomes.'),
-                trailing: const Icon(Icons.chevron_right),
+                subtitle: const Text(
+                  'Save the full tracker state to the clipboard.',
+                ),
                 onTap: () async {
                   await Clipboard.setData(
                     ClipboardData(text: controller.exportJson()),
                   );
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Backup copied to clipboard.')),
+                      const SnackBar(content: Text('Backup copied.')),
                     );
                   }
                 },
@@ -893,71 +806,45 @@ class SettingsPage extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.input_outlined),
                 title: const Text('Import JSON backup'),
-                subtitle: const Text('Restores a previously exported state.'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => _showImportDialog(context),
+                subtitle: const Text('Restore a previously exported state.'),
+                onTap: () => showImportDialog(context),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 22),
-        const _SectionTitle(
-          title: 'Tracker controls',
-          subtitle: 'Reset only when you want to discard all entered results.',
-        ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 18),
         Card(
           child: ListTile(
             leading: const Icon(Icons.restart_alt, color: Colors.redAccent),
-            title: const Text('Reset prediction results'),
-            subtitle: const Text('Returns all records and actual outcomes to pending.'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => _confirmReset(context),
+            title: const Text('Reset results'),
+            subtitle: const Text(
+              'Clear records while keeping the original predictions.',
+            ),
+            onTap: () => confirmReset(context),
           ),
         ),
-        const SizedBox(height: 22),
-        const _SectionTitle(
-          title: 'Build information',
-          subtitle: 'Designed for automatic Android delivery through GitHub Actions.',
-        ),
-        const SizedBox(height: 12),
-        const Card(
-          child: Column(
-            children: [
-              ListTile(
-                leading: Icon(Icons.android),
-                title: Text('TI Predictions Tracker'),
-                subtitle: Text('Version 1.0.0 • Offline-first Flutter app'),
-              ),
-              Divider(height: 1),
-              ListTile(
-                leading: Icon(Icons.cloud_done_outlined),
-                title: Text('CI release pipeline'),
-                subtitle: Text('Push a v* tag to build and attach the APK to GitHub Releases.'),
-              ),
-            ],
-          ),
+        const SizedBox(height: 18),
+        const InfoPanel(
+          icon: Icons.android,
+          title: 'Automatic APK delivery',
+          message:
+              'Every CI run uploads an APK artifact. A v* tag creates a GitHub Release and attaches the APK automatically.',
         ),
       ],
     );
   }
 
-  Future<void> _showImportDialog(BuildContext context) async {
-    final textController = TextEditingController();
-    final imported = await showDialog<bool>(
+  Future<void> showImportDialog(BuildContext context) async {
+    final input = TextEditingController();
+    final success = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Import tracker backup'),
-        content: SizedBox(
-          width: 520,
-          child: TextField(
-            controller: textController,
-            minLines: 7,
-            maxLines: 12,
-            decoration: const InputDecoration(
-              hintText: 'Paste exported JSON here',
-            ),
-          ),
+        title: const Text('Import backup'),
+        content: TextField(
+          controller: input,
+          minLines: 7,
+          maxLines: 12,
+          decoration: const InputDecoration(hintText: 'Paste JSON here'),
         ),
         actions: [
           TextButton(
@@ -965,36 +852,29 @@ class SettingsPage extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           FilledButton(
-            onPressed: () {
-              final success = controller.importJson(textController.text);
-              Navigator.pop(dialogContext, success);
-            },
+            onPressed: () => Navigator.pop(
+              dialogContext,
+              controller.importJson(input.text),
+            ),
             child: const Text('Import'),
           ),
         ],
       ),
     );
-
-    if (context.mounted && imported != null) {
+    if (context.mounted && success != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            imported
-                ? 'Tracker backup restored.'
-                : 'Import failed. Use a valid 16-team tracker backup.',
-          ),
-        ),
+        SnackBar(content: Text(success ? 'Backup restored.' : 'Invalid backup.')),
       );
     }
   }
 
-  Future<void> _confirmReset(BuildContext context) async {
+  Future<void> confirmReset(BuildContext context) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Reset all results?'),
         content: const Text(
-          'This clears entered records and actual outcomes. The original prediction board remains unchanged.',
+          'Entered wins, losses, and actual categories will be cleared.',
         ),
         actions: [
           TextButton(
@@ -1008,33 +888,31 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
-    if (confirmed == true) {
-      controller.reset();
-    }
+    if (confirmed == true) controller.reset();
   }
 }
 
-class BannerStat {
-  const BannerStat(this.name, this.multiplier, this.detail);
+class FantasyStat {
+  const FantasyStat(this.name, this.multiplier, this.detail);
 
   final String name;
   final int multiplier;
   final String detail;
 }
 
-class _FantasyTitleCard extends StatelessWidget {
-  const _FantasyTitleCard();
+class FantasyTitleCard extends StatelessWidget {
+  const FantasyTitleCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF473113), Color(0xFF191A20)],
+          colors: [Color(0xFF473113), _panel],
         ),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0x66D6A84B)),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _gold.withOpacity(.45)),
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1042,21 +920,20 @@ class _FantasyTitleCard extends StatelessWidget {
           Text(
             'COACHING TITLE',
             style: TextStyle(
-              color: Color(0xFFD6A84B),
-              fontSize: 11,
-              letterSpacing: 1.8,
+              color: _gold,
+              letterSpacing: 1.5,
               fontWeight: FontWeight.w900,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
-            'Heroic LET HIM COOK [LTGS] the Clutch',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
-          ),
           SizedBox(height: 7),
           Text(
-            'Heroic rewards capped or masked heroes. The Clutch rewards the last possible match of a series.',
-            style: TextStyle(color: Colors.white70, height: 1.4),
+            'Heroic LET HIM COOK [LTGS] the Clutch',
+            style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900),
+          ),
+          SizedBox(height: 6),
+          Text(
+            'Current high-percentile fantasy reference build.',
+            style: TextStyle(color: Colors.white70),
           ),
         ],
       ),
@@ -1064,69 +941,50 @@ class _FantasyTitleCard extends StatelessWidget {
   }
 }
 
-class _FantasyRoleCard extends StatelessWidget {
-  const _FantasyRoleCard({
+class FantasyRoleCard extends StatelessWidget {
+  const FantasyRoleCard({
+    super.key,
     required this.role,
     required this.team,
     required this.players,
-    required this.icon,
     required this.stats,
   });
 
   final String role;
   final String team;
   final String players;
-  final IconData icon;
-  final List<BannerStat> stats;
+  final List<FantasyStat> stats;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundColor: const Color(0xFF5A431D),
-                  child: Icon(icon, color: const Color(0xFFFFD985)),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '$role • $team',
-                        style: const TextStyle(
-                          color: Color(0xFFD6A84B),
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      Text(
-                        players,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            Text(
+              '$role • $team',
+              style: const TextStyle(
+                color: _gold,
+                fontWeight: FontWeight.w900,
+              ),
             ),
-            const SizedBox(height: 14),
+            Text(
+              players,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            const SizedBox(height: 11),
             ...stats.map(
               (stat) => Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 7),
+                padding: const EdgeInsets.all(11),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF17191F),
-                  borderRadius: BorderRadius.circular(14),
+                  color: _panel,
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   children: [
@@ -1152,7 +1010,7 @@ class _FantasyRoleCard extends StatelessWidget {
                       '${stat.multiplier}%',
                       style: const TextStyle(
                         color: Color(0xFFFFD985),
-                        fontSize: 19,
+                        fontSize: 18,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -1167,28 +1025,29 @@ class _FantasyRoleCard extends StatelessWidget {
   }
 }
 
-class _RecordControl extends StatelessWidget {
-  const _RecordControl({
+class RecordControl extends StatelessWidget {
+  const RecordControl({
+    super.key,
     required this.label,
     required this.value,
     required this.color,
-    required this.onDecrease,
-    required this.onIncrease,
+    required this.onMinus,
+    required this.onPlus,
   });
 
   final String label;
   final int value;
   final Color color;
-  final VoidCallback onDecrease;
-  final VoidCallback onIncrease;
+  final VoidCallback onMinus;
+  final VoidCallback onPlus;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       decoration: BoxDecoration(
-        color: const Color(0xFF17191F),
-        borderRadius: BorderRadius.circular(14),
+        color: _panel,
+        borderRadius: BorderRadius.circular(13),
       ),
       child: Column(
         children: [
@@ -1198,27 +1057,25 @@ class _RecordControl extends StatelessWidget {
               color: color,
               fontSize: 10,
               fontWeight: FontWeight.w900,
-              letterSpacing: 1.1,
+              letterSpacing: 1,
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                visualDensity: VisualDensity.compact,
-                onPressed: value > 0 ? onDecrease : null,
+                onPressed: value > 0 ? onMinus : null,
                 icon: const Icon(Icons.remove_circle_outline),
               ),
               Text(
                 '$value',
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 23,
                   fontWeight: FontWeight.w900,
                 ),
               ),
               IconButton(
-                visualDensity: VisualDensity.compact,
-                onPressed: value < 4 ? onIncrease : null,
+                onPressed: value < 4 ? onPlus : null,
                 icon: const Icon(Icons.add_circle_outline),
               ),
             ],
@@ -1229,33 +1086,36 @@ class _RecordControl extends StatelessWidget {
   }
 }
 
-class _MetricCard extends StatelessWidget {
-  const _MetricCard({
-    required this.icon,
+class MetricCard extends StatelessWidget {
+  const MetricCard({
+    super.key,
     required this.value,
     required this.label,
+    required this.icon,
   });
 
-  final IconData icon;
   final String value;
   final String label;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 13),
         child: Column(
           children: [
-            Icon(icon, color: const Color(0xFFD6A84B)),
-            const SizedBox(height: 6),
+            Icon(icon, color: _gold),
+            const SizedBox(height: 5),
             Text(
               value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+              style: const TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.w900,
+              ),
             ),
             Text(
               label,
-              textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white54, fontSize: 11),
             ),
           ],
@@ -1265,46 +1125,41 @@ class _MetricCard extends StatelessWidget {
   }
 }
 
-class _BucketStrip extends StatelessWidget {
-  const _BucketStrip({required this.bucket, required this.teams});
+class BucketStrip extends StatelessWidget {
+  const BucketStrip({
+    super.key,
+    required this.bucket,
+    required this.teams,
+  });
 
   final String bucket;
   final List<TeamEntry> teams;
 
   @override
   Widget build(BuildContext context) {
-    final color = colorForBucket(bucket);
+    final color = bucketColor(bucket);
     return Container(
-      margin: const EdgeInsets.only(bottom: 9),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(
-        color: const Color(0xFF14161B),
-        borderRadius: BorderRadius.circular(16),
+        color: _panel,
+        borderRadius: BorderRadius.circular(14),
         border: Border(left: BorderSide(color: color, width: 4)),
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 104,
-            child: Text(
-              bucket,
-              style: TextStyle(color: color, fontWeight: FontWeight.w900),
-            ),
+          Text(
+            bucket,
+            style: TextStyle(color: color, fontWeight: FontWeight.w900),
           ),
-          Expanded(
-            child: Wrap(
-              spacing: 7,
-              runSpacing: 7,
-              children: teams
-                  .map(
-                    (team) => Chip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(team.clientName),
-                    ),
-                  )
-                  .toList(),
-            ),
+          const SizedBox(height: 7),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: teams
+                .map((team) => Chip(label: Text(team.clientName)))
+                .toList(),
           ),
         ],
       ),
@@ -1312,17 +1167,17 @@ class _BucketStrip extends StatelessWidget {
   }
 }
 
-class _TeamAvatar extends StatelessWidget {
-  const _TeamAvatar({required this.team});
+class TeamAvatar extends StatelessWidget {
+  const TeamAvatar({super.key, required this.team});
 
   final TeamEntry team;
 
   @override
   Widget build(BuildContext context) {
+    final color = bucketColor(team.predicted);
     return CircleAvatar(
-      radius: 23,
-      backgroundColor: colorForBucket(team.predictedBucket).withValues(alpha: 0.2),
-      foregroundColor: colorForBucket(team.predictedBucket),
+      backgroundColor: color.withOpacity(.18),
+      foregroundColor: color,
       child: Text(
         team.initials,
         style: const TextStyle(fontWeight: FontWeight.w900),
@@ -1331,26 +1186,30 @@ class _TeamAvatar extends StatelessWidget {
   }
 }
 
-class _StatusPill extends StatelessWidget {
-  const _StatusPill({required this.label, required this.color});
+class StatusPill extends StatelessWidget {
+  const StatusPill({
+    super.key,
+    required this.text,
+    required this.color,
+  });
 
-  final String label;
+  final String text;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: color.withOpacity(.12),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: color.withValues(alpha: 0.42)),
+        border: Border.all(color: color.withOpacity(.4)),
       ),
       child: Text(
-        label,
+        text,
         style: TextStyle(
           color: color,
-          fontSize: 11,
+          fontSize: 10,
           fontWeight: FontWeight.w900,
         ),
       ),
@@ -1358,8 +1217,12 @@ class _StatusPill extends StatelessWidget {
   }
 }
 
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.title, required this.subtitle});
+class SectionTitle extends StatelessWidget {
+  const SectionTitle({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
 
   final String title;
   final String subtitle;
@@ -1371,17 +1234,20 @@ class _SectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w900,
+          ),
         ),
-        const SizedBox(height: 3),
         Text(subtitle, style: const TextStyle(color: Colors.white54)),
       ],
     );
   }
 }
 
-class _EmptyPanel extends StatelessWidget {
-  const _EmptyPanel({
+class InfoPanel extends StatelessWidget {
+  const InfoPanel({
+    super.key,
     required this.icon,
     required this.title,
     required this.message,
@@ -1394,16 +1260,16 @@ class _EmptyPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF14161B),
-        borderRadius: BorderRadius.circular(18),
+        color: _panel,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white10),
       ),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFFD6A84B), size: 31),
-          const SizedBox(width: 13),
+          Icon(icon, color: _gold, size: 29),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1415,7 +1281,10 @@ class _EmptyPanel extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   message,
-                  style: const TextStyle(color: Colors.white60, height: 1.35),
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    height: 1.35,
+                  ),
                 ),
               ],
             ),
@@ -1426,14 +1295,21 @@ class _EmptyPanel extends StatelessWidget {
   }
 }
 
-Color colorForBucket(String bucket) {
-  return switch (bucket) {
-    '4-0' => const Color(0xFFFFD166),
-    '4-1' => const Color(0xFF7BDFF2),
-    'Elimination Winner' => const Color(0xFF80ED99),
-    'Elimination Loser' => const Color(0xFFFF9F80),
-    '1-4' => const Color(0xFFCDB4DB),
-    '0-4' => const Color(0xFFFF6B6B),
-    _ => Colors.white54,
-  };
+Color bucketColor(String bucket) {
+  switch (bucket) {
+    case '4-0':
+      return const Color(0xFFFFD166);
+    case '4-1':
+      return const Color(0xFF7BDFF2);
+    case 'Elimination Winner':
+      return const Color(0xFF80ED99);
+    case 'Elimination Loser':
+      return const Color(0xFFFF9F80);
+    case '1-4':
+      return const Color(0xFFCDB4DB);
+    case '0-4':
+      return const Color(0xFFFF6B6B);
+    default:
+      return Colors.white54;
+  }
 }
