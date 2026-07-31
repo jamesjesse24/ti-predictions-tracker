@@ -44,8 +44,8 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Validate data scripts
-        run: python -m py_compile scripts/sync_results.py tool/configure_android.py
+      - name: Validate data and Android scripts
+        run: python -m py_compile scripts/sync_results.py tool/configure_android.py tool/fix_workmanager_r8.py
 
       - name: Install Flutter
         shell: bash
@@ -56,13 +56,22 @@ jobs:
       - name: Verify Flutter installation
         run: flutter --version
 
-      - name: Generate Android platform files
+      - name: Generate and harden Android platform files
         run: |
           flutter create . \
             --platforms=android \
             --org com.jamesjesse24 \
             --project-name ti_predictions_tracker
           python tool/configure_android.py
+          python tool/fix_workmanager_r8.py
+
+      - name: Verify WorkManager startup protection
+        shell: bash
+        run: |
+          grep -Fq 'isMinifyEnabled = false' android/app/build.gradle.kts
+          grep -Fq 'isShrinkResources = false' android/app/build.gradle.kts
+          grep -Fq 'WorkDatabase_Impl' android/app/proguard-rules.pro
+          echo 'Release shrinker protection verified.'
 
       - name: Install dependencies
         run: flutter pub get
