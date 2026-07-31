@@ -65,13 +65,15 @@ jobs:
           python tool/configure_android.py
           python tool/fix_workmanager_r8.py
 
-      - name: Verify WorkManager startup protection
+      - name: Verify Android release protections
         shell: bash
         run: |
+          grep -Fq 'android.permission.INTERNET' android/app/src/main/AndroidManifest.xml
+          grep -Fq 'android.permission.ACCESS_NETWORK_STATE' android/app/src/main/AndroidManifest.xml
           grep -Fq 'isMinifyEnabled = false' android/app/build.gradle.kts
           grep -Fq 'isShrinkResources = false' android/app/build.gradle.kts
           grep -Fq 'WorkDatabase_Impl' android/app/proguard-rules.pro
-          echo 'Release shrinker protection verified.'
+          echo 'Network and WorkManager startup protection verified.'
 
       - name: Install dependencies
         run: flutter pub get
