@@ -1,7 +1,7 @@
 name: ti_predictions_tracker
 description: Offline-first tracker for The International predictions and fantasy roster.
 publish_to: "none"
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.5.0
   shared_preferences: ^2.5.5
 
 dev_dependencies:
