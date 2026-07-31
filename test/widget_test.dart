@@ -20,7 +20,16 @@ void main() {
 
     expect(find.text('THE INTERNATIONAL\nPREDICTION COMMAND'), findsOneWidget);
     expect(find.text('Prediction performance'), findsOneWidget);
-    expect(find.text('Latest completed series'), findsOneWidget);
     expect(find.text('Enable result alerts'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Latest completed series'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Latest completed series'), findsOneWidget);
+    expect(find.text('The arena is quiet'), findsOneWidget);
   });
 }
