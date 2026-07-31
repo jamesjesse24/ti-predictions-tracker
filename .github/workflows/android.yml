@@ -6,6 +6,8 @@ on:
       - main
     tags:
       - "v*"
+    paths-ignore:
+      - "data/live.json"
   pull_request:
     branches:
       - main
@@ -113,4 +115,3 @@ jobs:
             gh release create "$GITHUB_REF_NAME" "$APK_PATH" \
               --title "TI Predictions Tracker $GITHUB_REF_NAME" \
               --generate-notes
-          fi
