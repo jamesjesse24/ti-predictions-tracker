@@ -19,29 +19,46 @@ class NotificationService {
 
   final FlutterLocalNotificationsPlugin _plugin;
   bool _initialized = false;
+  bool _available = true;
+
+  bool get isAvailable => _available;
 
   Future<void> initialize() async {
-    if (_initialized) return;
+    if (_initialized || !_available) return;
 
-    const settings = InitializationSettings(
-      android: AndroidInitializationSettings('ic_stat_ti'),
-    );
+    try {
+      const settings = InitializationSettings(
+        android: AndroidInitializationSettings('ic_stat_ti'),
+      );
 
-    await _plugin.initialize(
-      settings: settings,
-      onDidReceiveNotificationResponse: (_) {},
-    );
-    _initialized = true;
+      await _plugin.initialize(
+        settings: settings,
+        onDidReceiveNotificationResponse: (_) {},
+      );
+      _initialized = true;
+    } catch (_) {
+      // Notifications are optional. A missing Android resource, unsupported
+      // plugin implementation, or vendor-specific initialization failure must
+      // never prevent the main application from opening.
+      _available = false;
+      _initialized = false;
+    }
   }
 
   Future<bool> requestPermission() async {
     await initialize();
+    if (!_available) return false;
     if (!Platform.isAndroid) return true;
 
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-    final granted = await android?.requestNotificationsPermission();
-    return granted ?? true;
+    try {
+      final android = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      final granted = await android?.requestNotificationsPermission();
+      return granted ?? true;
+    } catch (_) {
+      _available = false;
+      return false;
+    }
   }
 
   Future<bool> isEnabled() async {
@@ -54,8 +71,8 @@ class NotificationService {
     Iterable<String> currentSeriesIds = const [],
   }) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(notificationsEnabledKey, enabled);
-    if (enabled) {
+    await prefs.setBool(notificationsEnabledKey, enabled && _available);
+    if (enabled && _available) {
       await prefs.setStringList(
         notifiedSeriesKey,
         currentSeriesIds.toSet().toList()..sort(),
@@ -77,8 +94,6 @@ class NotificationService {
     final currentIds = completed.map((item) => item.id).toSet();
     final storedIds = prefs.getStringList(notifiedSeriesKey);
 
-    // A migration or first launch should establish a baseline rather than send
-    // a burst of notifications for every historical result.
     if (storedIds == null) {
       await prefs.setStringList(notifiedSeriesKey, currentIds.toList()..sort());
       return const [];
@@ -89,6 +104,11 @@ class NotificationService {
     if (fresh.isEmpty) return const [];
 
     await initialize();
+    if (!_available) {
+      await prefs.setBool(notificationsEnabledKey, false);
+      return const [];
+    }
+
     final latest = fresh.last;
     final title = fresh.length == 1
         ? 'TI result: ${latest.winner} wins'
@@ -110,20 +130,27 @@ class NotificationService {
     );
     const details = NotificationDetails(android: androidDetails);
 
-    await _plugin.show(
-      id: DateTime.now().millisecondsSinceEpoch.remainder(2147483647),
-      title: title,
-      body: body,
-      notificationDetails: details,
-      payload: 'dashboard',
-    );
-
-    await prefs.setStringList(notifiedSeriesKey, currentIds.toList()..sort());
-    return fresh;
+    try {
+      await _plugin.show(
+        id: DateTime.now().millisecondsSinceEpoch.remainder(2147483647),
+        title: title,
+        body: body,
+        notificationDetails: details,
+        payload: 'dashboard',
+      );
+      await prefs.setStringList(notifiedSeriesKey, currentIds.toList()..sort());
+      return fresh;
+    } catch (_) {
+      _available = false;
+      await prefs.setBool(notificationsEnabledKey, false);
+      return const [];
+    }
   }
 
   Future<void> showTestNotification() async {
     await initialize();
+    if (!_available) return;
+
     const details = NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
@@ -134,13 +161,20 @@ class NotificationService {
         icon: 'ic_stat_ti',
       ),
     );
-    await _plugin.show(
-      id: 2026,
-      title: 'TI alerts are ready',
-      body: 'You will be notified when a new completed series is synced.',
-      notificationDetails: details,
-      payload: 'settings',
-    );
+
+    try {
+      await _plugin.show(
+        id: 2026,
+        title: 'TI alerts are ready',
+        body: 'You will be notified when a new completed series is synced.',
+        notificationDetails: details,
+        payload: 'settings',
+      );
+    } catch (_) {
+      _available = false;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(notificationsEnabledKey, false);
+    }
   }
 }
 
