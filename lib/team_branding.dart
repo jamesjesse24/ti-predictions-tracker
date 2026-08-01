@@ -170,8 +170,10 @@ TeamBrand teamBrandFor(String name, {String? alternateName}) {
   }
 
   final words = name.trim().split(RegExp(r'\s+'));
+  final fallbackName = words.first.isEmpty ? 'TM' : words.first;
+  final codeLength = fallbackName.length < 2 ? fallbackName.length : 2;
   final code = words.length == 1
-      ? words.first.substring(0, words.first.length.clamp(1, 2)).toUpperCase()
+      ? fallbackName.substring(0, codeLength).toUpperCase()
       : words.take(2).map((word) => word[0]).join().toUpperCase();
 
   return TeamBrand(
@@ -211,45 +213,49 @@ class TeamLogo extends StatelessWidget {
     final radius = size * 0.28;
     final fallback = _BrandMonogram(brand: brand, size: size);
 
-    return Container(
-      width: size,
-      height: size,
-      padding: EdgeInsets.all(size * 0.10),
-      decoration: BoxDecoration(
-        color: brand.secondary.withAlpha(220),
-        borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: brand.primary.withAlpha(120)),
-        boxShadow: showGlow
-            ? [
-                BoxShadow(
-                  color: brand.primary.withAlpha(34),
-                  blurRadius: size * 0.42,
-                  spreadRadius: 1,
-                ),
-              ]
-            : null,
-      ),
-      child: resolvedUrl == null
-          ? fallback
-          : Image.network(
-              resolvedUrl,
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.high,
-              frameBuilder: (context, child, frame, synchronous) {
-                if (synchronous || frame != null) return child;
-                return Center(
-                  child: SizedBox(
-                    width: size * 0.25,
-                    height: size * 0.25,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1.7,
-                      color: brand.primary,
-                    ),
+    return Semantics(
+      label: '${brand.displayName} logo',
+      image: true,
+      child: Container(
+        width: size,
+        height: size,
+        padding: EdgeInsets.all(size * 0.10),
+        decoration: BoxDecoration(
+          color: brand.secondary.withAlpha(220),
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(color: brand.primary.withAlpha(120)),
+          boxShadow: showGlow
+              ? [
+                  BoxShadow(
+                    color: brand.primary.withAlpha(34),
+                    blurRadius: size * 0.42,
+                    spreadRadius: 1,
                   ),
-                );
-              },
-              errorBuilder: (_, __, ___) => fallback,
-            ),
+                ]
+              : null,
+        ),
+        child: resolvedUrl == null
+            ? fallback
+            : Image.network(
+                resolvedUrl,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+                frameBuilder: (context, child, frame, synchronous) {
+                  if (synchronous || frame != null) return child;
+                  return Center(
+                    child: SizedBox(
+                      width: size * 0.25,
+                      height: size * 0.25,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.7,
+                        color: brand.primary,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (_, __, ___) => fallback,
+              ),
+      ),
     );
   }
 }
