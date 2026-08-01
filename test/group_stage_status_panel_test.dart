@@ -4,7 +4,7 @@ import 'package:ti_predictions_tracker/group_stage_status_panel.dart';
 import 'package:ti_predictions_tracker/tracker_controller.dart';
 
 void main() {
-  testWidgets('shows waiting state before group-stage results', (tester) async {
+  testWidgets('shows compact waiting state before results', (tester) async {
     final controller = TrackerController.memory();
 
     await tester.pumpWidget(
@@ -17,15 +17,12 @@ void main() {
       ),
     );
 
-    expect(find.text('Group Stage Status'), findsOneWidget);
-    expect(find.text('WAITING'), findsWidgets);
-    expect(
-      find.text('Standings will appear after the first synchronized series.'),
-      findsOneWidget,
-    );
+    expect(find.text('Group stage'), findsOneWidget);
+    expect(find.text('WAITING'), findsOneWidget);
+    expect(find.text('No standings yet'), findsOneWidget);
   });
 
-  testWidgets('shows live records and settled outcomes', (tester) async {
+  testWidgets('shows records and settled outcomes', (tester) async {
     final controller = TrackerController.memory();
     controller.teams[0]
       ..wins = 4
@@ -60,7 +57,7 @@ void main() {
 
     expect(find.text('IN PROGRESS'), findsOneWidget);
     expect(find.text('DIRECT'), findsWidgets);
-    expect(find.text('IN PLAY'), findsOneWidget);
+    expect(find.text('ACTIVE'), findsWidgets);
     expect(find.text('OUT'), findsWidgets);
     expect(find.text('4-0'), findsOneWidget);
   });

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ti_predictions_tracker/main.dart';
 
 void main() {
-  testWidgets('shows redesigned TI command center', (tester) async {
+  testWidgets('shows compact professional dashboard', (tester) async {
     final controller = TrackerController.memory();
 
     await tester.pumpWidget(
@@ -18,18 +18,20 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('THE INTERNATIONAL\nPREDICTION COMMAND'), findsOneWidget);
-    expect(find.text('Prediction performance'), findsOneWidget);
+    expect(find.text('Not checked yet'), findsOneWidget);
+    expect(find.text('Accuracy'), findsOneWidget);
+    expect(find.text('Group stage'), findsOneWidget);
     expect(find.text('Enable result alerts'), findsOneWidget);
 
     await tester.scrollUntilVisible(
-      find.text('Latest completed series'),
-      300,
+      find.text('Latest results'),
+      250,
       scrollable: find.byType(Scrollable).first,
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Latest completed series'), findsOneWidget);
-    expect(find.text('The arena is quiet'), findsOneWidget);
+    expect(find.text('Latest results'), findsOneWidget);
+    expect(find.text('No completed series yet'), findsOneWidget);
+    expect(find.text('Field snapshot'), findsOneWidget);
   });
 }
