@@ -13,8 +13,9 @@ class LiveResultsService {
   final http.Client _client;
 
   Future<LiveFeed> fetch() async {
+    final checkedAt = DateTime.now().toUtc();
     final uri = Uri.parse(feedUrl).replace(
-      queryParameters: {'t': DateTime.now().millisecondsSinceEpoch.toString()},
+      queryParameters: {'t': checkedAt.millisecondsSinceEpoch.toString()},
     );
     final response = await _client.get(
       uri,
@@ -29,8 +30,36 @@ class LiveResultsService {
     if (decoded is! Map<String, dynamic>) {
       throw const FormatException('Live feed is not a JSON object.');
     }
-    return LiveFeed.fromJson(decoded);
+
+    final remoteFeed = LiveFeed.fromJson(decoded);
+    final remoteUpdatedAt = remoteFeed.generatedAt;
+    final message = remoteUpdatedAt == null
+        ? remoteFeed.message
+        : '${remoteFeed.message} Tournament data changed '
+            '${_formatLocalTimestamp(remoteUpdatedAt)}.';
+
+    // `generatedAt` is consumed by the UI as the successful synchronization
+    // time. The repository feed timestamp is preserved in the status message,
+    // so users can distinguish a fresh check from a new match-data publication.
+    return LiveFeed(
+      status: remoteFeed.status,
+      source: remoteFeed.source,
+      message: message,
+      generatedAt: checkedAt,
+      leagueName: remoteFeed.leagueName,
+      leagueId: remoteFeed.leagueId,
+      teams: remoteFeed.teams,
+      series: remoteFeed.series,
+    );
   }
 
   void close() => _client.close();
+}
+
+String _formatLocalTimestamp(DateTime value) {
+  final local = value.toLocal();
+  final hour = local.hour % 12 == 0 ? 12 : local.hour % 12;
+  final minute = local.minute.toString().padLeft(2, '0');
+  final suffix = local.hour >= 12 ? 'PM' : 'AM';
+  return '${local.month}/${local.day} $hour:$minute $suffix';
 }
