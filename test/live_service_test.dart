@@ -9,7 +9,7 @@ void main() {
   test('successful fetch reports the current check time', () async {
     final remoteTimestamp = DateTime.utc(2026, 8, 1, 0, 15);
     final client = MockClient((request) async {
-      expect(request.queryParameters['t'], isNotEmpty);
+      expect(request.url.queryParameters['t'], isNotEmpty);
       expect(request.headers['Cache-Control'], 'no-cache');
       return http.Response(
         jsonEncode({
