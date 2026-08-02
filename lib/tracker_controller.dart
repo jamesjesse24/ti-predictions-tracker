@@ -19,6 +19,10 @@ const resultBuckets = <String>[
   '0-4',
 ];
 
+const predictionDataVersion = 2;
+const predictionPatch = '7.41d';
+const predictionDataUpdatedAt = '2026-08-03';
+
 const _storageKey = 'ti_tracker_state_v4';
 const _legacyStorageKey = 'ti_tracker_state_v3';
 const _teamLogoCacheKey = 'ti_team_logo_cache_v1';
@@ -125,7 +129,7 @@ class TeamEntry {
         TeamEntry(
           name: 'Aurora Gaming',
           clientName: 'AURORA GAMING',
-          pick: 'Elimination Winner',
+          pick: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'Team Liquid',
@@ -140,7 +144,7 @@ class TeamEntry {
         TeamEntry(
           name: 'IRON WING',
           clientName: 'IRON WING',
-          pick: 'Elimination Loser',
+          pick: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'Xtreme Gaming',
@@ -150,7 +154,7 @@ class TeamEntry {
         TeamEntry(
           name: 'OG',
           clientName: 'OG',
-          pick: 'Elimination Loser',
+          pick: '1-4',
         ),
         TeamEntry(
           name: 'GamerLegion',
@@ -160,7 +164,7 @@ class TeamEntry {
         TeamEntry(
           name: 'Team Resilience',
           clientName: 'TEAM RESILIENCE',
-          pick: '1-4',
+          pick: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'HULIGANI',
@@ -229,14 +233,23 @@ class TrackerController extends ChangeNotifier {
     controller.notificationsEnabled =
         prefs.getBool(notificationsEnabledKey) ?? false;
 
+    var migratedPredictions = false;
     if (raw != null) {
       try {
         final data = jsonDecode(raw) as Map<String, dynamic>;
-        controller.teams = (data['teams'] as List<dynamic>)
+        final savedTeams = (data['teams'] as List<dynamic>)
             .map(
               (item) => TeamEntry.fromJson(item as Map<String, dynamic>),
             )
             .toList();
+        final savedPredictionVersion =
+            (data['predictionDataVersion'] as num?)?.toInt() ?? 1;
+        if (savedPredictionVersion < predictionDataVersion) {
+          controller.teams = _mergeCurrentPredictions(savedTeams);
+          migratedPredictions = true;
+        } else {
+          controller.teams = savedTeams;
+        }
         controller.syncStatus = data['syncStatus'] as String? ?? 'offline';
         controller.syncMessage =
             data['syncMessage'] as String? ?? 'Using saved data.';
@@ -261,10 +274,18 @@ class TrackerController extends ChangeNotifier {
                 .toList();
       } catch (_) {
         controller.teams = TeamEntry.defaults();
+        migratedPredictions = true;
       }
+    } else {
+      migratedPredictions = true;
     }
 
     controller._restoreLogoCache();
+    if (migratedPredictions) {
+      controller.syncMessage =
+          'Prediction board refreshed for patch $predictionPatch form.';
+      await controller._save();
+    }
     return controller;
   }
 
@@ -502,7 +523,10 @@ class TrackerController extends ChangeNotifier {
   }
 
   String exportJson() => const JsonEncoder.withIndent('  ').convert({
-        'schemaVersion': 4,
+        'schemaVersion': 5,
+        'predictionDataVersion': predictionDataVersion,
+        'predictionPatch': predictionPatch,
+        'predictionDataUpdatedAt': predictionDataUpdatedAt,
         'exportedAt': DateTime.now().toUtc().toIso8601String(),
         'teams': teams.map((team) => team.toJson()).toList(),
         'series': series.map((item) => item.toJson()).toList(),
@@ -529,7 +553,8 @@ class TrackerController extends ChangeNotifier {
     teams = TeamEntry.defaults();
     series = const [];
     syncStatus = 'offline';
-    syncMessage = 'Using default selections.';
+    syncMessage =
+        'Using patch $predictionPatch selections updated $predictionDataUpdatedAt.';
     lastChecked = null;
     feedUpdatedAt = null;
     leagueId = null;
@@ -543,6 +568,9 @@ class TrackerController extends ChangeNotifier {
     await _preferences?.setString(
       _storageKey,
       jsonEncode({
+        'predictionDataVersion': predictionDataVersion,
+        'predictionPatch': predictionPatch,
+        'predictionDataUpdatedAt': predictionDataUpdatedAt,
         'teams': teams.map((team) => team.toJson()).toList(),
         'series': series.map((item) => item.toJson()).toList(),
         'syncStatus': syncStatus,
@@ -564,6 +592,34 @@ class TrackerController extends ChangeNotifier {
     _service.close();
     super.dispose();
   }
+}
+
+List<TeamEntry> _mergeCurrentPredictions(List<TeamEntry> savedTeams) {
+  final byName = <String, TeamEntry>{};
+  for (final team in savedTeams) {
+    byName[_normalize(team.name)] = team;
+    byName[_normalize(team.clientName)] = team;
+  }
+
+  return TeamEntry.defaults().map((current) {
+    final saved = byName[_normalize(current.name)] ??
+        byName[_normalize(current.clientName)];
+    if (saved == null) return current;
+
+    return TeamEntry(
+      name: current.name,
+      clientName: current.clientName,
+      pick: current.pick,
+      logoUrl: saved.logoUrl,
+      wins: saved.wins,
+      losses: saved.losses,
+      mapWins: saved.mapWins,
+      mapLosses: saved.mapLosses,
+      actual: saved.actual,
+      live: saved.live,
+      lastMatchAt: saved.lastMatchAt,
+    );
+  }).toList();
 }
 
 String _normalize(String value) =>
