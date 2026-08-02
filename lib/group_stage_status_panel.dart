@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'team_branding.dart';
 import 'tracker_controller.dart';
 
 const _gold = Color(0xFFD8A84E);
@@ -27,11 +28,16 @@ class GroupStageStatusPanel extends StatelessWidget {
         .length;
     final eliminated = teams.where(_isOut).length;
     final active = teams
-        .where((team) => team.actual == 'Pending' && team.wins + team.losses > 0)
+        .where(
+          (team) =>
+              team.actual == 'Pending' && team.wins + team.losses > 0,
+        )
         .length;
     final completedSwiss = controller.series
         .where(
-          (series) => series.completed && series.stage.toLowerCase().contains('swiss'),
+          (series) =>
+              series.completed &&
+              series.stage.toLowerCase().contains('swiss'),
         )
         .length;
     final started = completedSwiss > 0 || settled > 0 || active > 0;
@@ -47,13 +53,23 @@ class GroupStageStatusPanel extends StatelessWidget {
             ? _blue
             : _gold;
     final progress = teams.isEmpty ? 0.0 : settled / teams.length;
-    final visible = teams.where((team) => team.wins + team.losses > 0 || team.actual != 'Pending').take(6).toList();
+    final visible = teams
+        .where(
+          (team) =>
+              team.wins + team.losses > 0 || team.actual != 'Pending',
+        )
+        .take(8)
+        .toList();
 
     return Container(
       decoration: BoxDecoration(
-        color: _surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: _border),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF18140C), _surface],
+        ),
       ),
       child: Column(
         children: [
@@ -65,7 +81,10 @@ class GroupStageStatusPanel extends StatelessWidget {
                   children: [
                     const Text(
                       'Group stage',
-                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                     const Spacer(),
                     _StatusBadge(label: status, color: statusColor),
@@ -80,8 +99,12 @@ class GroupStageStatusPanel extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      '$completedSwiss series',
-                      style: const TextStyle(color: _gold, fontSize: 11, fontWeight: FontWeight.w800),
+                      '$completedSwiss Swiss series',
+                      style: const TextStyle(
+                        color: _gold,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ],
                 ),
@@ -101,16 +124,57 @@ class GroupStageStatusPanel extends StatelessWidget {
           const Divider(height: 1),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Expanded(child: _Metric(label: 'DIRECT', value: direct, color: _success)),
-                const SizedBox(width: 7),
-                Expanded(child: _Metric(label: 'PLAY-IN W', value: playInWinners, color: _gold)),
-                const SizedBox(width: 7),
-                Expanded(child: _Metric(label: 'ACTIVE', value: active, color: _blue)),
-                const SizedBox(width: 7),
-                Expanded(child: _Metric(label: 'OUT', value: eliminated, color: _danger)),
-              ],
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final metrics = [
+                  _Metric(
+                    label: 'DIRECT',
+                    value: direct,
+                    color: _success,
+                  ),
+                  _Metric(
+                    label: 'PLAY-IN W',
+                    value: playInWinners,
+                    color: _gold,
+                  ),
+                  _Metric(label: 'ACTIVE', value: active, color: _blue),
+                  _Metric(label: 'OUT', value: eliminated, color: _danger),
+                ];
+
+                if (constraints.maxWidth < 330) {
+                  return Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: metrics[0]),
+                          const SizedBox(width: 7),
+                          Expanded(child: metrics[1]),
+                        ],
+                      ),
+                      const SizedBox(height: 7),
+                      Row(
+                        children: [
+                          Expanded(child: metrics[2]),
+                          const SizedBox(width: 7),
+                          Expanded(child: metrics[3]),
+                        ],
+                      ),
+                    ],
+                  );
+                }
+
+                return Row(
+                  children: [
+                    Expanded(child: metrics[0]),
+                    const SizedBox(width: 7),
+                    Expanded(child: metrics[1]),
+                    const SizedBox(width: 7),
+                    Expanded(child: metrics[2]),
+                    const SizedBox(width: 7),
+                    Expanded(child: metrics[3]),
+                  ],
+                );
+              },
             ),
           ),
           if (!started)
@@ -121,8 +185,12 @@ class GroupStageStatusPanel extends StatelessWidget {
           else ...[
             const Divider(height: 1),
             ...visible.indexed.map(
-              (entry) => _StandingRow(rank: entry.$1 + 1, team: entry.$2),
+              (entry) => _StandingRow(
+                rank: entry.$1 + 1,
+                team: entry.$2,
+              ),
             ),
+            const SizedBox(height: 10),
           ],
         ],
       ),
@@ -148,12 +216,22 @@ class _Metric extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('$value', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+          Text(
+            '$value',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           const SizedBox(height: 2),
           Text(
             label,
             maxLines: 1,
-            style: const TextStyle(color: _muted, fontSize: 8, fontWeight: FontWeight.w800),
+            style: const TextStyle(
+              color: _muted,
+              fontSize: 8,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ],
       ),
@@ -170,19 +248,43 @@ class _StandingRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final status = _teamStatus(team);
-    final color = _teamStatusColor(team);
+    final statusColor = _teamStatusColor(team);
+    final brand = teamBrandFor(
+      team.name,
+      alternateName: team.clientName,
+    );
     final mapDiff = team.mapWins - team.mapLosses;
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 9, 12, 0),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: brand.primary.withAlpha(48)),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [brand.primary.withAlpha(15), Colors.transparent],
+        ),
+      ),
       child: Row(
         children: [
           SizedBox(
             width: 20,
-            child: Text('$rank', textAlign: TextAlign.center, style: const TextStyle(color: _muted, fontSize: 11)),
+            child: Text(
+              '$rank',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: _muted, fontSize: 11),
+            ),
           ),
           const SizedBox(width: 7),
-          _Monogram(text: team.initials),
+          TeamLogo(
+            name: team.name,
+            alternateName: team.clientName,
+            logoUrl: team.logoUrl,
+            size: 38,
+            showGlow: false,
+          ),
           const SizedBox(width: 9),
           Expanded(
             child: Column(
@@ -192,7 +294,10 @@ class _StandingRow extends StatelessWidget {
                   team.clientName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -204,35 +309,18 @@ class _StandingRow extends StatelessWidget {
           ),
           Text(
             '${team.wins}-${team.losses}',
-            style: const TextStyle(color: _goldSoft, fontSize: 15, fontWeight: FontWeight.w900),
+            style: TextStyle(
+              color: brand.primary,
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+            ),
           ),
           const SizedBox(width: 8),
-          SizedBox(width: 60, child: _StatusBadge(label: status, color: color)),
+          SizedBox(
+            width: 62,
+            child: _StatusBadge(label: status, color: statusColor),
+          ),
         ],
-      ),
-    );
-  }
-}
-
-class _Monogram extends StatelessWidget {
-  const _Monogram({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 34,
-      height: 34,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [Color(0xFF3B2C13), Color(0xFF18191C)]),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0x77D8A84E)),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(color: _goldSoft, fontSize: 10, fontWeight: FontWeight.w900),
       ),
     );
   }
@@ -258,7 +346,11 @@ class _StatusBadge extends StatelessWidget {
         label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: color, fontSize: 8, fontWeight: FontWeight.w900),
+        style: TextStyle(
+          color: color,
+          fontSize: 8,
+          fontWeight: FontWeight.w900,
+        ),
       ),
     );
   }
@@ -279,14 +371,30 @@ class _EmptyTable extends StatelessWidget {
         children: [
           Icon(Icons.hourglass_empty_rounded, color: _gold, size: 20),
           SizedBox(width: 10),
-          Text('No standings yet', style: TextStyle(color: _muted, fontWeight: FontWeight.w700)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Standings unavailable',
+                  style: TextStyle(fontWeight: FontWeight.w800),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  'Unlocks after the first official series',
+                  style: TextStyle(color: _muted, fontSize: 10),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-bool _isDirect(TeamEntry team) => team.actual == '4-0' || team.actual == '4-1';
+bool _isDirect(TeamEntry team) =>
+    team.actual == '4-0' || team.actual == '4-1';
 
 bool _isOut(TeamEntry team) =>
     team.actual == '0-4' ||
