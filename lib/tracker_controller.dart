@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'live_models.dart';
 import 'live_service.dart';
 import 'notification_service.dart';
+import 'team_branding.dart';
+import 'team_logo_service.dart';
 
 const resultBuckets = <String>[
   'Pending',
@@ -17,7 +19,9 @@ const resultBuckets = <String>[
   '0-4',
 ];
 
-const _storageKey = 'ti_tracker_state_v3';
+const _storageKey = 'ti_tracker_state_v4';
+const _legacyStorageKey = 'ti_tracker_state_v3';
+const _teamLogoCacheKey = 'ti_team_logo_cache_v1';
 
 class TeamEntry {
   TeamEntry({
@@ -49,14 +53,8 @@ class TeamEntry {
   bool get isExact => actual != 'Pending' && actual == pick;
   bool get isMiss => actual != 'Pending' && actual != pick;
 
-  String get initials {
-    final words = clientName.split(RegExp(r'\s+'));
-    if (words.length == 1) {
-      final length = words.first.length < 2 ? words.first.length : 2;
-      return words.first.substring(0, length).toUpperCase();
-    }
-    return words.take(2).map((word) => word[0]).join().toUpperCase();
-  }
+  String get initials =>
+      teamBrandFor(name, alternateName: clientName).code;
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -75,7 +73,8 @@ class TeamEntry {
   factory TeamEntry.fromJson(Map<String, dynamic> json) => TeamEntry(
         name: json['name'] as String,
         clientName: json['clientName'] as String,
-        pick: json['pick'] as String? ?? json['predicted'] as String? ?? 'Pending',
+        pick:
+            json['pick'] as String? ?? json['predicted'] as String? ?? 'Pending',
         logoUrl: _cleanUrl(json['logoUrl'] as String?),
         wins: (json['wins'] as num?)?.toInt() ?? 0,
         losses: (json['losses'] as num?)?.toInt() ?? 0,
@@ -83,26 +82,91 @@ class TeamEntry {
         mapLosses: (json['mapLosses'] as num?)?.toInt() ?? 0,
         actual: json['actual'] as String? ?? 'Pending',
         live: json['live'] as bool? ?? false,
-        lastMatchAt: DateTime.tryParse(json['lastMatchAt'] as String? ?? ''),
+        lastMatchAt:
+            DateTime.tryParse(json['lastMatchAt'] as String? ?? ''),
       );
 
   static List<TeamEntry> defaults() => [
-        TeamEntry(name: 'PARIVISION', clientName: 'TEAM VISION', pick: '4-0'),
-        TeamEntry(name: 'Team Yandex', clientName: 'TEAM YANDEX', pick: '4-1'),
-        TeamEntry(name: 'BetBoom Team', clientName: 'BOOMBOYS', pick: '4-1'),
-        TeamEntry(name: 'Team Falcons', clientName: 'TEAM FALCONS', pick: 'Elimination Winner'),
-        TeamEntry(name: 'Team Spirit', clientName: 'TEAM SPIRIT', pick: 'Elimination Winner'),
-        TeamEntry(name: 'Nigma Galaxy', clientName: 'NIGMA GALAXY', pick: 'Elimination Winner'),
-        TeamEntry(name: 'Vici Gaming', clientName: 'VICI GAMING', pick: 'Elimination Winner'),
-        TeamEntry(name: 'Aurora Gaming', clientName: 'AURORA GAMING', pick: 'Elimination Winner'),
-        TeamEntry(name: 'Team Liquid', clientName: 'TEAM LIQUID', pick: 'Elimination Loser'),
-        TeamEntry(name: 'LGD Gaming', clientName: 'LGD GAMING', pick: 'Elimination Loser'),
-        TeamEntry(name: 'IRON WING', clientName: 'IRON WING', pick: 'Elimination Loser'),
-        TeamEntry(name: 'Xtreme Gaming', clientName: 'XTREME GAMING', pick: 'Elimination Loser'),
-        TeamEntry(name: 'OG', clientName: 'OG', pick: 'Elimination Loser'),
-        TeamEntry(name: 'GamerLegion', clientName: 'GAMERLEGION', pick: '1-4'),
-        TeamEntry(name: 'Team Resilience', clientName: 'TEAM RESILIENCE', pick: '1-4'),
-        TeamEntry(name: 'HULIGANI', clientName: 'HULIGANI', pick: '0-4'),
+        TeamEntry(
+          name: 'PARIVISION',
+          clientName: 'TEAM VISION',
+          pick: '4-0',
+        ),
+        TeamEntry(
+          name: 'Team Yandex',
+          clientName: 'TEAM YANDEX',
+          pick: '4-1',
+        ),
+        TeamEntry(
+          name: 'BetBoom Team',
+          clientName: 'BOOMBOYS',
+          pick: '4-1',
+        ),
+        TeamEntry(
+          name: 'Team Falcons',
+          clientName: 'TEAM FALCONS',
+          pick: 'Elimination Winner',
+        ),
+        TeamEntry(
+          name: 'Team Spirit',
+          clientName: 'TEAM SPIRIT',
+          pick: 'Elimination Winner',
+        ),
+        TeamEntry(
+          name: 'Nigma Galaxy',
+          clientName: 'NIGMA GALAXY',
+          pick: 'Elimination Winner',
+        ),
+        TeamEntry(
+          name: 'Vici Gaming',
+          clientName: 'VICI GAMING',
+          pick: 'Elimination Winner',
+        ),
+        TeamEntry(
+          name: 'Aurora Gaming',
+          clientName: 'AURORA GAMING',
+          pick: 'Elimination Winner',
+        ),
+        TeamEntry(
+          name: 'Team Liquid',
+          clientName: 'TEAM LIQUID',
+          pick: 'Elimination Loser',
+        ),
+        TeamEntry(
+          name: 'LGD Gaming',
+          clientName: 'LGD GAMING',
+          pick: 'Elimination Loser',
+        ),
+        TeamEntry(
+          name: 'IRON WING',
+          clientName: 'IRON WING',
+          pick: 'Elimination Loser',
+        ),
+        TeamEntry(
+          name: 'Xtreme Gaming',
+          clientName: 'XTREME GAMING',
+          pick: 'Elimination Loser',
+        ),
+        TeamEntry(
+          name: 'OG',
+          clientName: 'OG',
+          pick: 'Elimination Loser',
+        ),
+        TeamEntry(
+          name: 'GamerLegion',
+          clientName: 'GAMERLEGION',
+          pick: '1-4',
+        ),
+        TeamEntry(
+          name: 'Team Resilience',
+          clientName: 'TEAM RESILIENCE',
+          pick: '1-4',
+        ),
+        TeamEntry(
+          name: 'HULIGANI',
+          clientName: 'HULIGANI',
+          pick: '0-4',
+        ),
       ];
 }
 
@@ -112,40 +176,52 @@ class TrackerController extends ChangeNotifier {
     SharedPreferences? preferences,
     LiveResultsService? service,
     NotificationService? notifications,
+    TeamLogoService? logoService,
   })  : _preferences = preferences,
         _service = service ?? LiveResultsService(),
-        _notifications = notifications ?? NotificationService();
+        _notifications = notifications ?? NotificationService(),
+        _logoService = logoService ?? TeamLogoService();
 
   List<TeamEntry> teams;
   final SharedPreferences? _preferences;
   final LiveResultsService _service;
   final NotificationService _notifications;
+  final TeamLogoService _logoService;
 
   List<LiveSeries> series = const [];
   bool isSyncing = false;
+  bool isRefreshingLogos = false;
   bool notificationsEnabled = false;
   bool notificationPermissionDenied = false;
   String syncStatus = 'offline';
   String syncMessage = 'Using saved data.';
+  String logoMessage = 'Team logos not checked.';
   String source = 'OpenDota';
-  DateTime? lastUpdated;
+  DateTime? lastChecked;
+  DateTime? feedUpdatedAt;
+  DateTime? lastLogoUpdated;
   int? leagueId;
   String? leagueName;
   int newSeriesCount = 0;
 
+  DateTime? get lastUpdated => lastChecked;
+
   factory TrackerController.memory({
     LiveResultsService? service,
     NotificationService? notifications,
+    TeamLogoService? logoService,
   }) =>
       TrackerController(
         TeamEntry.defaults(),
         service: service,
         notifications: notifications,
+        logoService: logoService,
       );
 
   static Future<TrackerController> load() async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_storageKey);
+    final raw =
+        prefs.getString(_storageKey) ?? prefs.getString(_legacyStorageKey);
     final controller = TrackerController(
       TeamEntry.defaults(),
       preferences: prefs,
@@ -153,49 +229,78 @@ class TrackerController extends ChangeNotifier {
     controller.notificationsEnabled =
         prefs.getBool(notificationsEnabledKey) ?? false;
 
-    if (raw == null) return controller;
-
-    try {
-      final data = jsonDecode(raw) as Map<String, dynamic>;
-      controller.teams = (data['teams'] as List<dynamic>)
-          .map((item) => TeamEntry.fromJson(item as Map<String, dynamic>))
-          .toList();
-      controller.syncStatus = data['syncStatus'] as String? ?? 'offline';
-      controller.syncMessage =
-          data['syncMessage'] as String? ?? 'Using saved data.';
-      controller.source = data['source'] as String? ?? 'OpenDota';
-      controller.lastUpdated =
-          DateTime.tryParse(data['lastUpdated'] as String? ?? '');
-      controller.leagueId = (data['leagueId'] as num?)?.toInt();
-      controller.leagueName = data['leagueName'] as String?;
-      controller.series = ((data['series'] as List<dynamic>?) ?? const [])
-          .whereType<Map<String, dynamic>>()
-          .map(LiveSeries.fromJson)
-          .toList();
-      return controller;
-    } catch (_) {
-      return controller;
+    if (raw != null) {
+      try {
+        final data = jsonDecode(raw) as Map<String, dynamic>;
+        controller.teams = (data['teams'] as List<dynamic>)
+            .map(
+              (item) => TeamEntry.fromJson(item as Map<String, dynamic>),
+            )
+            .toList();
+        controller.syncStatus = data['syncStatus'] as String? ?? 'offline';
+        controller.syncMessage =
+            data['syncMessage'] as String? ?? 'Using saved data.';
+        controller.logoMessage =
+            data['logoMessage'] as String? ?? 'Using cached team branding.';
+        controller.source = data['source'] as String? ?? 'OpenDota';
+        controller.lastChecked = DateTime.tryParse(
+          data['lastChecked'] as String? ??
+              data['lastUpdated'] as String? ??
+              '',
+        );
+        controller.feedUpdatedAt =
+            DateTime.tryParse(data['feedUpdatedAt'] as String? ?? '');
+        controller.lastLogoUpdated =
+            DateTime.tryParse(data['lastLogoUpdated'] as String? ?? '');
+        controller.leagueId = (data['leagueId'] as num?)?.toInt();
+        controller.leagueName = data['leagueName'] as String?;
+        controller.series =
+            ((data['series'] as List<dynamic>?) ?? const [])
+                .whereType<Map<String, dynamic>>()
+                .map(LiveSeries.fromJson)
+                .toList();
+      } catch (_) {
+        controller.teams = TeamEntry.defaults();
+      }
     }
+
+    controller._restoreLogoCache();
+    return controller;
   }
 
-  int get settled => teams.where((team) => team.actual != 'Pending').length;
+  int get settled =>
+      teams.where((team) => team.actual != 'Pending').length;
   int get hits => teams.where((team) => team.isExact).length;
   int get misses => teams.where((team) => team.isMiss).length;
   double get accuracy => settled == 0 ? 0 : hits / settled;
-  int get active => teams.where((team) => team.wins + team.losses > 0).length;
-  int get completedSeries => series.where((item) => item.completed).length;
+  int get active =>
+      teams.where((team) => team.wins + team.losses > 0).length;
+  int get completedSeries =>
+      series.where((item) => item.completed).length;
+  int get unresolvedLogos => teams
+      .where((team) => team.logoUrl == null || team.logoUrl!.isEmpty)
+      .length;
   bool get hasLiveData => syncStatus == 'live' || syncStatus == 'ready';
+
   List<LiveSeries> get recentCompletedSeries {
     final items = series.where((item) => item.completed).toList()
-      ..sort((a, b) =>
-          (b.startedAt ?? DateTime(1970)).compareTo(a.startedAt ?? DateTime(1970)));
+      ..sort(
+        (a, b) => (b.startedAt ?? DateTime(1970))
+            .compareTo(a.startedAt ?? DateTime(1970)),
+      );
     return items;
   }
 
   TeamEntry? teamByName(String value) {
     final key = _normalize(value);
     for (final team in teams) {
-      if (_normalize(team.name) == key || _normalize(team.clientName) == key) {
+      final brand = teamBrandFor(
+        team.name,
+        alternateName: team.clientName,
+      );
+      if (_normalize(team.name) == key ||
+          _normalize(team.clientName) == key ||
+          brand.matches(value)) {
         return team;
       }
     }
@@ -247,7 +352,8 @@ class TrackerController extends ChangeNotifier {
       syncStatus = feed.status;
       syncMessage = feed.message;
       source = feed.source;
-      lastUpdated = feed.generatedAt ?? DateTime.now().toUtc();
+      lastChecked = DateTime.now().toUtc();
+      feedUpdatedAt = feed.generatedAt;
       leagueId = feed.leagueId;
       leagueName = feed.leagueName;
       series = feed.series;
@@ -260,10 +366,11 @@ class TrackerController extends ChangeNotifier {
       _applyFeed(feed);
       await _notifications.notifyForNewSeries(feed.series);
       await _save();
+      await hydrateTeamLogos();
     } catch (_) {
       syncStatus = 'offline';
       syncMessage =
-          'Automatic refresh failed. Showing the last saved results.';
+          'Refresh failed. Showing the last saved tournament data.';
       await _save();
     } finally {
       isSyncing = false;
@@ -271,10 +378,91 @@ class TrackerController extends ChangeNotifier {
     }
   }
 
+  Future<void> hydrateTeamLogos({bool force = false}) async {
+    if (isRefreshingLogos) return;
+    if (!force && unresolvedLogos == 0) return;
+
+    isRefreshingLogos = true;
+    logoMessage = 'Resolving team identities…';
+    notifyListeners();
+
+    try {
+      final discovered = await _logoService.discoverLogos();
+      var updated = 0;
+      for (final team in teams) {
+        final brand = teamBrandFor(
+          team.name,
+          alternateName: team.clientName,
+        );
+        final url = discovered[brand.canonicalName];
+        if (url != null && url.isNotEmpty && team.logoUrl != url) {
+          team.logoUrl = url;
+          updated += 1;
+        }
+      }
+      lastLogoUpdated = DateTime.now().toUtc();
+      logoMessage = unresolvedLogos == 0
+          ? 'All team identities resolved.'
+          : '${teams.length - unresolvedLogos}/${teams.length} team logos resolved.';
+      await _persistLogoCache();
+      if (updated > 0) await _save();
+    } catch (_) {
+      logoMessage = unresolvedLogos == teams.length
+          ? 'Logo service unavailable. Using branded fallbacks.'
+          : 'Some logos are cached; unresolved teams use branded fallbacks.';
+    } finally {
+      isRefreshingLogos = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> clearLogoCache() async {
+    for (final team in teams) {
+      team.logoUrl = null;
+    }
+    lastLogoUpdated = null;
+    logoMessage = 'Team logo cache cleared.';
+    await _preferences?.remove(_teamLogoCacheKey);
+    await _save();
+  }
+
+  void _restoreLogoCache() {
+    final raw = _preferences?.getString(_teamLogoCacheKey);
+    if (raw == null) return;
+    try {
+      final cached = Map<String, dynamic>.from(jsonDecode(raw));
+      for (final team in teams) {
+        final brand = teamBrandFor(
+          team.name,
+          alternateName: team.clientName,
+        );
+        final url = _cleanUrl(cached[brand.canonicalName] as String?);
+        if (url != null && team.logoUrl == null) team.logoUrl = url;
+      }
+    } catch (_) {
+      // Invalid visual cache is ignored.
+    }
+  }
+
+  Future<void> _persistLogoCache() async {
+    final cache = <String, String>{};
+    for (final team in teams) {
+      final url = _cleanUrl(team.logoUrl);
+      if (url == null) continue;
+      final brand = teamBrandFor(
+        team.name,
+        alternateName: team.clientName,
+      );
+      cache[brand.canonicalName] = url;
+    }
+    await _preferences?.setString(_teamLogoCacheKey, jsonEncode(cache));
+  }
+
   void _applyFeed(LiveFeed feed) {
     if (feed.teams.isEmpty) return;
     for (final incoming in feed.teams) {
-      final local = teamByName(incoming.name) ?? teamByName(incoming.clientName);
+      final local =
+          teamByName(incoming.name) ?? teamByName(incoming.clientName);
       if (local == null) continue;
       local
         ..wins = incoming.seriesWins
@@ -314,7 +502,7 @@ class TrackerController extends ChangeNotifier {
   }
 
   String exportJson() => const JsonEncoder.withIndent('  ').convert({
-        'schemaVersion': 3,
+        'schemaVersion': 4,
         'exportedAt': DateTime.now().toUtc().toIso8601String(),
         'teams': teams.map((team) => team.toJson()).toList(),
         'series': series.map((item) => item.toJson()).toList(),
@@ -324,7 +512,9 @@ class TrackerController extends ChangeNotifier {
     try {
       final data = jsonDecode(sourceText) as Map<String, dynamic>;
       final imported = (data['teams'] as List<dynamic>)
-          .map((item) => TeamEntry.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) => TeamEntry.fromJson(item as Map<String, dynamic>),
+          )
           .toList();
       if (imported.length != 16) return false;
       teams = imported;
@@ -340,9 +530,11 @@ class TrackerController extends ChangeNotifier {
     series = const [];
     syncStatus = 'offline';
     syncMessage = 'Using default selections.';
-    lastUpdated = null;
+    lastChecked = null;
+    feedUpdatedAt = null;
     leagueId = null;
     leagueName = null;
+    _restoreLogoCache();
     _save();
   }
 
@@ -355,8 +547,11 @@ class TrackerController extends ChangeNotifier {
         'series': series.map((item) => item.toJson()).toList(),
         'syncStatus': syncStatus,
         'syncMessage': syncMessage,
+        'logoMessage': logoMessage,
         'source': source,
-        'lastUpdated': lastUpdated?.toUtc().toIso8601String(),
+        'lastChecked': lastChecked?.toUtc().toIso8601String(),
+        'feedUpdatedAt': feedUpdatedAt?.toUtc().toIso8601String(),
+        'lastLogoUpdated': lastLogoUpdated?.toUtc().toIso8601String(),
         'leagueId': leagueId,
         'leagueName': leagueName,
       }),
@@ -365,6 +560,7 @@ class TrackerController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _logoService.close();
     _service.close();
     super.dispose();
   }
