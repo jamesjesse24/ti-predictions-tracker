@@ -12,28 +12,6 @@ dependencies:
   flutter_local_notifications: ^22.2.0
   http: ^1.5.0
   shared_preferences: ^2.5.5
-  workmanager:
-    git:
-      url: https://github.com/fluttercommunity/flutter_workmanager.git
-      ref: 632d2041d83b7c2ea1d5083e993c29fb507c0332
-      path: workmanager
-
-dependency_overrides:
-  workmanager_android:
-    git:
-      url: https://github.com/fluttercommunity/flutter_workmanager.git
-      ref: 632d2041d83b7c2ea1d5083e993c29fb507c0332
-      path: workmanager_android
-  workmanager_apple:
-    git:
-      url: https://github.com/fluttercommunity/flutter_workmanager.git
-      ref: 632d2041d83b7c2ea1d5083e993c29fb507c0332
-      path: workmanager_apple
-  workmanager_platform_interface:
-    git:
-      url: https://github.com/fluttercommunity/flutter_workmanager.git
-      ref: 632d2041d83b7c2ea1d5083e993c29fb507c0332
-      path: workmanager_platform_interface
 
 dev_dependencies:
   flutter_test:
