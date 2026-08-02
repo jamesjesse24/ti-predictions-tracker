@@ -1,74 +1,56 @@
-import 'dart:ui';
+import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
-
-import 'live_service.dart';
-import 'notification_service.dart';
 
 const backgroundResultsTask = 'ti-background-results-sync';
 const backgroundResultsUniqueName = 'ti-background-results-periodic';
 
-@pragma('vm:entry-point')
-void backgroundCallbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    try {
-      WidgetsFlutterBinding.ensureInitialized();
-      DartPluginRegistrant.ensureInitialized();
+const _notificationsEnabledKey = 'ti_notifications_enabled_v1';
+const _backgroundChannel = MethodChannel(
+  'com.jamesjesse24.ti_predictions_tracker/background',
+);
 
-      final prefs = await SharedPreferences.getInstance();
-      final enabled = prefs.getBool(notificationsEnabledKey) ?? false;
-      if (!enabled) return true;
+/// Schedules native AndroidX WorkManager polling without depending on the
+/// incompatible Flutter workmanager plugin. Existing work is preserved across
+/// process death and device restarts by Android itself.
+Future<bool> configureBackgroundResultChecks({
+  Iterable<String>? currentSeriesIds,
+}) async {
+  if (kIsWeb || !Platform.isAndroid) return true;
 
-      final liveService = LiveResultsService();
-      try {
-        final feed = await liveService.fetch();
-        final notifications = NotificationService();
-        await notifications.initialize();
-        await notifications.notifyForNewSeries(feed.series);
-        return true;
-      } finally {
-        liveService.close();
-      }
-    } catch (_) {
-      // WorkManager may retry later. The background isolate must never bring
-      // down the main application process because an OEM blocks scheduling,
-      // a plugin is unavailable, or the network request fails.
-      return false;
-    }
-  });
-}
-
-Future<bool> configureBackgroundResultChecks() async {
   try {
     final prefs = await SharedPreferences.getInstance();
-    final enabled = prefs.getBool(notificationsEnabledKey) ?? false;
+    final enabled = prefs.getBool(_notificationsEnabledKey) ?? false;
+    if (!enabled) {
+      await disableBackgroundResultChecks();
+      return true;
+    }
 
-    // Do not initialize WorkManager during normal startup until the user has
-    // explicitly enabled result notifications. This avoids making an optional
-    // service part of the app's critical launch path.
-    if (!enabled) return true;
+    final arguments = <String, Object?>{};
+    if (currentSeriesIds != null) {
+      arguments['seriesIds'] = currentSeriesIds.toSet().toList()..sort();
+    }
 
-    await Workmanager().initialize(backgroundCallbackDispatcher);
-    await Workmanager().registerPeriodicTask(
-      backgroundResultsUniqueName,
-      backgroundResultsTask,
-      frequency: const Duration(minutes: 15),
-      constraints: Constraints(networkType: NetworkType.connected),
-      existingWorkPolicy: ExistingPeriodicWorkPolicy.keep,
-    );
-    return true;
+    return await _backgroundChannel.invokeMethod<bool>(
+          'enable',
+          arguments,
+        ) ??
+        true;
   } catch (_) {
+    // Background polling is optional. Foreground refresh and notifications
+    // remain available even when an OEM blocks WorkManager scheduling.
     return false;
   }
 }
 
 Future<void> disableBackgroundResultChecks() async {
+  if (kIsWeb || !Platform.isAndroid) return;
+
   try {
-    await Workmanager().cancelByUniqueName(backgroundResultsUniqueName);
+    await _backgroundChannel.invokeMethod<void>('disable');
   } catch (_) {
-    // Disabling alerts must remain safe even when WorkManager was never
-    // initialized successfully on this device.
+    // Disabling remains safe when the native bridge is unavailable.
   }
 }

@@ -19,7 +19,11 @@ void main() {
 
     expect(find.text('Group stage'), findsOneWidget);
     expect(find.text('WAITING'), findsOneWidget);
-    expect(find.text('No standings yet'), findsOneWidget);
+    expect(find.text('Standings unavailable'), findsOneWidget);
+    expect(
+      find.text('Unlocks after the first official series'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('shows records and settled outcomes', (tester) async {

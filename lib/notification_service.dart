@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'background_worker.dart';
 import 'live_models.dart';
 
 const notificationsEnabledKey = 'ti_notifications_enabled_v1';
@@ -70,13 +71,16 @@ class NotificationService {
     bool enabled, {
     Iterable<String> currentSeriesIds = const [],
   }) async {
+    final active = enabled && _available;
+    final ids = currentSeriesIds.toSet().toList()..sort();
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(notificationsEnabledKey, enabled && _available);
-    if (enabled && _available) {
-      await prefs.setStringList(
-        notifiedSeriesKey,
-        currentSeriesIds.toSet().toList()..sort(),
-      );
+
+    await prefs.setBool(notificationsEnabledKey, active);
+    if (active) {
+      await prefs.setStringList(notifiedSeriesKey, ids);
+      await configureBackgroundResultChecks(currentSeriesIds: ids);
+    } else {
+      await disableBackgroundResultChecks();
     }
   }
 
@@ -106,6 +110,7 @@ class NotificationService {
     await initialize();
     if (!_available) {
       await prefs.setBool(notificationsEnabledKey, false);
+      await disableBackgroundResultChecks();
       return const [];
     }
 
@@ -143,6 +148,7 @@ class NotificationService {
     } catch (_) {
       _available = false;
       await prefs.setBool(notificationsEnabledKey, false);
+      await disableBackgroundResultChecks();
       return const [];
     }
   }
@@ -174,6 +180,7 @@ class NotificationService {
       _available = false;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(notificationsEnabledKey, false);
+      await disableBackgroundResultChecks();
     }
   }
 }
