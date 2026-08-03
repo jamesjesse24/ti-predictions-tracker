@@ -1,0 +1,417 @@
+name: Post-7.41d research dataset
+
+on:
+  push:
+    branches:
+      - analysis/post-741d-data
+    paths:
+      - .github/workflows/post-741d-data.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    name: Collect OpenDota map telemetry
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Collect post-7.41d matches and telemetry
+        shell: bash
+        run: |
+          mkdir -p research/post-741d/raw
+          cat > "$RUNNER_TEMP/collect_post_741d.py" <<'PY'
+          import csv
+          import json
+          import math
+          import os
+          import re
+          import time
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from collections import defaultdict
+          from datetime import datetime, timezone
+
+          API = "https://api.opendota.com/api"
+          OUT = "research/post-741d/raw"
+          START_TS = int(datetime(2026, 6, 4, 0, 0, tzinfo=timezone.utc).timestamp())
+          END_TS = int(datetime(2026, 8, 3, 7, 31, tzinfo=timezone.utc).timestamp())
+
+          ALIASES = {
+              "PARIVISION": ["parivision", "pvision", "pvission", "team vision", "pari"],
+              "Team Yandex": ["team yandex", "yandex"],
+              "BetBoom Team": ["betboom team", "betboom", "bb team", "boomboys"],
+              "Team Falcons": ["team falcons", "falcons"],
+              "Team Spirit": ["team spirit", "spirit"],
+              "Nigma Galaxy": ["nigma galaxy", "nigma", "ngx"],
+              "Vici Gaming": ["vici gaming", "vici", "vg"],
+              "Aurora Gaming": ["aurora gaming", "aurora"],
+              "Team Liquid": ["team liquid", "liquid"],
+              "LGD Gaming": ["lgd gaming", "lgd"],
+              "IRON WING / 1w": ["iron wing", "1w team", "1w", "1win team", "1win", "tundra esports", "tundra"],
+              "Xtreme Gaming": ["xtreme gaming", "xtreme", "xg"],
+              "OG": ["og", "og esports"],
+              "GamerLegion": ["gamerlegion", "gamer legion"],
+              "Team Resilience": ["team resilience", "resilience"],
+              "HULIGANI / L1 TEAM": ["huligani", "l1 team", "l1ga team", "l1ga", "l1"],
+          }
+
+          def normalize(value):
+              value = (value or "").casefold().strip()
+              value = re.sub(r"[^a-z0-9]+", " ", value)
+              return " ".join(value.split())
+
+          NORMALIZED = {
+              canonical: {normalize(alias) for alias in aliases + [canonical]}
+              for canonical, aliases in ALIASES.items()
+          }
+
+          def canonical_for(name):
+              n = normalize(name)
+              if not n:
+                  return None
+              for canonical, aliases in NORMALIZED.items():
+                  if n in aliases:
+                      return canonical
+              return None
+
+          def get_json(path, params=None, attempts=7):
+              url = API + path
+              if params:
+                  url += "?" + urllib.parse.urlencode(params)
+              delay = 2.0
+              for attempt in range(attempts):
+                  try:
+                      req = urllib.request.Request(
+                          url,
+                          headers={"User-Agent": "ti-predictions-tracker-research/1.0"},
+                      )
+                      with urllib.request.urlopen(req, timeout=60) as response:
+                          return json.loads(response.read().decode("utf-8"))
+                  except urllib.error.HTTPError as exc:
+                      if exc.code not in (429, 500, 502, 503, 504) or attempt == attempts - 1:
+                          raise
+                      retry_after = exc.headers.get("Retry-After")
+                      wait = float(retry_after) if retry_after else delay
+                  except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+                      if attempt == attempts - 1:
+                          raise
+                      wait = delay
+                  time.sleep(wait)
+                  delay = min(delay * 1.8, 45)
+              raise RuntimeError(f"Unable to fetch {url}")
+
+          def safe_last(values):
+              if not isinstance(values, list):
+                  return None
+              for value in reversed(values):
+                  if isinstance(value, (int, float)) and math.isfinite(value):
+                      return value
+              return None
+
+          def at_minute(values, minute):
+              if not isinstance(values, list) or not values:
+                  return None
+              idx = min(minute, len(values) - 1)
+              value = values[idx]
+              return value if isinstance(value, (int, float)) else None
+
+          print("Collecting professional-match index...")
+          pro_matches = []
+          less_than = None
+          seen_match_ids = set()
+          pages = 0
+          while pages < 160:
+              params = {"less_than_match_id": less_than} if less_than else None
+              batch = get_json("/proMatches", params)
+              if not batch:
+                  break
+              fresh = [row for row in batch if row.get("match_id") not in seen_match_ids]
+              if not fresh:
+                  break
+              pro_matches.extend(fresh)
+              seen_match_ids.update(row.get("match_id") for row in fresh)
+              pages += 1
+              oldest = min((row.get("start_time") or END_TS) for row in batch)
+              less_than = min(row["match_id"] for row in batch if row.get("match_id"))
+              print(f"proMatches page {pages}: oldest={datetime.fromtimestamp(oldest, timezone.utc).isoformat()}")
+              if oldest < START_TS - 86400 * 2:
+                  break
+              time.sleep(1.05)
+
+          team_ids = defaultdict(set)
+          observed_names = defaultdict(set)
+          for row in pro_matches:
+              for side in ("radiant", "dire"):
+                  name = row.get(f"{side}_name")
+                  team_id = row.get(f"{side}_team_id")
+                  canonical = canonical_for(name)
+                  if canonical and team_id:
+                      team_ids[canonical].add(int(team_id))
+                      observed_names[canonical].add(name)
+
+          unresolved = [name for name in ALIASES if not team_ids.get(name)]
+          if unresolved:
+              print("WARNING unresolved teams from proMatches:", unresolved)
+
+          with open(os.path.join(OUT, "team_id_map.json"), "w", encoding="utf-8") as fh:
+              json.dump(
+                  {
+                      key: {
+                          "team_ids": sorted(team_ids.get(key, [])),
+                          "observed_names": sorted(observed_names.get(key, [])),
+                          "aliases": ALIASES[key],
+                      }
+                      for key in ALIASES
+                  },
+                  fh,
+                  indent=2,
+                  ensure_ascii=False,
+              )
+
+          print("Collecting target-team match lists...")
+          target_matches = {}
+          match_contexts = defaultdict(list)
+          for canonical in ALIASES:
+              for team_id in sorted(team_ids.get(canonical, [])):
+                  rows = get_json(f"/teams/{team_id}/matches")
+                  for row in rows:
+                      start_time = int(row.get("start_time") or 0)
+                      if not (START_TS <= start_time <= END_TS):
+                          continue
+                      match_id = int(row["match_id"])
+                      target_matches[match_id] = None
+                      match_contexts[match_id].append(
+                          {
+                              "canonical_team": canonical,
+                              "team_id": team_id,
+                              "team_is_radiant": bool(row.get("radiant")),
+                              "opposing_team_id": row.get("opposing_team_id"),
+                              "opposing_team_name": row.get("opposing_team_name"),
+                              "leagueid": row.get("leagueid"),
+                              "league_name": row.get("league_name"),
+                              "start_time": start_time,
+                          }
+                      )
+                  time.sleep(1.05)
+
+          heroes = get_json("/constants/heroes")
+          hero_names = {
+              int(hero_id): value.get("localized_name") or value.get("name") or str(hero_id)
+              for hero_id, value in heroes.items()
+          }
+          time.sleep(1.05)
+
+          match_ids = sorted(target_matches, key=lambda mid: min(c["start_time"] for c in match_contexts[mid]))
+          print(f"Fetching {len(match_ids)} unique map details...")
+
+          map_rows = []
+          draft_rows = []
+          player_rows = []
+          objective_rows = []
+          teamfight_rows = []
+          raw_path = os.path.join(OUT, "match_details.jsonl")
+          failures = []
+
+          with open(raw_path, "w", encoding="utf-8") as raw_fh:
+              for index, match_id in enumerate(match_ids, start=1):
+                  try:
+                      detail = get_json(f"/matches/{match_id}")
+                  except Exception as exc:
+                      failures.append({"match_id": match_id, "error": repr(exc)})
+                      print(f"FAILED {match_id}: {exc!r}")
+                      continue
+
+                  raw_fh.write(json.dumps(detail, ensure_ascii=False) + "\n")
+                  radiant_win = bool(detail.get("radiant_win"))
+                  duration = int(detail.get("duration") or 0)
+                  start_time = int(detail.get("start_time") or 0)
+                  radiant_name = detail.get("radiant_name") or ""
+                  dire_name = detail.get("dire_name") or ""
+                  radiant_team_id = detail.get("radiant_team_id")
+                  dire_team_id = detail.get("dire_team_id")
+                  gold = detail.get("radiant_gold_adv") or []
+                  xp = detail.get("radiant_xp_adv") or []
+
+                  for context in match_contexts[match_id]:
+                      is_radiant = bool(context["team_is_radiant"])
+                      sign = 1 if is_radiant else -1
+                      won = radiant_win if is_radiant else not radiant_win
+                      signed_gold = [sign * v for v in gold if isinstance(v, (int, float))]
+                      signed_xp = [sign * v for v in xp if isinstance(v, (int, float))]
+                      max_lead = max(signed_gold) if signed_gold else None
+                      max_deficit = min(signed_gold) if signed_gold else None
+                      opponent_name = dire_name if is_radiant else radiant_name
+                      opponent_id = dire_team_id if is_radiant else radiant_team_id
+
+                      map_rows.append(
+                          {
+                              "match_id": match_id,
+                              "start_time_utc": datetime.fromtimestamp(start_time, timezone.utc).isoformat(),
+                              "canonical_team": context["canonical_team"],
+                              "team_id": context["team_id"],
+                              "team_side": "Radiant" if is_radiant else "Dire",
+                              "opponent_name": opponent_name or context.get("opposing_team_name") or "",
+                              "opponent_id": opponent_id or context.get("opposing_team_id") or "",
+                              "opponent_canonical": canonical_for(opponent_name) or "",
+                              "league_id": detail.get("leagueid") or context.get("leagueid") or "",
+                              "league_name": detail.get("league_name") or context.get("league_name") or "",
+                              "series_id": detail.get("series_id") or "",
+                              "series_type": detail.get("series_type") or "",
+                              "patch_id": detail.get("patch") or "",
+                              "duration_seconds": duration,
+                              "duration_minutes": round(duration / 60, 3) if duration else "",
+                              "win": int(won),
+                              "radiant_win": int(radiant_win),
+                              "gold_adv_10": sign * at_minute(gold, 10) if at_minute(gold, 10) is not None else "",
+                              "gold_adv_15": sign * at_minute(gold, 15) if at_minute(gold, 15) is not None else "",
+                              "gold_adv_20": sign * at_minute(gold, 20) if at_minute(gold, 20) is not None else "",
+                              "xp_adv_10": sign * at_minute(xp, 10) if at_minute(xp, 10) is not None else "",
+                              "xp_adv_15": sign * at_minute(xp, 15) if at_minute(xp, 15) is not None else "",
+                              "xp_adv_20": sign * at_minute(xp, 20) if at_minute(xp, 20) is not None else "",
+                              "final_gold_adv": sign * safe_last(gold) if safe_last(gold) is not None else "",
+                              "final_xp_adv": sign * safe_last(xp) if safe_last(xp) is not None else "",
+                              "max_gold_lead": max_lead if max_lead is not None else "",
+                              "max_gold_deficit": max_deficit if max_deficit is not None else "",
+                              "comeback_from_5k": int(bool(won and max_deficit is not None and max_deficit <= -5000)),
+                              "loss_after_5k_lead": int(bool((not won) and max_lead is not None and max_lead >= 5000)),
+                              "parsed": int(bool(detail.get("version"))),
+                          }
+                      )
+
+                  for item in detail.get("picks_bans") or []:
+                      hero_id = int(item.get("hero_id") or 0)
+                      draft_rows.append(
+                          {
+                              "match_id": match_id,
+                              "order": item.get("order"),
+                              "is_pick": int(bool(item.get("is_pick"))),
+                              "draft_team": "Radiant" if int(item.get("team") or 0) == 0 else "Dire",
+                              "hero_id": hero_id,
+                              "hero_name": hero_names.get(hero_id, str(hero_id)),
+                          }
+                      )
+
+                  for player in detail.get("players") or []:
+                      hero_id = int(player.get("hero_id") or 0)
+                      player_rows.append(
+                          {
+                              "match_id": match_id,
+                              "account_id": player.get("account_id") or "",
+                              "personaname": player.get("personaname") or "",
+                              "name": player.get("name") or "",
+                              "team_side": "Radiant" if bool(player.get("isRadiant")) else "Dire",
+                              "hero_id": hero_id,
+                              "hero_name": hero_names.get(hero_id, str(hero_id)),
+                              "kills": player.get("kills") or 0,
+                              "deaths": player.get("deaths") or 0,
+                              "assists": player.get("assists") or 0,
+                              "last_hits": player.get("last_hits") or 0,
+                              "denies": player.get("denies") or 0,
+                              "gold_per_min": player.get("gold_per_min") or 0,
+                              "xp_per_min": player.get("xp_per_min") or 0,
+                              "net_worth": player.get("net_worth") or 0,
+                              "hero_damage": player.get("hero_damage") or 0,
+                              "tower_damage": player.get("tower_damage") or 0,
+                              "hero_healing": player.get("hero_healing") or 0,
+                              "lane_role": player.get("lane_role") or "",
+                              "roaming": int(bool(player.get("roaming"))),
+                          }
+                      )
+
+                  for order, objective in enumerate(detail.get("objectives") or []):
+                      objective_rows.append(
+                          {
+                              "match_id": match_id,
+                              "order": order,
+                              "time_seconds": objective.get("time") or 0,
+                              "type": objective.get("type") or "",
+                              "team": objective.get("team") if objective.get("team") is not None else "",
+                              "slot": objective.get("slot") if objective.get("slot") is not None else "",
+                              "key": objective.get("key") if objective.get("key") is not None else "",
+                              "player1": objective.get("player1") if objective.get("player1") is not None else "",
+                              "player2": objective.get("player2") if objective.get("player2") is not None else "",
+                          }
+                      )
+
+                  for fight_index, fight in enumerate(detail.get("teamfights") or []):
+                      players = fight.get("players") or []
+                      rad_deaths = sum((p or {}).get("deaths") or 0 for p in players[:5])
+                      dire_deaths = sum((p or {}).get("deaths") or 0 for p in players[5:10])
+                      rad_gold_delta = sum((p or {}).get("gold_delta") or 0 for p in players[:5])
+                      dire_gold_delta = sum((p or {}).get("gold_delta") or 0 for p in players[5:10])
+                      teamfight_rows.append(
+                          {
+                              "match_id": match_id,
+                              "fight_index": fight_index,
+                              "start_seconds": fight.get("start") or 0,
+                              "end_seconds": fight.get("end") or 0,
+                              "last_death_seconds": fight.get("last_death") or 0,
+                              "deaths_radiant": rad_deaths,
+                              "deaths_dire": dire_deaths,
+                              "kills_radiant": dire_deaths,
+                              "kills_dire": rad_deaths,
+                              "gold_delta_radiant": rad_gold_delta,
+                              "gold_delta_dire": dire_gold_delta,
+                          }
+                      )
+
+                  print(f"details {index}/{len(match_ids)}: {match_id}")
+                  time.sleep(1.05)
+
+          def write_csv(filename, rows):
+              path = os.path.join(OUT, filename)
+              if not rows:
+                  open(path, "w", encoding="utf-8").close()
+                  return
+              with open(path, "w", newline="", encoding="utf-8") as fh:
+                  writer = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
+                  writer.writeheader()
+                  writer.writerows(rows)
+
+          write_csv("maps.csv", map_rows)
+          write_csv("drafts.csv", draft_rows)
+          write_csv("players.csv", player_rows)
+          write_csv("objectives.csv", objective_rows)
+          write_csv("teamfights.csv", teamfight_rows)
+
+          report = {
+              "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+              "analysis_window_start_utc": datetime.fromtimestamp(START_TS, timezone.utc).isoformat(),
+              "analysis_window_end_utc": datetime.fromtimestamp(END_TS, timezone.utc).isoformat(),
+              "pro_match_pages": pages,
+              "pro_matches_scanned": len(pro_matches),
+              "target_team_ids": {key: sorted(value) for key, value in team_ids.items()},
+              "unresolved_teams": unresolved,
+              "unique_target_maps_requested": len(match_ids),
+              "map_team_rows_written": len(map_rows),
+              "draft_rows_written": len(draft_rows),
+              "player_rows_written": len(player_rows),
+              "objective_rows_written": len(objective_rows),
+              "teamfight_rows_written": len(teamfight_rows),
+              "detail_failures": failures,
+          }
+          with open(os.path.join(OUT, "fetch_report.json"), "w", encoding="utf-8") as fh:
+              json.dump(report, fh, indent=2, ensure_ascii=False)
+          print(json.dumps(report, indent=2))
+          PY
+          python "$RUNNER_TEMP/collect_post_741d.py"
+
+      - name: Upload research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ti-post-741d-opendota-raw
+          path: research/post-741d/raw
+          if-no-files-found: error
+          retention-days: 14
