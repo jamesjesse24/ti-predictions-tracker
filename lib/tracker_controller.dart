@@ -19,7 +19,7 @@ const resultBuckets = <String>[
   '0-4',
 ];
 
-const predictionDataVersion = 2;
+const predictionDataVersion = 3;
 const predictionPatch = '7.41d';
 const predictionDataUpdatedAt = '2026-08-03';
 
@@ -119,7 +119,7 @@ class TeamEntry {
         TeamEntry(
           name: 'Nigma Galaxy',
           clientName: 'NIGMA GALAXY',
-          pick: 'Elimination Winner',
+          pick: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'Vici Gaming',
@@ -134,7 +134,7 @@ class TeamEntry {
         TeamEntry(
           name: 'Team Liquid',
           clientName: 'TEAM LIQUID',
-          pick: 'Elimination Loser',
+          pick: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'LGD Gaming',
@@ -144,17 +144,17 @@ class TeamEntry {
         TeamEntry(
           name: 'IRON WING',
           clientName: 'IRON WING',
-          pick: 'Elimination Winner',
+          pick: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'Xtreme Gaming',
           clientName: 'XTREME GAMING',
-          pick: 'Elimination Loser',
+          pick: '1-4',
         ),
         TeamEntry(
           name: 'OG',
           clientName: 'OG',
-          pick: '1-4',
+          pick: 'Elimination Loser',
         ),
         TeamEntry(
           name: 'GamerLegion',
@@ -164,7 +164,7 @@ class TeamEntry {
         TeamEntry(
           name: 'Team Resilience',
           clientName: 'TEAM RESILIENCE',
-          pick: 'Elimination Loser',
+          pick: 'Elimination Winner',
         ),
         TeamEntry(
           name: 'HULIGANI',
