@@ -1,46 +1,99 @@
-# TI 2026 prediction board — patch 7.41d refresh
+# TI 2026 final prediction board — post-7.41d model
 
-Updated: 2026-08-03
+Updated: 2026-08-03 15:31 Asia/Manila
 
-## Method
+## Status
 
-The board keeps the in-client distribution of one 4-0 team, two 4-1 teams, five elimination-round winners, five elimination-round losers, two 1-4 teams, and one 0-4 team.
+This replaces the provisional 1.4.1+10 board. The update is based on a full post-7.41d game-by-game dataset rather than tournament placements alone.
 
-The refresh prioritizes completed matches played on Dota 2 version 7.41d, especially the Esports World Cup 2026 and The International 2026 regional qualifiers. Recent top-tier results carry more weight than older ranking history. Incomplete events are treated only as secondary evidence.
+The in-client distribution remains fixed at one 4-0 team, two 4-1 teams, five elimination-round winners, five elimination-round losers, two 1-4 teams, and one 0-4 team.
 
-## Revised board
+## Final board
 
 | Prediction | Teams |
 |---|---|
 | 4-0 | PARIVISION |
 | 4-1 | Team Yandex; BetBoom Team |
-| Elimination Winner | Team Falcons; Team Spirit; Nigma Galaxy; Vici Gaming; IRON WING / 1w |
-| Elimination Loser | Aurora Gaming; Team Liquid; LGD Gaming; Xtreme Gaming; Team Resilience |
-| 1-4 | OG; GamerLegion |
-| 0-4 | HULIGANI / L1GA Team |
+| Elimination Winner | Team Falcons; Team Spirit; Vici Gaming; Team Liquid; Team Resilience |
+| Elimination Loser | Nigma Galaxy; Aurora Gaming; LGD Gaming; IRON WING / 1w; OG |
+| 1-4 | Xtreme Gaming; GamerLegion |
+| 0-4 | HULIGANI / L1 Team |
 
-## Changes from the previous board
+## Changes from 1.4.1+10
 
-- IRON WING / 1w: Elimination Loser → Elimination Winner
-- Aurora Gaming: Elimination Winner → Elimination Loser
-- Team Resilience: 1-4 → Elimination Loser
-- OG: Elimination Loser → 1-4
+- Nigma Galaxy: Elimination Winner → Elimination Loser
+- Team Liquid: Elimination Loser → Elimination Winner
+- IRON WING / 1w: Elimination Winner → Elimination Loser
+- Team Resilience: Elimination Loser → Elimination Winner
+- Xtreme Gaming: Elimination Loser → 1-4
+- OG: 1-4 → Elimination Loser
 
-## Evidence summary
+Aurora Gaming remains an Elimination Loser, but the analysis no longer supports placing 1w above Aurora. Aurora ranked eighth to ninth across the sensitivity profiles, while 1w ranked tenth to twelfth. Both remain in the same elimination-loser bucket because neither had a stable winner-slot advantage.
 
-- PARIVISION won Esports World Cup 2026 after a 9-1 group-stage record and a 3-1 grand-final victory over BetBoom Team.
-- BetBoom Team finished second; Team Yandex finished third; Vici Gaming finished fourth.
-- Team Falcons and Nigma Galaxy both posted 9-1 group-stage records. Team Spirit posted an 8-2 group-stage record.
-- IRON WING / 1w advanced from a strong group and narrowly lost 1-2 to eventual fourth-place Vici Gaming.
-- Aurora Gaming posted a strong group record but lost 0-2 in the survival stage.
-- Team Resilience qualified from China without dropping a map in its upper-bracket run.
-- OG, GamerLegion, and HULIGANI / L1GA Team underperformed at the completed 7.41d Tier 1 event relative to the rest of the TI field.
+## Dataset and quality controls
 
-## Sources reviewed
+- Analysis window: patch 7.41d release on 2026-06-04 through 2026-08-03 07:31 UTC.
+- 316 unique maps were requested from OpenDota; 315 were fetched successfully.
+- Three unrelated amateur maps from a different team using the name `BoomBoys` were detected and removed from BetBoom Team.
+- Final cleaned dataset: 312 unique maps and 439 team-perspective records.
+- Parsed economy, draft, objective, player, and team-fight telemetry was available for the cleaned maps.
+- One Falcons-versus-1w map was unavailable after an HTTP 429 response. The available map was retained, but the incomplete series was excluded from series-rate calculations.
+- Current-roster overlap was measured map by map. Matches involving a recent substitute or previous roster were downweighted.
 
-- Valve / Steam: Dota 2 7.41d Gameplay Patch, 2026-06-04
-- Liquipedia: Esports World Cup 2026 results and standings
-- Dot Esports: Esports World Cup 2026 schedule, results, and standings
-- GosuGamers and DOTABUFF: The International 2026 regional qualifier results
+## Transparent weighted model
 
-Predictions are estimates, not guarantees. The board should be reviewed again after another completed Tier 1 event, a roster change, or a new gameplay balance version.
+| Component | Weight |
+|---|---:|
+| Opponent-adjusted Elo | 25% |
+| Tier-1 LAN form | 15% |
+| Weighted map form | 12% |
+| Recent form | 8% |
+| Swiss and best-of-three stability | 15% |
+| Results against the 16-team TI field | 10% |
+| Economy, objectives, and team-fight execution | 8% |
+| Draft and hero-pool breadth | 4% |
+| Current-roster continuity | 3% |
+
+Five sensitivity profiles were evaluated: baseline, LAN-heavy, recent-heavy, Swiss-heavy, and opponent-heavy. The tournament model then ran 100,000 Swiss-format simulations across those profiles. Simulations alternated seeded and randomized pairing assumptions because the exact TI 2026 first-round pairings were not available at the cutoff.
+
+## Robust ranking
+
+| Rank | Team | Robust score | Rank range |
+|---:|---|---:|---:|
+| 1 | PARIVISION | 76.5 | 1–1 |
+| 2 | Team Yandex | 72.2 | 2–2 |
+| 3 | Team Spirit | 60.5 | 3–4 |
+| 4 | BetBoom Team | 60.4 | 3–5 |
+| 5 | Vici Gaming | 57.0 | 4–6 |
+| 6 | Team Falcons | 56.2 | 5–7 |
+| 7 | Team Resilience | 54.7 | 6–7 |
+| 8 | Team Liquid | 50.2 | 8–9 |
+| 9 | Aurora Gaming | 49.3 | 8–9 |
+| 10 | OG | 47.4 | 10–13 |
+| 11 | IRON WING / 1w | 47.4 | 10–12 |
+| 12 | LGD Gaming | 47.1 | 10–12 |
+| 13 | Nigma Galaxy | 44.8 | 11–14 |
+| 14 | Xtreme Gaming | 41.4 | 13–14 |
+| 15 | GamerLegion | 37.2 | 15–15 |
+| 16 | HULIGANI / L1 Team | 28.0 | 16–16 |
+
+BetBoom and Team Spirit were effectively tied near the 4-1 boundary. BetBoom retained the 4-1 slot because it held that slot in three of the five profile-specific constrained boards and had substantially stronger evidence coverage.
+
+## Aurora Gaming versus IRON WING / 1w
+
+There was no direct post-7.41d head-to-head series in the dataset.
+
+1w held a small advantage in opponent-adjusted Elo and Tier-1 LAN map rate. Aurora held the stronger recent rate, TI-field rate, best-of-three stability, execution score, draft breadth, and simulated elimination-winner frequency. The resulting composite advantage for Aurora was narrow but consistent enough to reject the provisional assumption that 1w should be placed one full bucket above Aurora.
+
+## Main uncertainty
+
+Team Resilience is the highest-risk winner-slot selection. It was assigned Elimination Winner in all five sensitivity boards, but its evidence confidence was the lowest in the field because it had no post-patch Tier-1 LAN maps in the dataset. Its strong qualifier run, recent series performance, and execution metrics support the pick, but the confidence label should remain lower than for established LAN teams.
+
+## Sources
+
+- OpenDota API match, player, draft, objective, team-fight, and economy data
+- Valve / Dota 2 patch 7.41d notes
+- Liquipedia tournament formats, schedules, results, and roster records
+- Official TI format description for the five-round best-of-three Swiss stage and elimination round
+
+These are competitive forecasts for the TI prediction board, not guarantees. Results after the fixed cutoff are intentionally excluded and should trigger a new review before another prediction migration.
