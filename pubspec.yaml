@@ -1,7 +1,7 @@
 name: ti_predictions_tracker
 description: Automatic TI predictions, results, fantasy, and notification tracker.
 publish_to: "none"
-version: 1.4.1+10
+version: 1.4.2+11
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
