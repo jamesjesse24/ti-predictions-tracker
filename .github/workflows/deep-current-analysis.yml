@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - research/deep_current.py
+      - research/deep_daily_20260804.py
       - .github/workflows/deep-current-analysis.yml
   workflow_dispatch:
 
@@ -28,17 +29,17 @@ jobs:
           python-version: "3.13"
 
       - name: Validate collector
-        run: python -m py_compile research/deep_current.py
+        run: python -m py_compile research/deep_current.py research/deep_daily_20260804.py
 
       - name: Collect current OpenDota telemetry
         env:
-          DEEP_ANALYSIS_OUT: research/deep-current-output
-        run: python research/deep_current.py
+          DEEP_ANALYSIS_OUT: research/deep-daily-output
+        run: python research/deep_daily_20260804.py
 
       - name: Upload telemetry artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ti-deep-current-20260803-2250
-          path: research/deep-current-output
+          name: ti-deep-daily-20260804-0830
+          path: research/deep-daily-output
           if-no-files-found: error
           retention-days: 14
