@@ -5,7 +5,6 @@ on:
     branches:
       - main
     paths:
-      - research/deep_current.py
       - research/deep_refresh_20260806.py
       - .github/workflows/deep-refresh-20260806.yml
   workflow_dispatch:
@@ -28,13 +27,30 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Validate collector
-        run: python -m py_compile research/deep_current.py research/deep_refresh_20260806.py
+      - name: Download and patch validated collector
+        shell: bash
+        run: |
+          curl -fsSL "https://raw.githubusercontent.com/jamesjesse24/ti-predictions-tracker/analysis/deep-20260805-0624/research/deep_refresh_20260805.py" -o "$RUNNER_TEMP/deep_refresh.py"
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("$RUNNER_TEMP/deep_refresh.py")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace(
+              "START_TS = int(datetime(2026, 8, 3, 14, 50, tzinfo=timezone.utc).timestamp())",
+              "START_TS = int(datetime(2026, 8, 4, 22, 24, tzinfo=timezone.utc).timestamp())",
+          )
+          text = text.replace(
+              "END_TS = int(datetime(2026, 8, 4, 22, 24, tzinfo=timezone.utc).timestamp())",
+              "END_TS = int(datetime(2026, 8, 5, 16, 27, tzinfo=timezone.utc).timestamp())",
+          )
+          path.write_text(text, encoding="utf-8")
+          PY
+          python -m py_compile "$RUNNER_TEMP/deep_refresh.py"
 
       - name: Collect OpenDota telemetry
         env:
           DEEP_ANALYSIS_OUT: research/deep-refresh-20260806-output
-        run: python research/deep_refresh_20260806.py
+        run: python "$RUNNER_TEMP/deep_refresh.py"
 
       - name: Upload telemetry artifact
         uses: actions/upload-artifact@v4
