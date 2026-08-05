@@ -32,8 +32,9 @@ jobs:
         run: |
           curl -fsSL "https://raw.githubusercontent.com/jamesjesse24/ti-predictions-tracker/analysis/deep-20260805-0624/research/deep_refresh_20260805.py" -o "$RUNNER_TEMP/deep_refresh.py"
           python - <<'PY'
+          import os
           from pathlib import Path
-          path = Path("$RUNNER_TEMP/deep_refresh.py")
+          path = Path(os.environ["RUNNER_TEMP"]) / "deep_refresh.py"
           text = path.read_text(encoding="utf-8")
           text = text.replace(
               "START_TS = int(datetime(2026, 8, 3, 14, 50, tzinfo=timezone.utc).timestamp())",
