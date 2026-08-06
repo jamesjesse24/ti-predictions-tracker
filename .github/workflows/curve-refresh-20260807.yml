@@ -60,3 +60,5 @@ jobs:
           path: research/curve-refresh-20260807-output
           if-no-files-found: error
           retention-days: 14
+
+# Triggered after opening the research PR.
