@@ -1,0 +1,62 @@
+name: TI curve refresh 2026-08-07
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/curve-refresh-20260807.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    name: Collect new post-cutoff telemetry with full curves
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out analysis branch
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Download and patch validated collector
+        shell: bash
+        run: |
+          curl -fsSL "https://raw.githubusercontent.com/jamesjesse24/ti-predictions-tracker/analysis/deep-20260805-0624/research/deep_refresh_20260805.py" -o "$RUNNER_TEMP/deep_refresh.py"
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          path = Path(os.environ["RUNNER_TEMP"]) / "deep_refresh.py"
+          text = path.read_text(encoding="utf-8")
+          text = text.replace(
+              "START_TS = int(datetime(2026, 8, 3, 14, 50, tzinfo=timezone.utc).timestamp())",
+              "START_TS = int(datetime(2026, 8, 6, 10, 13, tzinfo=timezone.utc).timestamp())",
+          )
+          text = text.replace(
+              "END_TS = int(datetime(2026, 8, 4, 22, 24, tzinfo=timezone.utc).timestamp())",
+              "END_TS = int(datetime(2026, 8, 6, 18, 23, tzinfo=timezone.utc).timestamp())",
+          )
+          text = text.replace("ti-deep-refresh/2.0", "ti-curve-refresh/20260807")
+          path.write_text(text, encoding="utf-8")
+          PY
+          python -m py_compile "$RUNNER_TEMP/deep_refresh.py"
+
+      - name: Collect OpenDota telemetry
+        env:
+          DEEP_ANALYSIS_OUT: research/curve-refresh-20260807-output
+        run: python "$RUNNER_TEMP/deep_refresh.py"
+
+      - name: Upload telemetry artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ti-curve-refresh-20260807-0223
+          path: research/curve-refresh-20260807-output
+          if-no-files-found: error
+          retention-days: 14
