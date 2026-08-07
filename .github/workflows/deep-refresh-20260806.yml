@@ -1,11 +1,11 @@
-name: TI full curve refresh 2026-08-07
+name: TI 1k curve refresh 2026-08-07
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - research/deep_refresh_20260806.py
+      - research/curve_1k_refresh_20260807.py
       - .github/workflows/deep-refresh-20260806.yml
   workflow_dispatch:
 
@@ -14,9 +14,9 @@ permissions:
 
 jobs:
   collect:
-    name: Collect full post-base telemetry with curves
+    name: Collect up to 1000 verified TI-field maps with curves
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 45
 
     steps:
       - name: Check out analysis branch
@@ -27,37 +27,18 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Download and patch validated collector
-        shell: bash
-        run: |
-          curl -fsSL "https://raw.githubusercontent.com/jamesjesse24/ti-predictions-tracker/analysis/deep-20260805-0624/research/deep_refresh_20260805.py" -o "$RUNNER_TEMP/deep_refresh.py"
-          python - <<'PY'
-          import os
-          from pathlib import Path
-          path = Path(os.environ["RUNNER_TEMP"]) / "deep_refresh.py"
-          text = path.read_text(encoding="utf-8")
-          text = text.replace(
-              "START_TS = int(datetime(2026, 8, 3, 14, 50, tzinfo=timezone.utc).timestamp())",
-              "START_TS = int(datetime(2026, 8, 3, 7, 31, tzinfo=timezone.utc).timestamp())",
-          )
-          text = text.replace(
-              "END_TS = int(datetime(2026, 8, 4, 22, 24, tzinfo=timezone.utc).timestamp())",
-              "END_TS = int(datetime(2026, 8, 6, 18, 23, tzinfo=timezone.utc).timestamp())",
-          )
-          text = text.replace("ti-deep-refresh/2.0", "ti-full-curve-refresh/20260807")
-          path.write_text(text, encoding="utf-8")
-          PY
-          python -m py_compile "$RUNNER_TEMP/deep_refresh.py"
+      - name: Validate collector
+        run: python -m py_compile research/curve_1k_refresh_20260807.py
 
       - name: Collect OpenDota telemetry
         env:
-          DEEP_ANALYSIS_OUT: research/full-curve-refresh-20260807-output
-        run: python "$RUNNER_TEMP/deep_refresh.py"
+          DEEP_ANALYSIS_OUT: research/curve-1k-refresh-20260807-output
+        run: python research/curve_1k_refresh_20260807.py
 
       - name: Upload telemetry artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ti-full-curve-refresh-20260807-0223
-          path: research/full-curve-refresh-20260807-output
+          name: ti-curve-1k-refresh-20260807-1556
+          path: research/curve-1k-refresh-20260807-output
           if-no-files-found: error
           retention-days: 14
