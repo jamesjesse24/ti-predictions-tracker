@@ -1,0 +1,44 @@
+name: TI 1k curve refresh 2026-08-07
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - research/curve_1k_refresh_20260807.py
+      - .github/workflows/deep-refresh-20260806.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    name: Collect up to 1000 verified TI-field maps with curves
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out analysis branch
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Validate collector
+        run: python -m py_compile research/curve_1k_refresh_20260807.py
+
+      - name: Collect OpenDota telemetry
+        env:
+          DEEP_ANALYSIS_OUT: research/curve-1k-refresh-20260807-output
+        run: python research/curve_1k_refresh_20260807.py
+
+      - name: Upload telemetry artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ti-curve-1k-refresh-20260807-1556
+          path: research/curve-1k-refresh-20260807-output
+          if-no-files-found: error
+          retention-days: 14

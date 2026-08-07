@@ -1,0 +1,39 @@
+name: TI deep refresh 2026-08-05
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - research/deep_refresh_20260805.py
+      - .github/workflows/deep-refresh-20260805.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    name: Collect full post-cutoff telemetry
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out analysis branch
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Validate collector
+        run: python -m py_compile research/deep_refresh_20260805.py
+      - name: Collect OpenDota telemetry
+        env:
+          DEEP_ANALYSIS_OUT: research/deep-refresh-output
+        run: python research/deep_refresh_20260805.py
+      - name: Upload telemetry artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ti-deep-refresh-20260805-0624
+          path: research/deep-refresh-output
+          if-no-files-found: error
+          retention-days: 14
