@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 8 completed series from OpenDota.",
-  "generatedAt": "2026-08-13T11:23:31Z",
+  "message": "Synced 10 completed series from OpenDota.",
+  "generatedAt": "2026-08-13T13:48:26Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -33,10 +33,10 @@
       "name": "BetBoom Team",
       "clientName": "BOOMBOYS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 0,
-      "mapWins": 2,
-      "mapLosses": 0,
+      "mapWins": 4,
+      "mapLosses": 1,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T08:43:13Z"
     },
@@ -66,9 +66,9 @@
       "name": "Nigma Galaxy",
       "clientName": "NIGMA GALAXY",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16959999218725724364/1D334B91A52606CA3E0027832D6F646E2A094391/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 1,
-      "mapWins": 0,
+      "mapWins": 2,
       "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T09:32:32Z"
@@ -122,9 +122,9 @@
       "clientName": "IRON WING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16903873521422862552/02513782FE03E7A567B8B8955A0DEF415EF2B624/",
       "seriesWins": 1,
-      "seriesLosses": 0,
-      "mapWins": 2,
-      "mapLosses": 0,
+      "seriesLosses": 1,
+      "mapWins": 3,
+      "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T08:43:13Z"
     },
@@ -144,9 +144,9 @@
       "clientName": "OG",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2586976.png",
       "seriesWins": 0,
-      "seriesLosses": 1,
+      "seriesLosses": 2,
       "mapWins": 0,
-      "mapLosses": 2,
+      "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T09:32:32Z"
     },
@@ -311,15 +311,16 @@
       "id": "series-1130060",
       "teamA": "BetBoom Team",
       "teamB": "IRON WING",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "BetBoom Team",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-13T08:43:13Z",
       "matchIds": [
         8943202720,
-        8943278347
+        8943278347,
+        8943357930
       ]
     },
     {
@@ -327,27 +328,29 @@
       "teamA": "Team Resilience",
       "teamB": "LGD Gaming",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-13T09:17:12Z",
       "matchIds": [
-        8943235603
+        8943235603,
+        8943332564
       ]
     },
     {
       "id": "series-1130066",
       "teamA": "Nigma Galaxy",
       "teamB": "OG",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 0,
-      "winner": "",
+      "winner": "Nigma Galaxy",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-13T09:32:32Z",
       "matchIds": [
-        8943244303
+        8943244303,
+        8943324841
       ]
     },
     {
@@ -355,13 +358,14 @@
       "teamA": "Team Falcons",
       "teamB": "PARIVISION",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-13T10:06:45Z",
       "matchIds": [
-        8943267925
+        8943267925,
+        8943364918
       ]
     }
   ]
