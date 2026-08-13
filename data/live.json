@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 2 completed series from OpenDota.",
-  "generatedAt": "2026-08-13T06:02:29Z",
+  "message": "Synced 4 completed series from OpenDota.",
+  "generatedAt": "2026-08-13T07:53:08Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -11,10 +11,10 @@
       "name": "PARIVISION",
       "clientName": "TEAM VISION",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10380389074903512947/5D074799695A862D17D4205285315FE20399B28D/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 0,
-      "mapWins": 0,
-      "mapLosses": 0,
+      "mapWins": 2,
+      "mapLosses": 1,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T03:33:30Z"
     },
@@ -44,10 +44,10 @@
       "name": "Team Falcons",
       "clientName": "TEAM FALCONS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 0,
-      "mapWins": 0,
-      "mapLosses": 0,
+      "mapWins": 2,
+      "mapLosses": 1,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T03:03:26Z"
     },
@@ -76,44 +76,44 @@
     {
       "name": "Vici Gaming",
       "clientName": "VICI GAMING",
-      "logoUrl": null,
+      "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/726228.png",
       "seriesWins": 0,
       "seriesLosses": 0,
       "mapWins": 0,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": null
+      "lastMatchAt": "2026-08-13T05:57:49Z"
     },
     {
       "name": "Aurora Gaming",
       "clientName": "AURORA GAMING",
-      "logoUrl": null,
+      "logoUrl": "https://cdn.steamusercontent.com/ugc/13052583756685508/22B0338D7E09FB2F021E5DB5BBEFFD170D5E5E1A/",
       "seriesWins": 0,
       "seriesLosses": 0,
       "mapWins": 0,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": null
+      "lastMatchAt": "2026-08-13T06:09:06Z"
     },
     {
       "name": "Team Liquid",
       "clientName": "TEAM LIQUID",
-      "logoUrl": null,
+      "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
       "seriesWins": 0,
       "seriesLosses": 0,
       "mapWins": 0,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": null
+      "lastMatchAt": "2026-08-13T05:57:49Z"
     },
     {
       "name": "LGD Gaming",
       "clientName": "LGD GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10055782735581672481/2B2BCEA9CC05286D7164E4548A2EB64CDBC77F31/",
       "seriesWins": 0,
-      "seriesLosses": 0,
-      "mapWins": 0,
-      "mapLosses": 0,
+      "seriesLosses": 1,
+      "mapWins": 1,
+      "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T03:03:26Z"
     },
@@ -153,22 +153,22 @@
     {
       "name": "GamerLegion",
       "clientName": "GAMERLEGION",
-      "logoUrl": null,
+      "logoUrl": "https://cdn.steamusercontent.com/ugc/13245379764580870318/1048428BEFAC87EC1C64E15706A4758A173B5BFB/",
       "seriesWins": 0,
       "seriesLosses": 0,
       "mapWins": 0,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": null
+      "lastMatchAt": "2026-08-13T06:09:06Z"
     },
     {
       "name": "Team Resilience",
       "clientName": "TEAM RESILIENCE",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14326265454983833183/734A1D8A0938380A48221CDAE1AACB0C5C0AB585/",
       "seriesWins": 0,
-      "seriesLosses": 0,
-      "mapWins": 0,
-      "mapLosses": 0,
+      "seriesLosses": 1,
+      "mapWins": 1,
+      "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T03:33:30Z"
     },
@@ -189,15 +189,16 @@
       "id": "series-1130024",
       "teamA": "Team Falcons",
       "teamB": "LGD Gaming",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Team Falcons",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-13T03:03:26Z",
       "matchIds": [
         8942993144,
-        8943034557
+        8943034557,
+        8943072784
       ]
     },
     {
@@ -220,14 +221,15 @@
       "teamA": "Team Resilience",
       "teamB": "PARIVISION",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "PARIVISION",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-13T03:33:30Z",
       "matchIds": [
         8943010675,
-        8943053016
+        8943053016,
+        8943098449
       ]
     },
     {
@@ -243,6 +245,34 @@
       "matchIds": [
         8943013334,
         8943055466
+      ]
+    },
+    {
+      "id": "series-1130045",
+      "teamA": "Team Liquid",
+      "teamB": "Vici Gaming",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-13T05:57:49Z",
+      "matchIds": [
+        8943091110
+      ]
+    },
+    {
+      "id": "series-1130047",
+      "teamA": "GamerLegion",
+      "teamB": "Aurora Gaming",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-13T06:09:06Z",
+      "matchIds": [
+        8943097729
       ]
     }
   ]
