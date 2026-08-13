@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 8 completed series from OpenDota.",
-  "generatedAt": "2026-08-13T10:29:42Z",
+  "generatedAt": "2026-08-13T11:23:31Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -16,7 +16,7 @@
       "mapWins": 2,
       "mapLosses": 1,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:33:30Z"
+      "lastMatchAt": "2026-08-13T10:06:45Z"
     },
     {
       "name": "Team Yandex",
@@ -49,7 +49,7 @@
       "mapWins": 2,
       "mapLosses": 1,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:03:26Z"
+      "lastMatchAt": "2026-08-13T10:06:45Z"
     },
     {
       "name": "Team Spirit",
@@ -71,7 +71,7 @@
       "mapWins": 0,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:18:54Z"
+      "lastMatchAt": "2026-08-13T09:32:32Z"
     },
     {
       "name": "Vici Gaming",
@@ -115,7 +115,7 @@
       "mapWins": 1,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:03:26Z"
+      "lastMatchAt": "2026-08-13T09:17:12Z"
     },
     {
       "name": "IRON WING",
@@ -148,7 +148,7 @@
       "mapWins": 0,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:38:50Z"
+      "lastMatchAt": "2026-08-13T09:32:32Z"
     },
     {
       "name": "GamerLegion",
@@ -170,7 +170,7 @@
       "mapWins": 1,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:33:30Z"
+      "lastMatchAt": "2026-08-13T09:17:12Z"
     },
     {
       "name": "HULIGANI",
@@ -312,13 +312,56 @@
       "teamA": "BetBoom Team",
       "teamB": "IRON WING",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-13T08:43:13Z",
       "matchIds": [
-        8943202720
+        8943202720,
+        8943278347
+      ]
+    },
+    {
+      "id": "series-1130063",
+      "teamA": "Team Resilience",
+      "teamB": "LGD Gaming",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-13T09:17:12Z",
+      "matchIds": [
+        8943235603
+      ]
+    },
+    {
+      "id": "series-1130066",
+      "teamA": "Nigma Galaxy",
+      "teamB": "OG",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-13T09:32:32Z",
+      "matchIds": [
+        8943244303
+      ]
+    },
+    {
+      "id": "series-1130069",
+      "teamA": "Team Falcons",
+      "teamB": "PARIVISION",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-13T10:06:45Z",
+      "matchIds": [
+        8943267925
       ]
     }
   ]
