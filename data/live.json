@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 6 completed series from OpenDota.",
-  "generatedAt": "2026-08-13T09:12:37Z",
+  "message": "Synced 8 completed series from OpenDota.",
+  "generatedAt": "2026-08-13T10:29:42Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -22,9 +22,9 @@
       "name": "Team Yandex",
       "clientName": "TEAM YANDEX",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/12970505637628494427/B04C3358F4E815ADFC2F8B1B8BE3AB0CE75C8881/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 0,
-      "mapWins": 0,
+      "mapWins": 2,
       "mapLosses": 0,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T07:18:12Z"
@@ -38,7 +38,7 @@
       "mapWins": 2,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:38:50Z"
+      "lastMatchAt": "2026-08-13T08:43:13Z"
     },
     {
       "name": "Team Falcons",
@@ -55,9 +55,9 @@
       "name": "Team Spirit",
       "clientName": "TEAM SPIRIT",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 0,
-      "mapWins": 0,
+      "mapWins": 2,
       "mapLosses": 0,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T07:18:50Z"
@@ -126,16 +126,16 @@
       "mapWins": 2,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T03:18:54Z"
+      "lastMatchAt": "2026-08-13T08:43:13Z"
     },
     {
       "name": "Xtreme Gaming",
       "clientName": "XTREME GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2402194226059610590/E3CF4B6C4B2CFB974A9B415141E4A37317AD4D80/",
       "seriesWins": 0,
-      "seriesLosses": 0,
+      "seriesLosses": 1,
       "mapWins": 0,
-      "mapLosses": 0,
+      "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T07:18:50Z"
     },
@@ -177,9 +177,9 @@
       "clientName": "HULIGANI",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14844266645370842778/47230D9640A722EAF06548C2EEB813ED4296AE3F/",
       "seriesWins": 0,
-      "seriesLosses": 0,
+      "seriesLosses": 1,
       "mapWins": 0,
-      "mapLosses": 0,
+      "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-13T07:18:12Z"
     }
@@ -281,28 +281,44 @@
       "id": "series-1130053",
       "teamA": "Team Yandex",
       "teamB": "HULIGANI",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 0,
-      "winner": "",
+      "winner": "Team Yandex",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-13T07:18:12Z",
       "matchIds": [
-        8943142948
+        8943142948,
+        8943182700
       ]
     },
     {
       "id": "series-1130051",
       "teamA": "Team Spirit",
       "teamB": "Xtreme Gaming",
+      "scoreA": 2,
+      "scoreB": 0,
+      "winner": "Team Spirit",
+      "stage": "Swiss",
+      "completed": true,
+      "startedAt": "2026-08-13T07:18:50Z",
+      "matchIds": [
+        8943143428,
+        8943200897
+      ]
+    },
+    {
+      "id": "series-1130060",
+      "teamA": "BetBoom Team",
+      "teamB": "IRON WING",
       "scoreA": 1,
       "scoreB": 0,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
-      "startedAt": "2026-08-13T07:18:50Z",
+      "startedAt": "2026-08-13T08:43:13Z",
       "matchIds": [
-        8943143428
+        8943202720
       ]
     }
   ]
