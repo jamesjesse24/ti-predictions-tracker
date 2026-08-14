@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 23 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T12:08:40Z",
+  "generatedAt": "2026-08-14T13:43:05Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -545,13 +545,14 @@
       "teamA": "Team Yandex",
       "teamB": "Aurora Gaming",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-14T10:24:53Z",
       "matchIds": [
-        8944841068
+        8944841068,
+        8944931337
       ]
     }
   ]
