@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 14 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T04:28:47Z",
+  "message": "Synced 16 completed series from OpenDota.",
+  "generatedAt": "2026-08-14T06:00:47Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -16,16 +16,16 @@
       "mapWins": 4,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T10:06:45Z"
+      "lastMatchAt": "2026-08-14T04:33:50Z"
     },
     {
       "name": "Team Yandex",
       "clientName": "TEAM YANDEX",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/12970505637628494427/B04C3358F4E815ADFC2F8B1B8BE3AB0CE75C8881/",
       "seriesWins": 1,
-      "seriesLosses": 0,
-      "mapWins": 2,
-      "mapLosses": 0,
+      "seriesLosses": 1,
+      "mapWins": 3,
+      "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T02:02:05Z"
     },
@@ -38,7 +38,7 @@
       "mapWins": 4,
       "mapLosses": 1,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T08:43:13Z"
+      "lastMatchAt": "2026-08-14T04:33:50Z"
     },
     {
       "name": "Team Falcons",
@@ -71,16 +71,16 @@
       "mapWins": 2,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T09:32:32Z"
+      "lastMatchAt": "2026-08-14T04:11:37Z"
     },
     {
       "name": "Vici Gaming",
       "clientName": "VICI GAMING",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/726228.png",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 1,
-      "mapWins": 0,
-      "mapLosses": 2,
+      "mapWins": 2,
+      "mapLosses": 3,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T02:00:25Z"
     },
@@ -99,10 +99,10 @@
       "name": "Team Liquid",
       "clientName": "TEAM LIQUID",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 0,
-      "mapWins": 2,
-      "mapLosses": 0,
+      "mapWins": 4,
+      "mapLosses": 1,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T02:02:05Z"
     },
@@ -115,7 +115,7 @@
       "mapWins": 3,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T09:17:12Z"
+      "lastMatchAt": "2026-08-14T04:11:37Z"
     },
     {
       "name": "IRON WING",
@@ -177,9 +177,9 @@
       "clientName": "HULIGANI",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14844266645370842778/47230D9640A722EAF06548C2EEB813ED4296AE3F/",
       "seriesWins": 0,
-      "seriesLosses": 1,
-      "mapWins": 0,
-      "mapLosses": 2,
+      "seriesLosses": 2,
+      "mapWins": 1,
+      "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T02:00:25Z"
     }
@@ -374,15 +374,16 @@
       "id": "series-1130279",
       "teamA": "Vici Gaming",
       "teamB": "HULIGANI",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Vici Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T02:00:25Z",
       "matchIds": [
         8944475901,
-        8944521919
+        8944521919,
+        8944566156
       ]
     },
     {
@@ -405,14 +406,15 @@
       "teamA": "Team Yandex",
       "teamB": "Team Liquid",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Team Liquid",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T02:02:05Z",
       "matchIds": [
         8944475950,
-        8944525313
+        8944525313,
+        8944570404
       ]
     },
     {
@@ -428,6 +430,34 @@
       "matchIds": [
         8944475884,
         8944521792
+      ]
+    },
+    {
+      "id": "series-1130301",
+      "teamA": "LGD Gaming",
+      "teamB": "Nigma Galaxy",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T04:11:37Z",
+      "matchIds": [
+        8944553935
+      ]
+    },
+    {
+      "id": "series-1130305",
+      "teamA": "BetBoom Team",
+      "teamB": "PARIVISION",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T04:33:50Z",
+      "matchIds": [
+        8944565060
       ]
     }
   ]
