@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 23 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T11:17:52Z",
+  "generatedAt": "2026-08-14T12:08:40Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 3,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T02:02:05Z"
+      "lastMatchAt": "2026-08-14T10:24:53Z"
     },
     {
       "name": "BetBoom Team",
@@ -93,7 +93,7 @@
       "mapWins": 2,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T02:02:13Z"
+      "lastMatchAt": "2026-08-14T10:24:53Z"
     },
     {
       "name": "Team Liquid",
@@ -538,6 +538,20 @@
       "matchIds": [
         8944738770,
         8944814087
+      ]
+    },
+    {
+      "id": "series-1130328",
+      "teamA": "Team Yandex",
+      "teamB": "Aurora Gaming",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T10:24:53Z",
+      "matchIds": [
+        8944841068
       ]
     }
   ]
