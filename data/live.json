@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 16 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T06:00:47Z",
+  "message": "Synced 18 completed series from OpenDota.",
+  "generatedAt": "2026-08-14T07:50:51Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -11,9 +11,9 @@
       "name": "PARIVISION",
       "clientName": "TEAM VISION",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10380389074903512947/5D074799695A862D17D4205285315FE20399B28D/",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 0,
-      "mapWins": 4,
+      "mapWins": 6,
       "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T04:33:50Z"
@@ -34,9 +34,9 @@
       "clientName": "BOOMBOYS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
-      "seriesLosses": 0,
+      "seriesLosses": 1,
       "mapWins": 4,
-      "mapLosses": 1,
+      "mapLosses": 3,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T04:33:50Z"
     },
@@ -49,7 +49,7 @@
       "mapWins": 3,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T10:06:45Z"
+      "lastMatchAt": "2026-08-14T05:47:21Z"
     },
     {
       "name": "Team Spirit",
@@ -66,9 +66,9 @@
       "name": "Nigma Galaxy",
       "clientName": "NIGMA GALAXY",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16959999218725724364/1D334B91A52606CA3E0027832D6F646E2A094391/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 1,
-      "mapWins": 2,
+      "mapWins": 4,
       "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T04:11:37Z"
@@ -111,9 +111,9 @@
       "clientName": "LGD GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10055782735581672481/2B2BCEA9CC05286D7164E4548A2EB64CDBC77F31/",
       "seriesWins": 1,
-      "seriesLosses": 1,
+      "seriesLosses": 2,
       "mapWins": 3,
-      "mapLosses": 3,
+      "mapLosses": 5,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T04:11:37Z"
     },
@@ -126,7 +126,7 @@
       "mapWins": 3,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T08:43:13Z"
+      "lastMatchAt": "2026-08-14T05:47:21Z"
     },
     {
       "name": "Xtreme Gaming",
@@ -148,7 +148,7 @@
       "mapWins": 0,
       "mapLosses": 4,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T09:32:32Z"
+      "lastMatchAt": "2026-08-14T06:10:26Z"
     },
     {
       "name": "GamerLegion",
@@ -170,7 +170,7 @@
       "mapWins": 2,
       "mapLosses": 4,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T09:17:12Z"
+      "lastMatchAt": "2026-08-14T06:10:26Z"
     },
     {
       "name": "HULIGANI",
@@ -437,13 +437,14 @@
       "teamA": "LGD Gaming",
       "teamB": "Nigma Galaxy",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Nigma Galaxy",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T04:11:37Z",
       "matchIds": [
-        8944553935
+        8944553935,
+        8944602781
       ]
     },
     {
@@ -451,13 +452,42 @@
       "teamA": "BetBoom Team",
       "teamB": "PARIVISION",
       "scoreA": 0,
-      "scoreB": 1,
+      "scoreB": 2,
+      "winner": "PARIVISION",
+      "stage": "Swiss",
+      "completed": true,
+      "startedAt": "2026-08-14T04:33:50Z",
+      "matchIds": [
+        8944565060,
+        8944612322
+      ]
+    },
+    {
+      "id": "series-1130309",
+      "teamA": "IRON WING",
+      "teamB": "Team Falcons",
+      "scoreA": 1,
+      "scoreB": 0,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
-      "startedAt": "2026-08-14T04:33:50Z",
+      "startedAt": "2026-08-14T05:47:21Z",
       "matchIds": [
-        8944565060
+        8944611964
+      ]
+    },
+    {
+      "id": "series-1130312",
+      "teamA": "Team Resilience",
+      "teamB": "OG",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T06:10:26Z",
+      "matchIds": [
+        8944628326
       ]
     }
   ]
