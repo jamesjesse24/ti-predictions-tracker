@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 23 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T13:43:05Z",
+  "message": "Synced 24 completed series from OpenDota.",
+  "generatedAt": "2026-08-14T14:40:47Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -23,9 +23,9 @@
       "clientName": "TEAM YANDEX",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/12970505637628494427/B04C3358F4E815ADFC2F8B1B8BE3AB0CE75C8881/",
       "seriesWins": 1,
-      "seriesLosses": 1,
-      "mapWins": 3,
-      "mapLosses": 2,
+      "seriesLosses": 2,
+      "mapWins": 4,
+      "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T10:24:53Z"
     },
@@ -88,10 +88,10 @@
       "name": "Aurora Gaming",
       "clientName": "AURORA GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13052583756685508/22B0338D7E09FB2F021E5DB5BBEFFD170D5E5E1A/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 1,
-      "mapWins": 2,
-      "mapLosses": 2,
+      "mapWins": 4,
+      "mapLosses": 3,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T10:24:53Z"
     },
@@ -545,14 +545,15 @@
       "teamA": "Team Yandex",
       "teamB": "Aurora Gaming",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Aurora Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T10:24:53Z",
       "matchIds": [
         8944841068,
-        8944931337
+        8944931337,
+        8945052416
       ]
     }
   ]
