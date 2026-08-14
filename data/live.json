@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 18 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T07:50:51Z",
+  "message": "Synced 19 completed series from OpenDota.",
+  "generatedAt": "2026-08-14T09:07:17Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -60,7 +60,7 @@
       "mapWins": 4,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T02:02:13Z"
+      "lastMatchAt": "2026-08-14T07:26:22Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -82,7 +82,7 @@
       "mapWins": 2,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T02:00:25Z"
+      "lastMatchAt": "2026-08-14T07:14:12Z"
     },
     {
       "name": "Aurora Gaming",
@@ -104,7 +104,7 @@
       "mapWins": 4,
       "mapLosses": 1,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T02:02:05Z"
+      "lastMatchAt": "2026-08-14T07:26:22Z"
     },
     {
       "name": "LGD Gaming",
@@ -144,9 +144,9 @@
       "clientName": "OG",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2586976.png",
       "seriesWins": 0,
-      "seriesLosses": 2,
+      "seriesLosses": 3,
       "mapWins": 0,
-      "mapLosses": 4,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T06:10:26Z"
     },
@@ -159,15 +159,15 @@
       "mapWins": 2,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T02:01:23Z"
+      "lastMatchAt": "2026-08-14T07:14:12Z"
     },
     {
       "name": "Team Resilience",
       "clientName": "TEAM RESILIENCE",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14326265454983833183/734A1D8A0938380A48221CDAE1AACB0C5C0AB585/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 2,
-      "mapWins": 2,
+      "mapWins": 4,
       "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T06:10:26Z"
@@ -467,27 +467,57 @@
       "teamA": "IRON WING",
       "teamB": "Team Falcons",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-14T05:47:21Z",
       "matchIds": [
-        8944611964
+        8944611964,
+        8944695348
       ]
     },
     {
       "id": "series-1130312",
       "teamA": "Team Resilience",
       "teamB": "OG",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 0,
+      "winner": "Team Resilience",
+      "stage": "Swiss",
+      "completed": true,
+      "startedAt": "2026-08-14T06:10:26Z",
+      "matchIds": [
+        8944628326,
+        8944692094
+      ]
+    },
+    {
+      "id": "series-1130317",
+      "teamA": "Vici Gaming",
+      "teamB": "GamerLegion",
+      "scoreA": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
-      "startedAt": "2026-08-14T06:10:26Z",
+      "startedAt": "2026-08-14T07:14:12Z",
       "matchIds": [
-        8944628326
+        8944676424
+      ]
+    },
+    {
+      "id": "series-1130320",
+      "teamA": "Team Liquid",
+      "teamB": "Team Spirit",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T07:26:22Z",
+      "matchIds": [
+        8944680063
       ]
     }
   ]
