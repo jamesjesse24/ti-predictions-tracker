@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 12 completed series from OpenDota.",
-  "generatedAt": "2026-08-13T14:57:44Z",
+  "message": "Synced 14 completed series from OpenDota.",
+  "generatedAt": "2026-08-14T04:28:47Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 2,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T07:18:12Z"
+      "lastMatchAt": "2026-08-14T02:02:05Z"
     },
     {
       "name": "BetBoom Team",
@@ -55,12 +55,12 @@
       "name": "Team Spirit",
       "clientName": "TEAM SPIRIT",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 0,
-      "mapWins": 2,
+      "mapWins": 4,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T07:18:50Z"
+      "lastMatchAt": "2026-08-14T02:02:13Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -82,18 +82,18 @@
       "mapWins": 0,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T05:57:49Z"
+      "lastMatchAt": "2026-08-14T02:00:25Z"
     },
     {
       "name": "Aurora Gaming",
       "clientName": "AURORA GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13052583756685508/22B0338D7E09FB2F021E5DB5BBEFFD170D5E5E1A/",
       "seriesWins": 1,
-      "seriesLosses": 0,
+      "seriesLosses": 1,
       "mapWins": 2,
-      "mapLosses": 0,
+      "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T06:09:06Z"
+      "lastMatchAt": "2026-08-14T02:02:13Z"
     },
     {
       "name": "Team Liquid",
@@ -104,7 +104,7 @@
       "mapWins": 2,
       "mapLosses": 0,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T05:57:49Z"
+      "lastMatchAt": "2026-08-14T02:02:05Z"
     },
     {
       "name": "LGD Gaming",
@@ -133,11 +133,11 @@
       "clientName": "XTREME GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2402194226059610590/E3CF4B6C4B2CFB974A9B415141E4A37317AD4D80/",
       "seriesWins": 0,
-      "seriesLosses": 1,
+      "seriesLosses": 2,
       "mapWins": 0,
-      "mapLosses": 2,
+      "mapLosses": 4,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T07:18:50Z"
+      "lastMatchAt": "2026-08-14T02:01:23Z"
     },
     {
       "name": "OG",
@@ -154,12 +154,12 @@
       "name": "GamerLegion",
       "clientName": "GAMERLEGION",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13245379764580870318/1048428BEFAC87EC1C64E15706A4758A173B5BFB/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 1,
-      "mapWins": 0,
+      "mapWins": 2,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T06:09:06Z"
+      "lastMatchAt": "2026-08-14T02:01:23Z"
     },
     {
       "name": "Team Resilience",
@@ -181,7 +181,7 @@
       "mapWins": 0,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-13T07:18:12Z"
+      "lastMatchAt": "2026-08-14T02:00:25Z"
     }
   ],
   "series": [
@@ -368,6 +368,66 @@
         8943267925,
         8943364918,
         8943477775
+      ]
+    },
+    {
+      "id": "series-1130279",
+      "teamA": "Vici Gaming",
+      "teamB": "HULIGANI",
+      "scoreA": 1,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T02:00:25Z",
+      "matchIds": [
+        8944475901,
+        8944521919
+      ]
+    },
+    {
+      "id": "series-1130282",
+      "teamA": "GamerLegion",
+      "teamB": "Xtreme Gaming",
+      "scoreA": 2,
+      "scoreB": 0,
+      "winner": "GamerLegion",
+      "stage": "Swiss",
+      "completed": true,
+      "startedAt": "2026-08-14T02:01:23Z",
+      "matchIds": [
+        8944476051,
+        8944506550
+      ]
+    },
+    {
+      "id": "series-1130281",
+      "teamA": "Team Yandex",
+      "teamB": "Team Liquid",
+      "scoreA": 1,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-14T02:02:05Z",
+      "matchIds": [
+        8944475950,
+        8944525313
+      ]
+    },
+    {
+      "id": "series-1130278",
+      "teamA": "Team Spirit",
+      "teamB": "Aurora Gaming",
+      "scoreA": 2,
+      "scoreB": 0,
+      "winner": "Team Spirit",
+      "stage": "Swiss",
+      "completed": true,
+      "startedAt": "2026-08-14T02:02:13Z",
+      "matchIds": [
+        8944475884,
+        8944521792
       ]
     }
   ]
