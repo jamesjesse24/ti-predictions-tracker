@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 20 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T10:16:36Z",
+  "message": "Synced 23 completed series from OpenDota.",
+  "generatedAt": "2026-08-14T11:17:52Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -55,10 +55,10 @@
       "name": "Team Spirit",
       "clientName": "TEAM SPIRIT",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 0,
-      "mapWins": 4,
-      "mapLosses": 0,
+      "mapWins": 6,
+      "mapLosses": 1,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T07:26:22Z"
     },
@@ -77,10 +77,10 @@
       "name": "Vici Gaming",
       "clientName": "VICI GAMING",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/726228.png",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 1,
-      "mapWins": 2,
-      "mapLosses": 3,
+      "mapWins": 4,
+      "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T07:14:12Z"
     },
@@ -100,9 +100,9 @@
       "clientName": "TEAM LIQUID",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
       "seriesWins": 2,
-      "seriesLosses": 0,
-      "mapWins": 4,
-      "mapLosses": 1,
+      "seriesLosses": 1,
+      "mapWins": 5,
+      "mapLosses": 3,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T07:26:22Z"
     },
@@ -132,9 +132,9 @@
       "name": "Xtreme Gaming",
       "clientName": "XTREME GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2402194226059610590/E3CF4B6C4B2CFB974A9B415141E4A37317AD4D80/",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 2,
-      "mapWins": 0,
+      "mapWins": 2,
       "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T08:36:26Z"
@@ -155,9 +155,9 @@
       "clientName": "GAMERLEGION",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13245379764580870318/1048428BEFAC87EC1C64E15706A4758A173B5BFB/",
       "seriesWins": 1,
-      "seriesLosses": 1,
-      "mapWins": 2,
-      "mapLosses": 2,
+      "seriesLosses": 2,
+      "mapWins": 3,
+      "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T07:14:12Z"
     },
@@ -177,9 +177,9 @@
       "clientName": "HULIGANI",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14844266645370842778/47230D9640A722EAF06548C2EEB813ED4296AE3F/",
       "seriesWins": 0,
-      "seriesLosses": 2,
+      "seriesLosses": 3,
       "mapWins": 1,
-      "mapLosses": 4,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-14T08:36:26Z"
     }
@@ -497,15 +497,16 @@
       "id": "series-1130317",
       "teamA": "Vici Gaming",
       "teamB": "GamerLegion",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Vici Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T07:14:12Z",
       "matchIds": [
         8944676424,
-        8944742846
+        8944742846,
+        8944834423
       ]
     },
     {
@@ -513,28 +514,30 @@
       "teamA": "Team Liquid",
       "teamB": "Team Spirit",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Team Spirit",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T07:26:22Z",
       "matchIds": [
         8944680063,
-        8944752572
+        8944752572,
+        8944819470
       ]
     },
     {
       "id": "series-1130324",
       "teamA": "Xtreme Gaming",
       "teamB": "HULIGANI",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 0,
-      "winner": "",
+      "winner": "Xtreme Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-14T08:36:26Z",
       "matchIds": [
-        8944738770
+        8944738770,
+        8944814087
       ]
     }
   ]
