@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 35 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T13:52:12Z",
+  "message": "Synced 36 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T14:22:37Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -34,9 +34,9 @@
       "clientName": "BOOMBOYS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
-      "seriesLosses": 2,
-      "mapWins": 4,
-      "mapLosses": 5,
+      "seriesLosses": 3,
+      "mapWins": 5,
+      "mapLosses": 7,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T10:41:46Z"
     },
@@ -44,10 +44,10 @@
       "name": "Team Falcons",
       "clientName": "TEAM FALCONS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 6,
-      "mapLosses": 6,
+      "mapWins": 8,
+      "mapLosses": 7,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T10:41:46Z"
     },
@@ -60,7 +60,7 @@
       "mapWins": 6,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T06:19:26Z"
+      "lastMatchAt": "2026-08-15T12:56:14Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -71,7 +71,7 @@
       "mapWins": 6,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T05:26:24Z"
+      "lastMatchAt": "2026-08-15T12:56:14Z"
     },
     {
       "name": "Vici Gaming",
@@ -730,29 +730,31 @@
       "id": "series-1130641",
       "teamA": "Team Falcons",
       "teamB": "BetBoom Team",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Team Falcons",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T10:41:46Z",
       "matchIds": [
         8946648249,
-        8946758310
+        8946758310,
+        8946889239
       ]
     },
     {
       "id": "series-1130665",
       "teamA": "Team Yandex",
       "teamB": "IRON WING",
-      "scoreA": 0,
+      "scoreA": 1,
       "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-15T11:44:37Z",
       "matchIds": [
-        8946735226
+        8946735226,
+        8946872708
       ]
     },
     {
@@ -768,6 +770,20 @@
       "matchIds": [
         8946740853,
         8946860406
+      ]
+    },
+    {
+      "id": "series-1130710",
+      "teamA": "Nigma Galaxy",
+      "teamB": "Team Spirit",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T12:56:14Z",
+      "matchIds": [
+        8946858055
       ]
     }
   ]
