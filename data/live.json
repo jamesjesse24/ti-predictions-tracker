@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 25 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T05:24:17Z",
+  "message": "Synced 26 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T05:51:08Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -143,10 +143,10 @@
       "name": "OG",
       "clientName": "OG",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2586976.png",
-      "seriesWins": 0,
+      "seriesWins": 1,
       "seriesLosses": 3,
-      "mapWins": 0,
-      "mapLosses": 6,
+      "mapWins": 2,
+      "mapLosses": 7,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:00:16Z"
     },
@@ -177,10 +177,10 @@
       "clientName": "HULIGANI",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14844266645370842778/47230D9640A722EAF06548C2EEB813ED4296AE3F/",
       "seriesWins": 0,
-      "seriesLosses": 3,
-      "mapWins": 1,
-      "mapLosses": 6,
-      "actual": "Pending",
+      "seriesLosses": 4,
+      "mapWins": 2,
+      "mapLosses": 8,
+      "actual": "0-4",
       "lastMatchAt": "2026-08-15T02:00:16Z"
     }
   ],
@@ -561,14 +561,15 @@
       "teamA": "HULIGANI",
       "teamB": "OG",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "OG",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T02:00:16Z",
       "matchIds": [
         8946161801,
-        8946227017
+        8946227017,
+        8946283971
       ]
     },
     {
