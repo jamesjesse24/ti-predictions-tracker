@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 24 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T04:47:21Z",
+  "message": "Synced 25 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T05:24:17Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -22,10 +22,10 @@
       "name": "Team Yandex",
       "clientName": "TEAM YANDEX",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/12970505637628494427/B04C3358F4E815ADFC2F8B1B8BE3AB0CE75C8881/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 2,
-      "mapWins": 4,
-      "mapLosses": 4,
+      "mapWins": 6,
+      "mapLosses": 5,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:02:08Z"
     },
@@ -166,9 +166,9 @@
       "clientName": "TEAM RESILIENCE",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14326265454983833183/734A1D8A0938380A48221CDAE1AACB0C5C0AB585/",
       "seriesWins": 1,
-      "seriesLosses": 2,
-      "mapWins": 4,
-      "mapLosses": 4,
+      "seriesLosses": 3,
+      "mapWins": 5,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:02:08Z"
     },
@@ -606,14 +606,15 @@
       "teamA": "Team Resilience",
       "teamB": "Team Yandex",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Team Yandex",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T02:02:08Z",
       "matchIds": [
         8946161629,
-        8946228107
+        8946228107,
+        8946260898
       ]
     }
   ]
