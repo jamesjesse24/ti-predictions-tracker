@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 36 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T14:22:37Z",
+  "message": "Synced 37 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T15:20:13Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -89,9 +89,9 @@
       "clientName": "AURORA GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13052583756685508/22B0338D7E09FB2F021E5DB5BBEFFD170D5E5E1A/",
       "seriesWins": 3,
-      "seriesLosses": 1,
-      "mapWins": 6,
-      "mapLosses": 3,
+      "seriesLosses": 2,
+      "mapWins": 7,
+      "mapLosses": 5,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T11:52:37Z"
     },
@@ -99,11 +99,11 @@
       "name": "Team Liquid",
       "clientName": "TEAM LIQUID",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
-      "seriesWins": 3,
+      "seriesWins": 4,
       "seriesLosses": 1,
-      "mapWins": 7,
-      "mapLosses": 4,
-      "actual": "Pending",
+      "mapWins": 9,
+      "mapLosses": 5,
+      "actual": "4-1",
       "lastMatchAt": "2026-08-15T11:52:37Z"
     },
     {
@@ -762,14 +762,15 @@
       "teamA": "Aurora Gaming",
       "teamB": "Team Liquid",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Team Liquid",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T11:52:37Z",
       "matchIds": [
         8946740853,
-        8946860406
+        8946860406,
+        8946996385
       ]
     },
     {
