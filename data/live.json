@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 24 completed series from OpenDota.",
-  "generatedAt": "2026-08-14T14:40:47Z",
+  "generatedAt": "2026-08-15T03:19:21Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -115,7 +115,7 @@
       "mapWins": 3,
       "mapLosses": 5,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T04:11:37Z"
+      "lastMatchAt": "2026-08-15T02:01:25Z"
     },
     {
       "name": "IRON WING",
@@ -137,7 +137,7 @@
       "mapWins": 2,
       "mapLosses": 4,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T08:36:26Z"
+      "lastMatchAt": "2026-08-15T02:01:25Z"
     },
     {
       "name": "OG",
@@ -148,7 +148,7 @@
       "mapWins": 0,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T06:10:26Z"
+      "lastMatchAt": "2026-08-15T02:00:16Z"
     },
     {
       "name": "GamerLegion",
@@ -181,7 +181,7 @@
       "mapWins": 1,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T08:36:26Z"
+      "lastMatchAt": "2026-08-15T02:00:16Z"
     }
   ],
   "series": [
@@ -554,6 +554,34 @@
         8944841068,
         8944931337,
         8945052416
+      ]
+    },
+    {
+      "id": "series-1130536",
+      "teamA": "HULIGANI",
+      "teamB": "OG",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T02:00:16Z",
+      "matchIds": [
+        8946161801
+      ]
+    },
+    {
+      "id": "series-1130535",
+      "teamA": "LGD Gaming",
+      "teamB": "Xtreme Gaming",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T02:01:25Z",
+      "matchIds": [
+        8946161784
       ]
     }
   ]
