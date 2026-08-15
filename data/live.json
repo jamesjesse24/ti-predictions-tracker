@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 31 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T08:58:09Z",
+  "message": "Synced 32 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T09:58:57Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -99,10 +99,10 @@
       "name": "Team Liquid",
       "clientName": "TEAM LIQUID",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 1,
-      "mapWins": 5,
-      "mapLosses": 3,
+      "mapWins": 7,
+      "mapLosses": 4,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T06:02:18Z"
     },
@@ -122,9 +122,9 @@
       "clientName": "IRON WING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16903873521422862552/02513782FE03E7A567B8B8955A0DEF415EF2B624/",
       "seriesWins": 2,
-      "seriesLosses": 1,
-      "mapWins": 5,
-      "mapLosses": 3,
+      "seriesLosses": 2,
+      "mapWins": 6,
+      "mapLosses": 5,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T06:02:18Z"
     },
@@ -639,15 +639,16 @@
       "id": "series-1130564",
       "teamA": "Team Liquid",
       "teamB": "IRON WING",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Team Liquid",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T06:02:18Z",
       "matchIds": [
         8946337070,
-        8946414154
+        8946414154,
+        8946495628
       ]
     },
     {
