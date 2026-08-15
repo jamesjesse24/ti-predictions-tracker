@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 26 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T05:51:08Z",
+  "message": "Synced 28 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T06:38:37Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -44,10 +44,10 @@
       "name": "Team Falcons",
       "clientName": "TEAM FALCONS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 2,
-      "mapWins": 4,
-      "mapLosses": 5,
+      "mapWins": 6,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:00:22Z"
     },
@@ -110,10 +110,10 @@
       "name": "LGD Gaming",
       "clientName": "LGD GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10055782735581672481/2B2BCEA9CC05286D7164E4548A2EB64CDBC77F31/",
-      "seriesWins": 1,
+      "seriesWins": 2,
       "seriesLosses": 2,
-      "mapWins": 3,
-      "mapLosses": 5,
+      "mapWins": 5,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:01:25Z"
     },
@@ -133,9 +133,9 @@
       "clientName": "XTREME GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2402194226059610590/E3CF4B6C4B2CFB974A9B415141E4A37317AD4D80/",
       "seriesWins": 1,
-      "seriesLosses": 2,
-      "mapWins": 2,
-      "mapLosses": 4,
+      "seriesLosses": 3,
+      "mapWins": 3,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:01:25Z"
     },
@@ -155,9 +155,9 @@
       "clientName": "GAMERLEGION",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13245379764580870318/1048428BEFAC87EC1C64E15706A4758A173B5BFB/",
       "seriesWins": 1,
-      "seriesLosses": 2,
-      "mapWins": 3,
-      "mapLosses": 4,
+      "seriesLosses": 3,
+      "mapWins": 4,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T02:00:22Z"
     },
@@ -577,29 +577,31 @@
       "teamA": "GamerLegion",
       "teamB": "Team Falcons",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Team Falcons",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T02:00:22Z",
       "matchIds": [
         8946161660,
-        8946228708
+        8946228708,
+        8946285985
       ]
     },
     {
       "id": "series-1130535",
       "teamA": "LGD Gaming",
       "teamB": "Xtreme Gaming",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "LGD Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T02:01:25Z",
       "matchIds": [
         8946161784,
-        8946231092
+        8946231092,
+        8946288549
       ]
     },
     {
