@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 32 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T09:58:57Z",
+  "generatedAt": "2026-08-15T10:31:32Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -137,7 +137,7 @@
       "mapWins": 3,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T02:01:25Z"
+      "lastMatchAt": "2026-08-15T09:33:28Z"
     },
     {
       "name": "OG",
@@ -148,7 +148,7 @@
       "mapWins": 2,
       "mapLosses": 7,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T02:00:16Z"
+      "lastMatchAt": "2026-08-15T09:34:29Z"
     },
     {
       "name": "GamerLegion",
@@ -159,7 +159,7 @@
       "mapWins": 4,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T02:00:22Z"
+      "lastMatchAt": "2026-08-15T09:34:29Z"
     },
     {
       "name": "Team Resilience",
@@ -170,7 +170,7 @@
       "mapWins": 5,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T02:02:08Z"
+      "lastMatchAt": "2026-08-15T09:33:28Z"
     },
     {
       "name": "HULIGANI",
@@ -679,6 +679,34 @@
       "matchIds": [
         8946351114,
         8946428867
+      ]
+    },
+    {
+      "id": "series-1130619",
+      "teamA": "Team Resilience",
+      "teamB": "Xtreme Gaming",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T09:33:28Z",
+      "matchIds": [
+        8946552436
+      ]
+    },
+    {
+      "id": "series-1130622",
+      "teamA": "GamerLegion",
+      "teamB": "OG",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T09:34:29Z",
+      "matchIds": [
+        8946563158
       ]
     }
   ]
