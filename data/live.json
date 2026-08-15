@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 28 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T06:38:37Z",
+  "generatedAt": "2026-08-15T07:16:24Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -38,7 +38,7 @@
       "mapWins": 4,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T04:33:50Z"
+      "lastMatchAt": "2026-08-15T06:09:56Z"
     },
     {
       "name": "Team Falcons",
@@ -71,7 +71,7 @@
       "mapWins": 4,
       "mapLosses": 2,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T04:11:37Z"
+      "lastMatchAt": "2026-08-15T05:26:24Z"
     },
     {
       "name": "Vici Gaming",
@@ -82,7 +82,7 @@
       "mapWins": 4,
       "mapLosses": 4,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T07:14:12Z"
+      "lastMatchAt": "2026-08-15T05:26:24Z"
     },
     {
       "name": "Aurora Gaming",
@@ -93,7 +93,7 @@
       "mapWins": 4,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T10:24:53Z"
+      "lastMatchAt": "2026-08-15T06:09:56Z"
     },
     {
       "name": "Team Liquid",
@@ -104,7 +104,7 @@
       "mapWins": 5,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T07:26:22Z"
+      "lastMatchAt": "2026-08-15T06:02:18Z"
     },
     {
       "name": "LGD Gaming",
@@ -126,7 +126,7 @@
       "mapWins": 5,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-14T05:47:21Z"
+      "lastMatchAt": "2026-08-15T06:02:18Z"
     },
     {
       "name": "Xtreme Gaming",
@@ -618,6 +618,48 @@
         8946161629,
         8946228107,
         8946260898
+      ]
+    },
+    {
+      "id": "series-1130559",
+      "teamA": "Vici Gaming",
+      "teamB": "Nigma Galaxy",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T05:26:24Z",
+      "matchIds": [
+        8946303764
+      ]
+    },
+    {
+      "id": "series-1130564",
+      "teamA": "Team Liquid",
+      "teamB": "IRON WING",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T06:02:18Z",
+      "matchIds": [
+        8946337070
+      ]
+    },
+    {
+      "id": "series-1130566",
+      "teamA": "BetBoom Team",
+      "teamB": "Aurora Gaming",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T06:09:56Z",
+      "matchIds": [
+        8946343023
       ]
     }
   ]
