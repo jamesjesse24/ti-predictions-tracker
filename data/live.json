@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 30 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T08:29:38Z",
+  "message": "Synced 31 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T08:58:09Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -11,11 +11,11 @@
       "name": "PARIVISION",
       "clientName": "TEAM VISION",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10380389074903512947/5D074799695A862D17D4205285315FE20399B28D/",
-      "seriesWins": 3,
+      "seriesWins": 4,
       "seriesLosses": 0,
-      "mapWins": 6,
+      "mapWins": 8,
       "mapLosses": 2,
-      "actual": "Pending",
+      "actual": "4-0",
       "lastMatchAt": "2026-08-15T06:19:26Z"
     },
     {
@@ -56,9 +56,9 @@
       "clientName": "TEAM SPIRIT",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
       "seriesWins": 3,
-      "seriesLosses": 0,
+      "seriesLosses": 1,
       "mapWins": 6,
-      "mapLosses": 1,
+      "mapLosses": 3,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T06:19:26Z"
     },
@@ -670,13 +670,14 @@
       "teamA": "Team Spirit",
       "teamB": "PARIVISION",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "PARIVISION",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T06:19:26Z",
       "matchIds": [
-        8946351114
+        8946351114,
+        8946428867
       ]
     }
   ]
