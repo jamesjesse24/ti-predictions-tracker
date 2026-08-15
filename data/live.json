@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 34 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T11:48:24Z",
+  "message": "Synced 35 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T12:37:32Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -78,9 +78,9 @@
       "clientName": "VICI GAMING",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/726228.png",
       "seriesWins": 2,
-      "seriesLosses": 2,
+      "seriesLosses": 3,
       "mapWins": 4,
-      "mapLosses": 6,
+      "mapLosses": 8,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T09:41:07Z"
     },
@@ -93,7 +93,7 @@
       "mapWins": 6,
       "mapLosses": 3,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T06:09:56Z"
+      "lastMatchAt": "2026-08-15T11:52:37Z"
     },
     {
       "name": "Team Liquid",
@@ -104,15 +104,15 @@
       "mapWins": 7,
       "mapLosses": 4,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T06:02:18Z"
+      "lastMatchAt": "2026-08-15T11:52:37Z"
     },
     {
       "name": "LGD Gaming",
       "clientName": "LGD GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10055782735581672481/2B2BCEA9CC05286D7164E4548A2EB64CDBC77F31/",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 5,
+      "mapWins": 7,
       "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T09:41:07Z"
@@ -716,13 +716,14 @@
       "teamA": "Vici Gaming",
       "teamB": "LGD Gaming",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "LGD Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T09:41:07Z",
       "matchIds": [
-        8946572751
+        8946572751,
+        8946690366
       ]
     },
     {
@@ -737,6 +738,20 @@
       "startedAt": "2026-08-15T10:41:46Z",
       "matchIds": [
         8946648249
+      ]
+    },
+    {
+      "id": "series-1130669",
+      "teamA": "Aurora Gaming",
+      "teamB": "Team Liquid",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T11:52:37Z",
+      "matchIds": [
+        8946740853
       ]
     }
   ]
