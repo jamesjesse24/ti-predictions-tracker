@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 32 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T10:31:32Z",
+  "generatedAt": "2026-08-15T10:58:59Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -82,7 +82,7 @@
       "mapWins": 4,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T05:26:24Z"
+      "lastMatchAt": "2026-08-15T09:41:07Z"
     },
     {
       "name": "Aurora Gaming",
@@ -115,7 +115,7 @@
       "mapWins": 5,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T02:01:25Z"
+      "lastMatchAt": "2026-08-15T09:41:07Z"
     },
     {
       "name": "IRON WING",
@@ -707,6 +707,20 @@
       "startedAt": "2026-08-15T09:34:29Z",
       "matchIds": [
         8946563158
+      ]
+    },
+    {
+      "id": "series-1130625",
+      "teamA": "Vici Gaming",
+      "teamB": "LGD Gaming",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T09:41:07Z",
+      "matchIds": [
+        8946572751
       ]
     }
   ]
