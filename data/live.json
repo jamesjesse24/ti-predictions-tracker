@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 28 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T07:52:44Z",
+  "message": "Synced 30 completed series from OpenDota.",
+  "generatedAt": "2026-08-15T08:29:38Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -34,9 +34,9 @@
       "clientName": "BOOMBOYS",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
-      "seriesLosses": 1,
+      "seriesLosses": 2,
       "mapWins": 4,
-      "mapLosses": 3,
+      "mapLosses": 5,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T06:09:56Z"
     },
@@ -66,9 +66,9 @@
       "name": "Nigma Galaxy",
       "clientName": "NIGMA GALAXY",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16959999218725724364/1D334B91A52606CA3E0027832D6F646E2A094391/",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 1,
-      "mapWins": 4,
+      "mapWins": 6,
       "mapLosses": 2,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T05:26:24Z"
@@ -78,9 +78,9 @@
       "clientName": "VICI GAMING",
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/726228.png",
       "seriesWins": 2,
-      "seriesLosses": 1,
+      "seriesLosses": 2,
       "mapWins": 4,
-      "mapLosses": 4,
+      "mapLosses": 6,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T05:26:24Z"
     },
@@ -88,9 +88,9 @@
       "name": "Aurora Gaming",
       "clientName": "AURORA GAMING",
       "logoUrl": "https://cdn.steamusercontent.com/ugc/13052583756685508/22B0338D7E09FB2F021E5DB5BBEFFD170D5E5E1A/",
-      "seriesWins": 2,
+      "seriesWins": 3,
       "seriesLosses": 1,
-      "mapWins": 4,
+      "mapWins": 6,
       "mapLosses": 3,
       "actual": "Pending",
       "lastMatchAt": "2026-08-15T06:09:56Z"
@@ -625,27 +625,29 @@
       "teamA": "Vici Gaming",
       "teamB": "Nigma Galaxy",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Nigma Galaxy",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T05:26:24Z",
       "matchIds": [
-        8946303764
+        8946303764,
+        8946386614
       ]
     },
     {
       "id": "series-1130564",
       "teamA": "Team Liquid",
       "teamB": "IRON WING",
-      "scoreA": 0,
+      "scoreA": 1,
       "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-15T06:02:18Z",
       "matchIds": [
-        8946337070
+        8946337070,
+        8946414154
       ]
     },
     {
@@ -653,13 +655,14 @@
       "teamA": "BetBoom Team",
       "teamB": "Aurora Gaming",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Aurora Gaming",
       "stage": "Swiss",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-15T06:09:56Z",
       "matchIds": [
-        8946343023
+        8946343023,
+        8946416702
       ]
     },
     {
