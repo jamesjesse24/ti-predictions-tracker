@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 35 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T12:37:32Z",
+  "generatedAt": "2026-08-15T13:17:27Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 6,
       "mapLosses": 5,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T02:02:08Z"
+      "lastMatchAt": "2026-08-15T11:44:37Z"
     },
     {
       "name": "BetBoom Team",
@@ -126,7 +126,7 @@
       "mapWins": 6,
       "mapLosses": 5,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T06:02:18Z"
+      "lastMatchAt": "2026-08-15T11:44:37Z"
     },
     {
       "name": "Xtreme Gaming",
@@ -731,13 +731,28 @@
       "teamA": "Team Falcons",
       "teamB": "BetBoom Team",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Swiss",
       "completed": false,
       "startedAt": "2026-08-15T10:41:46Z",
       "matchIds": [
-        8946648249
+        8946648249,
+        8946758310
+      ]
+    },
+    {
+      "id": "series-1130665",
+      "teamA": "Team Yandex",
+      "teamB": "IRON WING",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Swiss",
+      "completed": false,
+      "startedAt": "2026-08-15T11:44:37Z",
+      "matchIds": [
+        8946735226
       ]
     },
     {
