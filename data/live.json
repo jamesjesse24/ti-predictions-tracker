@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 40 completed series from OpenDota.",
-  "generatedAt": "2026-08-16T04:21:09Z",
+  "message": "Synced 41 completed series from OpenDota.",
+  "generatedAt": "2026-08-16T05:43:19Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -35,9 +35,9 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
       "seriesLosses": 3,
-      "mapWins": 5,
+      "mapWins": 7,
       "mapLosses": 7,
-      "actual": "Pending",
+      "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-16T03:00:00Z"
     },
     {
@@ -60,7 +60,7 @@
       "mapWins": 6,
       "mapLosses": 5,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T12:56:14Z"
+      "lastMatchAt": "2026-08-16T04:32:38Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -91,8 +91,8 @@
       "seriesWins": 3,
       "seriesLosses": 2,
       "mapWins": 7,
-      "mapLosses": 5,
-      "actual": "Pending",
+      "mapLosses": 7,
+      "actual": "Elimination Loser",
       "lastMatchAt": "2026-08-16T03:00:00Z"
     },
     {
@@ -170,7 +170,7 @@
       "mapWins": 7,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T09:33:28Z"
+      "lastMatchAt": "2026-08-16T04:32:38Z"
     },
     {
       "name": "HULIGANI",
@@ -808,14 +808,29 @@
       "id": "series-1130934",
       "teamA": "BetBoom Team",
       "teamB": "Aurora Gaming",
+      "scoreA": 2,
+      "scoreB": 0,
+      "winner": "BetBoom Team",
+      "stage": "Elimination",
+      "completed": true,
+      "startedAt": "2026-08-16T03:00:00Z",
+      "matchIds": [
+        8948026518,
+        8948094765
+      ]
+    },
+    {
+      "id": "series-1130941",
+      "teamA": "Team Spirit",
+      "teamB": "Team Resilience",
       "scoreA": 1,
       "scoreB": 0,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
-      "startedAt": "2026-08-16T03:00:00Z",
+      "startedAt": "2026-08-16T04:32:38Z",
       "matchIds": [
-        8948026518
+        8948094346
       ]
     }
   ]
