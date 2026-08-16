@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 41 completed series from OpenDota.",
-  "generatedAt": "2026-08-16T05:43:19Z",
+  "generatedAt": "2026-08-16T06:59:39Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -126,7 +126,7 @@
       "mapWins": 8,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T11:44:37Z"
+      "lastMatchAt": "2026-08-16T05:46:32Z"
     },
     {
       "name": "Xtreme Gaming",
@@ -159,7 +159,7 @@
       "mapWins": 6,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T09:34:29Z"
+      "lastMatchAt": "2026-08-16T05:46:32Z"
     },
     {
       "name": "Team Resilience",
@@ -824,13 +824,28 @@
       "teamA": "Team Spirit",
       "teamB": "Team Resilience",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
       "startedAt": "2026-08-16T04:32:38Z",
       "matchIds": [
-        8948094346
+        8948094346,
+        8948151326
+      ]
+    },
+    {
+      "id": "series-1130950",
+      "teamA": "GamerLegion",
+      "teamB": "IRON WING",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-16T05:46:32Z",
+      "matchIds": [
+        8948155771
       ]
     }
   ]
