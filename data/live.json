@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 39 completed series from OpenDota.",
-  "generatedAt": "2026-08-15T15:45:51Z",
+  "generatedAt": "2026-08-16T03:33:32Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -49,7 +49,7 @@
       "mapWins": 8,
       "mapLosses": 7,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T10:41:46Z"
+      "lastMatchAt": "2026-08-16T02:00:06Z"
     },
     {
       "name": "Team Spirit",
@@ -82,7 +82,7 @@
       "mapWins": 4,
       "mapLosses": 8,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T09:41:07Z"
+      "lastMatchAt": "2026-08-16T02:00:06Z"
     },
     {
       "name": "Aurora Gaming",
@@ -787,6 +787,20 @@
       "matchIds": [
         8946858055,
         8947050343
+      ]
+    },
+    {
+      "id": "series-1130919",
+      "teamA": "Vici Gaming",
+      "teamB": "Team Falcons",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-16T02:00:06Z",
+      "matchIds": [
+        8947983249
       ]
     }
   ]
