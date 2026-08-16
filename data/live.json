@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 41 completed series from OpenDota.",
-  "generatedAt": "2026-08-16T06:59:39Z",
+  "message": "Synced 43 completed series from OpenDota.",
+  "generatedAt": "2026-08-16T08:00:42Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -57,9 +57,9 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 6,
-      "mapLosses": 5,
-      "actual": "Pending",
+      "mapWins": 8,
+      "mapLosses": 6,
+      "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-16T04:32:38Z"
     },
     {
@@ -123,9 +123,9 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16903873521422862552/02513782FE03E7A567B8B8955A0DEF415EF2B624/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 8,
+      "mapWins": 10,
       "mapLosses": 6,
-      "actual": "Pending",
+      "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-16T05:46:32Z"
     },
     {
@@ -157,8 +157,8 @@
       "seriesWins": 2,
       "seriesLosses": 3,
       "mapWins": 6,
-      "mapLosses": 6,
-      "actual": "Pending",
+      "mapLosses": 8,
+      "actual": "Elimination Loser",
       "lastMatchAt": "2026-08-16T05:46:32Z"
     },
     {
@@ -167,9 +167,9 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/14326265454983833183/734A1D8A0938380A48221CDAE1AACB0C5C0AB585/",
       "seriesWins": 2,
       "seriesLosses": 3,
-      "mapWins": 7,
-      "mapLosses": 6,
-      "actual": "Pending",
+      "mapWins": 8,
+      "mapLosses": 8,
+      "actual": "Elimination Loser",
       "lastMatchAt": "2026-08-16T04:32:38Z"
     },
     {
@@ -823,15 +823,16 @@
       "id": "series-1130941",
       "teamA": "Team Spirit",
       "teamB": "Team Resilience",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Team Spirit",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-16T04:32:38Z",
       "matchIds": [
         8948094346,
-        8948151326
+        8948151326,
+        8948235815
       ]
     },
     {
@@ -839,13 +840,14 @@
       "teamA": "GamerLegion",
       "teamB": "IRON WING",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "IRON WING",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-16T05:46:32Z",
       "matchIds": [
-        8948155771
+        8948155771,
+        8948244379
       ]
     }
   ]
