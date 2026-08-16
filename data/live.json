@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 43 completed series from OpenDota.",
-  "generatedAt": "2026-08-16T08:00:42Z",
+  "generatedAt": "2026-08-16T09:27:17Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 7,
       "mapLosses": 7,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T11:44:37Z"
+      "lastMatchAt": "2026-08-16T08:08:05Z"
     },
     {
       "name": "BetBoom Team",
@@ -115,7 +115,7 @@
       "mapWins": 7,
       "mapLosses": 6,
       "actual": "Pending",
-      "lastMatchAt": "2026-08-15T09:41:07Z"
+      "lastMatchAt": "2026-08-16T08:08:05Z"
     },
     {
       "name": "IRON WING",
@@ -848,6 +848,20 @@
       "matchIds": [
         8948155771,
         8948244379
+      ]
+    },
+    {
+      "id": "series-1130974",
+      "teamA": "LGD Gaming",
+      "teamB": "Team Yandex",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-16T08:08:05Z",
+      "matchIds": [
+        8948311007
       ]
     }
   ]
