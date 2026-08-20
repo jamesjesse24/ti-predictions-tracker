@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 44 completed series from OpenDota.",
-  "generatedAt": "2026-08-20T05:31:14Z",
+  "generatedAt": "2026-08-20T07:56:33Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -16,7 +16,7 @@
       "mapWins": 8,
       "mapLosses": 2,
       "actual": "4-0",
-      "lastMatchAt": "2026-08-15T06:19:26Z"
+      "lastMatchAt": "2026-08-20T05:48:16Z"
     },
     {
       "name": "Team Yandex",
@@ -38,7 +38,7 @@
       "mapWins": 7,
       "mapLosses": 7,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-16T03:00:00Z"
+      "lastMatchAt": "2026-08-20T05:48:16Z"
     },
     {
       "name": "Team Falcons",
@@ -892,6 +892,20 @@
       "startedAt": "2026-08-20T04:12:03Z",
       "matchIds": [
         8955247801
+      ]
+    },
+    {
+      "id": "series-1132161",
+      "teamA": "BetBoom Team",
+      "teamB": "PARIVISION",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-20T05:48:16Z",
+      "matchIds": [
+        8955304019
       ]
     }
   ]
