@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 44 completed series from OpenDota.",
-  "generatedAt": "2026-08-20T09:18:21Z",
+  "message": "Synced 45 completed series from OpenDota.",
+  "generatedAt": "2026-08-20T10:00:25Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -13,8 +13,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10380389074903512947/5D074799695A862D17D4205285315FE20399B28D/",
       "seriesWins": 4,
       "seriesLosses": 0,
-      "mapWins": 8,
-      "mapLosses": 2,
+      "mapWins": 10,
+      "mapLosses": 3,
       "actual": "4-0",
       "lastMatchAt": "2026-08-20T05:48:16Z"
     },
@@ -35,8 +35,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
       "seriesLosses": 3,
-      "mapWins": 7,
-      "mapLosses": 7,
+      "mapWins": 8,
+      "mapLosses": 9,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-20T05:48:16Z"
     },
@@ -899,14 +899,15 @@
       "teamA": "BetBoom Team",
       "teamB": "PARIVISION",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "PARIVISION",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-20T05:48:16Z",
       "matchIds": [
         8955304019,
-        8955383956
+        8955383956,
+        8955456108
       ]
     }
   ]
