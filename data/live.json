@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 46 completed series from OpenDota.",
-  "generatedAt": "2026-08-20T14:36:29Z",
+  "generatedAt": "2026-08-20T15:59:13Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -930,13 +930,14 @@
       "teamA": "Team Falcons",
       "teamB": "Nigma Galaxy",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
       "startedAt": "2026-08-20T13:22:01Z",
       "matchIds": [
-        8955796155
+        8955796155,
+        8955934230
       ]
     }
   ]
