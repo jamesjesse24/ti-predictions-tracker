@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 44 completed series from OpenDota.",
-  "generatedAt": "2026-08-16T12:39:38Z",
+  "generatedAt": "2026-08-20T04:12:26Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -60,7 +60,7 @@
       "mapWins": 8,
       "mapLosses": 6,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-16T04:32:38Z"
+      "lastMatchAt": "2026-08-20T02:36:29Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -126,7 +126,7 @@
       "mapWins": 10,
       "mapLosses": 6,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-16T05:46:32Z"
+      "lastMatchAt": "2026-08-20T02:36:29Z"
     },
     {
       "name": "Xtreme Gaming",
@@ -864,6 +864,20 @@
         8948311007,
         8948420293,
         8948533452
+      ]
+    },
+    {
+      "id": "fallback-ironwing-teamspirit-82740",
+      "teamA": "Team Spirit",
+      "teamB": "IRON WING",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-20T02:36:29Z",
+      "matchIds": [
+        8955197224
       ]
     }
   ]
