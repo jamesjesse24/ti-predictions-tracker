@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 45 completed series from OpenDota.",
-  "generatedAt": "2026-08-20T10:00:25Z",
+  "generatedAt": "2026-08-20T11:54:24Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 9,
       "mapLosses": 8,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-16T08:08:05Z"
+      "lastMatchAt": "2026-08-20T10:29:28Z"
     },
     {
       "name": "BetBoom Team",
@@ -104,7 +104,7 @@
       "mapWins": 9,
       "mapLosses": 5,
       "actual": "4-1",
-      "lastMatchAt": "2026-08-15T11:52:37Z"
+      "lastMatchAt": "2026-08-20T10:29:28Z"
     },
     {
       "name": "LGD Gaming",
@@ -908,6 +908,20 @@
         8955304019,
         8955383956,
         8955456108
+      ]
+    },
+    {
+      "id": "series-1132178",
+      "teamA": "Team Yandex",
+      "teamB": "Team Liquid",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-20T10:29:28Z",
+      "matchIds": [
+        8955549026
       ]
     }
   ]
