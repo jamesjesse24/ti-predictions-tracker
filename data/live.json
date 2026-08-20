@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 46 completed series from OpenDota.",
-  "generatedAt": "2026-08-20T15:59:13Z",
+  "message": "Synced 47 completed series from OpenDota.",
+  "generatedAt": "2026-08-20T17:48:27Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -46,8 +46,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 10,
-      "mapLosses": 7,
+      "mapWins": 11,
+      "mapLosses": 9,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-20T13:22:01Z"
     },
@@ -68,8 +68,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16959999218725724364/1D334B91A52606CA3E0027832D6F646E2A094391/",
       "seriesWins": 4,
       "seriesLosses": 1,
-      "mapWins": 8,
-      "mapLosses": 2,
+      "mapWins": 10,
+      "mapLosses": 3,
       "actual": "4-1",
       "lastMatchAt": "2026-08-20T13:22:01Z"
     },
@@ -930,14 +930,15 @@
       "teamA": "Team Falcons",
       "teamB": "Nigma Galaxy",
       "scoreA": 1,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Nigma Galaxy",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-20T13:22:01Z",
       "matchIds": [
         8955796155,
-        8955934230
+        8955934230,
+        8956096810
       ]
     }
   ]
