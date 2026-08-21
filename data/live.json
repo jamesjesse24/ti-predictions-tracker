@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 48 completed series from OpenDota.",
-  "generatedAt": "2026-08-21T09:07:49Z",
+  "message": "Synced 49 completed series from OpenDota.",
+  "generatedAt": "2026-08-21T09:52:37Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -46,8 +46,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 11,
-      "mapLosses": 9,
+      "mapWins": 12,
+      "mapLosses": 11,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-21T06:16:16Z"
     },
@@ -101,8 +101,8 @@
       "logoUrl": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
       "seriesWins": 4,
       "seriesLosses": 1,
-      "mapWins": 9,
-      "mapLosses": 7,
+      "mapWins": 11,
+      "mapLosses": 8,
       "actual": "4-1",
       "lastMatchAt": "2026-08-21T06:16:16Z"
     },
@@ -961,15 +961,16 @@
       "id": "series-1132374",
       "teamA": "Team Liquid",
       "teamB": "Team Falcons",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "Team Liquid",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-21T06:16:16Z",
       "matchIds": [
         8956943534,
-        8957013760
+        8957013760,
+        8957086928
       ]
     }
   ]
