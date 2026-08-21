@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 47 completed series from OpenDota.",
-  "generatedAt": "2026-08-21T03:37:03Z",
+  "generatedAt": "2026-08-21T05:04:48Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -945,14 +945,15 @@
       "id": "series-1132343",
       "teamA": "BetBoom Team",
       "teamB": "IRON WING",
-      "scoreA": 0,
+      "scoreA": 1,
       "scoreB": 1,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
       "startedAt": "2026-08-21T02:09:24Z",
       "matchIds": [
-        8956780728
+        8956780728,
+        8956821666
       ]
     }
   ]
