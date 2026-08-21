@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 47 completed series from OpenDota.",
-  "generatedAt": "2026-08-20T17:48:27Z",
+  "generatedAt": "2026-08-21T03:37:03Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -38,7 +38,7 @@
       "mapWins": 8,
       "mapLosses": 9,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-20T05:48:16Z"
+      "lastMatchAt": "2026-08-21T02:09:24Z"
     },
     {
       "name": "Team Falcons",
@@ -126,7 +126,7 @@
       "mapWins": 10,
       "mapLosses": 6,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-20T04:12:03Z"
+      "lastMatchAt": "2026-08-21T02:09:24Z"
     },
     {
       "name": "Xtreme Gaming",
@@ -939,6 +939,20 @@
         8955796155,
         8955934230,
         8956096810
+      ]
+    },
+    {
+      "id": "series-1132343",
+      "teamA": "BetBoom Team",
+      "teamB": "IRON WING",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-21T02:09:24Z",
+      "matchIds": [
+        8956780728
       ]
     }
   ]
