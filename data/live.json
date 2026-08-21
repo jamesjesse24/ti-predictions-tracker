@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 47 completed series from OpenDota.",
-  "generatedAt": "2026-08-21T05:04:48Z",
+  "message": "Synced 48 completed series from OpenDota.",
+  "generatedAt": "2026-08-21T05:48:22Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -35,8 +35,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
       "seriesLosses": 3,
-      "mapWins": 8,
-      "mapLosses": 9,
+      "mapWins": 10,
+      "mapLosses": 10,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-21T02:09:24Z"
     },
@@ -123,8 +123,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16903873521422862552/02513782FE03E7A567B8B8955A0DEF415EF2B624/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 10,
-      "mapLosses": 6,
+      "mapWins": 11,
+      "mapLosses": 8,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-21T02:09:24Z"
     },
@@ -945,15 +945,16 @@
       "id": "series-1132343",
       "teamA": "BetBoom Team",
       "teamB": "IRON WING",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "BetBoom Team",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-21T02:09:24Z",
       "matchIds": [
         8956780728,
-        8956821666
+        8956821666,
+        8956877335
       ]
     }
   ]
