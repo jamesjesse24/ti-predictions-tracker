@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 48 completed series from OpenDota.",
-  "generatedAt": "2026-08-21T05:48:22Z",
+  "generatedAt": "2026-08-21T07:42:50Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -49,7 +49,7 @@
       "mapWins": 11,
       "mapLosses": 9,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-20T13:22:01Z"
+      "lastMatchAt": "2026-08-21T06:16:16Z"
     },
     {
       "name": "Team Spirit",
@@ -104,7 +104,7 @@
       "mapWins": 9,
       "mapLosses": 7,
       "actual": "4-1",
-      "lastMatchAt": "2026-08-20T10:29:28Z"
+      "lastMatchAt": "2026-08-21T06:16:16Z"
     },
     {
       "name": "LGD Gaming",
@@ -955,6 +955,20 @@
         8956780728,
         8956821666,
         8956877335
+      ]
+    },
+    {
+      "id": "series-1132374",
+      "teamA": "Team Liquid",
+      "teamB": "Team Falcons",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-21T06:16:16Z",
+      "matchIds": [
+        8956943534
       ]
     }
   ]
