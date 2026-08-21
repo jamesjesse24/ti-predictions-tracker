@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 50 completed series from OpenDota.",
-  "generatedAt": "2026-08-21T13:58:54Z",
+  "generatedAt": "2026-08-21T15:58:58Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 11,
       "mapLosses": 8,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-20T10:29:28Z"
+      "lastMatchAt": "2026-08-21T14:12:01Z"
     },
     {
       "name": "BetBoom Team",
@@ -71,7 +71,7 @@
       "mapWins": 10,
       "mapLosses": 3,
       "actual": "4-1",
-      "lastMatchAt": "2026-08-20T13:22:01Z"
+      "lastMatchAt": "2026-08-21T14:12:01Z"
     },
     {
       "name": "Vici Gaming",
@@ -987,6 +987,20 @@
         8957180942,
         8957272720,
         8957364447
+      ]
+    },
+    {
+      "id": "series-1132426",
+      "teamA": "Team Yandex",
+      "teamB": "Nigma Galaxy",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-21T14:12:01Z",
+      "matchIds": [
+        8957527957
       ]
     }
   ]
