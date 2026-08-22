@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 53 completed series from OpenDota.",
-  "generatedAt": "2026-08-22T08:30:31Z",
+  "generatedAt": "2026-08-22T10:01:13Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -16,7 +16,7 @@
       "mapWins": 12,
       "mapLosses": 4,
       "actual": "4-0",
-      "lastMatchAt": "2026-08-21T10:20:07Z"
+      "lastMatchAt": "2026-08-22T08:47:09Z"
     },
     {
       "name": "Team Yandex",
@@ -27,7 +27,7 @@
       "mapWins": 13,
       "mapLosses": 9,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-21T14:12:01Z"
+      "lastMatchAt": "2026-08-22T08:47:09Z"
     },
     {
       "name": "BetBoom Team",
@@ -1034,6 +1034,20 @@
         8958607830,
         8958667855,
         8958734008
+      ]
+    },
+    {
+      "id": "series-1132678",
+      "teamA": "Team Yandex",
+      "teamB": "PARIVISION",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-22T08:47:09Z",
+      "matchIds": [
+        8958842370
       ]
     }
   ]
