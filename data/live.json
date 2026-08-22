@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 51 completed series from OpenDota.",
-  "generatedAt": "2026-08-21T19:14:11Z",
+  "generatedAt": "2026-08-22T03:26:01Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -60,7 +60,7 @@
       "mapWins": 9,
       "mapLosses": 8,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-21T10:20:07Z"
+      "lastMatchAt": "2026-08-22T02:12:24Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -104,7 +104,7 @@
       "mapWins": 11,
       "mapLosses": 8,
       "actual": "4-1",
-      "lastMatchAt": "2026-08-21T06:16:16Z"
+      "lastMatchAt": "2026-08-22T02:12:24Z"
     },
     {
       "name": "LGD Gaming",
@@ -1003,6 +1003,20 @@
         8957527957,
         8957749452,
         8957890399
+      ]
+    },
+    {
+      "id": "series-1132622",
+      "teamA": "Team Liquid",
+      "teamB": "Team Spirit",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-22T02:12:24Z",
+      "matchIds": [
+        8958478716
       ]
     }
   ]
