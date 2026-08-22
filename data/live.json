@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 52 completed series from OpenDota.",
-  "generatedAt": "2026-08-22T06:40:50Z",
+  "generatedAt": "2026-08-22T07:19:24Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -1025,13 +1025,14 @@
       "teamA": "BetBoom Team",
       "teamB": "Nigma Galaxy",
       "scoreA": 1,
-      "scoreB": 0,
+      "scoreB": 1,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
       "startedAt": "2026-08-22T05:02:28Z",
       "matchIds": [
-        8958607830
+        8958607830,
+        8958667855
       ]
     }
   ]
