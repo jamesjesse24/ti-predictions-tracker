@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 52 completed series from OpenDota.",
-  "generatedAt": "2026-08-22T07:19:24Z",
+  "message": "Synced 53 completed series from OpenDota.",
+  "generatedAt": "2026-08-22T08:30:31Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -35,8 +35,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
       "seriesWins": 2,
       "seriesLosses": 3,
-      "mapWins": 10,
-      "mapLosses": 10,
+      "mapWins": 12,
+      "mapLosses": 11,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-22T05:02:28Z"
     },
@@ -68,8 +68,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/16959999218725724364/1D334B91A52606CA3E0027832D6F646E2A094391/",
       "seriesWins": 4,
       "seriesLosses": 1,
-      "mapWins": 11,
-      "mapLosses": 5,
+      "mapWins": 12,
+      "mapLosses": 7,
       "actual": "4-1",
       "lastMatchAt": "2026-08-22T05:02:28Z"
     },
@@ -1024,15 +1024,16 @@
       "id": "series-1132647",
       "teamA": "BetBoom Team",
       "teamB": "Nigma Galaxy",
-      "scoreA": 1,
+      "scoreA": 2,
       "scoreB": 1,
-      "winner": "",
+      "winner": "BetBoom Team",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-22T05:02:28Z",
       "matchIds": [
         8958607830,
-        8958667855
+        8958667855,
+        8958734008
       ]
     }
   ]
