@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 53 completed series from OpenDota.",
-  "generatedAt": "2026-08-22T10:01:13Z",
+  "generatedAt": "2026-08-22T11:29:20Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -1040,14 +1040,15 @@
       "id": "series-1132678",
       "teamA": "Team Yandex",
       "teamB": "PARIVISION",
-      "scoreA": 0,
+      "scoreA": 1,
       "scoreB": 1,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
       "startedAt": "2026-08-22T08:47:09Z",
       "matchIds": [
-        8958842370
+        8958842370,
+        8958950792
       ]
     }
   ]
