@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 52 completed series from OpenDota.",
-  "generatedAt": "2026-08-22T04:49:45Z",
+  "generatedAt": "2026-08-22T06:40:50Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -38,7 +38,7 @@
       "mapWins": 10,
       "mapLosses": 10,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-21T02:09:24Z"
+      "lastMatchAt": "2026-08-22T05:02:28Z"
     },
     {
       "name": "Team Falcons",
@@ -71,7 +71,7 @@
       "mapWins": 11,
       "mapLosses": 5,
       "actual": "4-1",
-      "lastMatchAt": "2026-08-21T14:12:01Z"
+      "lastMatchAt": "2026-08-22T05:02:28Z"
     },
     {
       "name": "Vici Gaming",
@@ -1018,6 +1018,20 @@
       "matchIds": [
         8958478716,
         8958538533
+      ]
+    },
+    {
+      "id": "series-1132647",
+      "teamA": "BetBoom Team",
+      "teamB": "Nigma Galaxy",
+      "scoreA": 1,
+      "scoreB": 0,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-22T05:02:28Z",
+      "matchIds": [
+        8958607830
       ]
     }
   ]
