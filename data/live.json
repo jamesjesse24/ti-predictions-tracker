@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 55 completed series from OpenDota.",
-  "generatedAt": "2026-08-23T11:57:27Z",
+  "message": "Synced 56 completed series from OpenDota.",
+  "generatedAt": "2026-08-23T13:32:18Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -13,8 +13,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/10380389074903512947/5D074799695A862D17D4205285315FE20399B28D/",
       "seriesWins": 4,
       "seriesLosses": 0,
-      "mapWins": 14,
-      "mapLosses": 5,
+      "mapWins": 16,
+      "mapLosses": 8,
       "actual": "4-0",
       "lastMatchAt": "2026-08-23T06:15:57Z"
     },
@@ -57,8 +57,8 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 13,
-      "mapLosses": 8,
+      "mapWins": 16,
+      "mapLosses": 10,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-23T06:15:57Z"
     },
@@ -1085,17 +1085,18 @@
       "id": "series-1133004",
       "teamA": "Team Spirit",
       "teamB": "PARIVISION",
-      "scoreA": 2,
+      "scoreA": 3,
       "scoreB": 2,
-      "winner": "",
+      "winner": "Team Spirit",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-23T06:15:57Z",
       "matchIds": [
         8960577698,
         8960655084,
         8960762254,
-        8960882635
+        8960882635,
+        8960991322
       ]
     }
   ]
