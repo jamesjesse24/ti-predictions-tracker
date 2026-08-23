@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 55 completed series from OpenDota.",
-  "generatedAt": "2026-08-23T10:40:49Z",
+  "generatedAt": "2026-08-23T11:57:27Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -1086,7 +1086,7 @@
       "teamA": "Team Spirit",
       "teamB": "PARIVISION",
       "scoreA": 2,
-      "scoreB": 1,
+      "scoreB": 2,
       "winner": "",
       "stage": "Elimination",
       "completed": false,
@@ -1094,7 +1094,8 @@
       "matchIds": [
         8960577698,
         8960655084,
-        8960762254
+        8960762254,
+        8960882635
       ]
     }
   ]
