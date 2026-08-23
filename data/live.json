@@ -3,7 +3,7 @@
   "status": "live",
   "source": "OpenDota",
   "message": "Synced 54 completed series from OpenDota.",
-  "generatedAt": "2026-08-22T14:21:47Z",
+  "generatedAt": "2026-08-23T03:37:02Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -27,7 +27,7 @@
       "mapWins": 14,
       "mapLosses": 11,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-22T08:47:09Z"
+      "lastMatchAt": "2026-08-23T02:11:08Z"
     },
     {
       "name": "BetBoom Team",
@@ -60,7 +60,7 @@
       "mapWins": 11,
       "mapLosses": 8,
       "actual": "Elimination Winner",
-      "lastMatchAt": "2026-08-22T13:08:09Z"
+      "lastMatchAt": "2026-08-23T02:11:08Z"
     },
     {
       "name": "Nigma Galaxy",
@@ -1064,6 +1064,20 @@
       "startedAt": "2026-08-22T13:08:09Z",
       "matchIds": [
         8959222564
+      ]
+    },
+    {
+      "id": "series-1132977",
+      "teamA": "Team Yandex",
+      "teamB": "Team Spirit",
+      "scoreA": 0,
+      "scoreB": 1,
+      "winner": "",
+      "stage": "Elimination",
+      "completed": false,
+      "startedAt": "2026-08-23T02:11:08Z",
+      "matchIds": [
+        8960365292
       ]
     }
   ]
