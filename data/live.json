@@ -2,8 +2,8 @@
   "schemaVersion": 3,
   "status": "live",
   "source": "OpenDota",
-  "message": "Synced 54 completed series from OpenDota.",
-  "generatedAt": "2026-08-23T03:37:02Z",
+  "message": "Synced 55 completed series from OpenDota.",
+  "generatedAt": "2026-08-23T04:22:34Z",
   "leagueName": "The International 2026",
   "leagueId": 19719,
   "teams": [
@@ -25,7 +25,7 @@
       "seriesWins": 2,
       "seriesLosses": 3,
       "mapWins": 14,
-      "mapLosses": 11,
+      "mapLosses": 13,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-23T02:11:08Z"
     },
@@ -57,7 +57,7 @@
       "logoUrl": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
       "seriesWins": 3,
       "seriesLosses": 2,
-      "mapWins": 11,
+      "mapWins": 13,
       "mapLosses": 8,
       "actual": "Elimination Winner",
       "lastMatchAt": "2026-08-23T02:11:08Z"
@@ -1071,13 +1071,14 @@
       "teamA": "Team Yandex",
       "teamB": "Team Spirit",
       "scoreA": 0,
-      "scoreB": 1,
-      "winner": "",
+      "scoreB": 2,
+      "winner": "Team Spirit",
       "stage": "Elimination",
-      "completed": false,
+      "completed": true,
       "startedAt": "2026-08-23T02:11:08Z",
       "matchIds": [
-        8960365292
+        8960365292,
+        8960411225
       ]
     }
   ]
